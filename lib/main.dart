@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/providers/operations_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
@@ -25,7 +27,17 @@ class MyApp extends StatelessWidget {
           create: (_) => UsersProvider(),
           update: (context, auth, provider) => provider
             ..setupAuthHeader(auth.authHeaders),
-        )
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, DebtsProvider>(
+          create: (_) => DebtsProvider(),
+          update: (context, auth, provider) => provider
+            ..setupAuthHeader(auth.authHeaders),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, OperationsProvider>(
+          create: (_) => OperationsProvider(),
+          update: (context, auth, provider) => provider
+            ..setupAuthHeader(auth.authHeaders),
+        ),
       ],
       child: Consumer<AuthProvider>(
         builder: (context, auth, child) => FutureBuilder<bool>(

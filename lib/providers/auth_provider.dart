@@ -4,16 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simpledebts/helpers/env_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/mixins/api_service.dart';
 import 'package:simpledebts/models/auth_data.dart';
 import 'package:simpledebts/models/auth_form.dart';
 import 'package:simpledebts/models/user.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthProvider extends ApiService with ChangeNotifier {
   final _deviceDataKey = 'authData';
-  final String baseUrl = EnvHelper.env.API_URL;
 
   AuthData _authData;
 

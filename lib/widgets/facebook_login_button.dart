@@ -23,7 +23,7 @@ class FacebookLoginButton extends StatelessWidget {
     return ButtonTheme(
       minWidth: double.infinity,
       height: 50,
-      buttonColor: Color.fromRGBO(59, 89, 152, 1),
+      buttonColor: const Color.fromRGBO(59, 89, 152, 1),
       child: RaisedButton(
         textColor: Colors.white,
         child: Text(

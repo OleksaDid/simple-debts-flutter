@@ -8,6 +8,7 @@ import 'package:simpledebts/helpers/env_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/auth_data.dart';
 import 'package:simpledebts/models/auth_form.dart';
+import 'package:simpledebts/models/user.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -114,6 +115,15 @@ class AuthProvider with ChangeNotifier {
       print(error);
       throw error;
     }
+  }
+
+  void updateUserInformation(User user) {
+    _authData = AuthData(
+      token: _authData.token,
+      refreshToken: _authData.refreshToken,
+      user: user
+    );
+    notifyListeners();
   }
 
 

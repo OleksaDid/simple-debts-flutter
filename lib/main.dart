@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/providers/users_provider.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/screens/splash_screen.dart';
@@ -19,6 +20,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, UsersProvider>(
+          create: (_) => UsersProvider(),
+          update: (context, auth, provider) => provider
+            ..setupAuthHeader(auth.authHeaders),
         )
       ],
       child: Consumer<AuthProvider>(
@@ -35,25 +41,26 @@ class MyApp extends StatelessWidget {
               title: 'Simple Dets',
               theme: ThemeData(
                 primaryColor: Colors.redAccent,
-                colorScheme: ColorScheme.light(
-                  primary: Color.fromRGBO(88, 210, 125, 1),
-                  primaryVariant: Color.fromRGBO(199, 239, 209, 1),
-                  secondary: Color.fromRGBO(251, 74, 101, 1),
-                  secondaryVariant: Color.fromRGBO(253, 196, 200, 1),
+                accentColor: Colors.orangeAccent,
+                colorScheme: const ColorScheme.light(
+                  primary: const Color.fromRGBO(88, 210, 125, 1),
+                  primaryVariant: const Color.fromRGBO(199, 239, 209, 1),
+                  secondary: const Color.fromRGBO(251, 74, 101, 1),
+                  secondaryVariant: const Color.fromRGBO(253, 196, 200, 1),
                 ),
                 fontFamily: 'Roboto',
                 textTheme: Theme.of(context).textTheme
                     .copyWith(
-                      headline1: TextStyle(fontFamily: 'Montserrat'),
-                      headline2: TextStyle(fontFamily: 'Montserrat'),
-                      headline3: TextStyle(fontFamily: 'Montserrat'),
-                      headline4: TextStyle(fontFamily: 'Montserrat'),
-                      headline5: TextStyle(fontFamily: 'Montserrat'),
-                      headline6: TextStyle(fontFamily: 'Montserrat'),
+                      headline1: const TextStyle(fontFamily: 'Montserrat'),
+                      headline2: const TextStyle(fontFamily: 'Montserrat'),
+                      headline3: const TextStyle(fontFamily: 'Montserrat'),
+                      headline4: const TextStyle(fontFamily: 'Montserrat'),
+                      headline5: const TextStyle(fontFamily: 'Montserrat'),
+                      headline6: const TextStyle(fontFamily: 'Montserrat'),
                     )
                     .apply(
-                      bodyColor: Color.fromRGBO(71, 82, 94, 1),
-                      displayColor: Color.fromRGBO(71, 82, 94, 1)
+                      bodyColor: const Color.fromRGBO(71, 82, 94, 1),
+                      displayColor: const Color.fromRGBO(71, 82, 94, 1)
                     ),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),

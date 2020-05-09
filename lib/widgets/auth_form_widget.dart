@@ -1,12 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/mixins/spinner_state.dart';
 import 'package:simpledebts/models/auth_form.dart';
+import 'package:simpledebts/widgets/button_spinner.dart';
 import 'package:simpledebts/widgets/facebook_login_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthFormWidget extends StatefulWidget {
-  final void Function(BuildContext context, AuthForm authForm, bool isLogin) onSubmit;
+  final Future<void> Function(AuthForm authForm, bool isLogin) onSubmit;
 
   AuthFormWidget({
     @required this.onSubmit
@@ -16,7 +18,7 @@ class AuthFormWidget extends StatefulWidget {
   _AuthFormWidgetState createState() => _AuthFormWidgetState();
 }
 
-class _AuthFormWidgetState extends State<AuthFormWidget> {
+class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
   final _form = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
@@ -34,11 +36,17 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     final isValid = _form.currentState.validate();
     if(isValid) {
       _form.currentState.save();
-      widget.onSubmit(context, _authForm, _isLogin);
+      showSpinner();
+      try {
+        await widget.onSubmit(_authForm, _isLogin);
+      } catch(error) {
+        ErrorHelper.handleError(error);
+      }
+      hideSpinner();
     } else {
       ErrorHelper.showErrorSnackBar(context, 'Form is not valid');
     }
@@ -78,6 +86,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
       child: Column(
         children: [
           TextFormField(
+            key: ValueKey('email'),
             decoration: const InputDecoration(
               hintText: 'email',
             ),
@@ -87,8 +96,9 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
             onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_passwordFocusNode),
             onSaved: (value) => _authForm.email = value.trim(),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           TextFormField(
+            key: ValueKey('password'),
             decoration: const InputDecoration(
               hintText: 'password',
             ),
@@ -99,10 +109,11 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
             onFieldSubmitted: !_isLogin ? (_) => FocusScope.of(context).requestFocus(_confirmPasswordFocusNode) : null,
             onSaved: (value) => _authForm.password = value.trim(),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Visibility(
             visible: !_isLogin,
             child: TextFormField(
+              key: ValueKey('confirm_password'),
               decoration: const InputDecoration(
                 hintText: 'confirm password',
               ),
@@ -112,15 +123,19 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
               obscureText: true,
             ),
           ),
-          SizedBox(height: 20,),
-          RaisedButton(
-            elevation: 0,
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
-            onPressed: _submitForm,
+          const SizedBox(height: 20,),
+          Visibility(
+            visible: !spinnerVisible,
+            child: RaisedButton(
+              elevation: 0,
+              color: Theme.of(context).primaryColor,
+              textColor: Colors.white,
+              child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
+              onPressed: _submitForm,
+            ),
+            replacement: ButtonSpinner(),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           FlatButton(
             child: Text(_isLogin ? 'DON\'T HAVE AN ACCOUNT' : 'ALREADY HAVE AN ACCOUNT'),
             onPressed: _toggleFormMode,
@@ -145,7 +160,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
               ]
             ),
           ),
-          SizedBox(height: 40,),
+          const SizedBox(height: 40,),
           FacebookLoginButton()
         ],
       ),

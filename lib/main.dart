@@ -40,10 +40,20 @@ class MyApp extends StatelessWidget {
                   secondary: Color.fromRGBO(251, 74, 101, 1),
                   secondaryVariant: Color.fromRGBO(253, 196, 200, 1),
                 ),
-                textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: Color.fromRGBO(71, 82, 94, 1),
-                    displayColor: Color.fromRGBO(71, 82, 94, 1)
-                ),
+                fontFamily: 'Roboto',
+                textTheme: Theme.of(context).textTheme
+                    .copyWith(
+                      headline1: TextStyle(fontFamily: 'Montserrat'),
+                      headline2: TextStyle(fontFamily: 'Montserrat'),
+                      headline3: TextStyle(fontFamily: 'Montserrat'),
+                      headline4: TextStyle(fontFamily: 'Montserrat'),
+                      headline5: TextStyle(fontFamily: 'Montserrat'),
+                      headline6: TextStyle(fontFamily: 'Montserrat'),
+                    )
+                    .apply(
+                      bodyColor: Color.fromRGBO(71, 82, 94, 1),
+                      displayColor: Color.fromRGBO(71, 82, 94, 1)
+                    ),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
               home: startScreen,

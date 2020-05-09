@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simpledebts/helpers/env_helper.dart';
-import 'package:simpledebts/mixins/api_service.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/auth_data.dart';
 import 'package:simpledebts/models/auth_form.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 
-class AuthProvider with ChangeNotifier, ApiService {
+class AuthProvider with ChangeNotifier {
   final _deviceDataKey = 'authData';
   final String baseUrl = EnvHelper.env.API_URL;
 
@@ -50,26 +51,38 @@ class AuthProvider with ChangeNotifier, ApiService {
           headers: _getAuthBearerHeader(_authData.refreshToken)
       );
       if(response.statusCode >= 400) {
-        handleResponseError(response);
+        ErrorHelper.handleResponseError(response);
       }
       _updateAuthData(response.body);
     } catch(error) {
-      handleError(error);
+      ErrorHelper.handleError(error);
     }
   }
 
-  Future<void> facebookLogin(String token) async {
-    try {
-      final url = '$baseUrl/login/facebook';
-      final response = await get(url,
-        headers: _getAuthBearerHeader(token)
-      );
-      if(response.statusCode >= 400) {
-        handleResponseError(response);
-      }
-      _updateAuthData(response.body);
-    } catch(error) {
-      handleError(error);
+  Future<void> facebookLogin() async {
+    final FacebookLoginResult loginResult = await FacebookLogin().logIn(['public_profile', 'email']);
+
+    switch (loginResult.status) {
+      case FacebookLoginStatus.loggedIn:
+        try {
+          final url = '$baseUrl/login/facebook';
+          final response = await get(url,
+              headers: _getAuthBearerHeader(loginResult.accessToken.token)
+          );
+          if(response.statusCode >= 400) {
+            ErrorHelper.handleResponseError(response);
+          }
+          _updateAuthData(response.body);
+        } catch(error) {
+          ErrorHelper.handleError(error);
+        }
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        return;
+        break;
+      case FacebookLoginStatus.error:
+        throw loginResult.errorMessage;
+        break;
     }
   }
 
@@ -111,11 +124,11 @@ class AuthProvider with ChangeNotifier, ApiService {
         body: authForm.toJson()
       );
       if(response.statusCode >= 400) {
-        handleResponseError(response);
+        ErrorHelper.handleResponseError(response);
       }
       _updateAuthData(response.body);
     } catch(error) {
-      handleError(error);
+      ErrorHelper.handleError(error);
     }
   }
 
@@ -136,7 +149,7 @@ class AuthProvider with ChangeNotifier, ApiService {
         );
         return response.statusCode < 400;
       } catch(error) {
-        handleError(error);
+        ErrorHelper.handleError(error);
         return false;
       }
     }
@@ -144,7 +157,7 @@ class AuthProvider with ChangeNotifier, ApiService {
 
   Map<String, String> _getAuthBearerHeader(String token) {
     return {
-      'Authorization': 'bearer $token'
+      'Authorization': 'Bearer $token'
     };
   }
 

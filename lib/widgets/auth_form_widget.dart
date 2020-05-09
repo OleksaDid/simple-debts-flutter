@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/auth_form.dart';
+import 'package:simpledebts/widgets/facebook_login_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthFormWidget extends StatefulWidget {
@@ -38,13 +40,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
       _form.currentState.save();
       widget.onSubmit(context, _authForm, _isLogin);
     } else {
-      Scaffold.of(context).hideCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Form is not valid'),
-          backgroundColor: Theme.of(context).errorColor,
-        )
-      );
+      ErrorHelper.showErrorSnackBar(context, 'Form is not valid');
     }
   }
 
@@ -83,7 +79,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
         children: [
           TextFormField(
             decoration: const InputDecoration(
-                hintText: 'email'
+              hintText: 'email',
             ),
             keyboardType: TextInputType.emailAddress,
             validator: _emailValidator,
@@ -91,9 +87,10 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
             onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_passwordFocusNode),
             onSaved: (value) => _authForm.email = value.trim(),
           ),
+          SizedBox(height: 10,),
           TextFormField(
             decoration: const InputDecoration(
-                hintText: 'password'
+              hintText: 'password',
             ),
             obscureText: true,
             validator: _passwordValidator,
@@ -102,11 +99,12 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
             onFieldSubmitted: !_isLogin ? (_) => FocusScope.of(context).requestFocus(_confirmPasswordFocusNode) : null,
             onSaved: (value) => _authForm.password = value.trim(),
           ),
+          SizedBox(height: 10,),
           Visibility(
             visible: !_isLogin,
             child: TextFormField(
               decoration: const InputDecoration(
-                  hintText: 'confirm password'
+                hintText: 'confirm password',
               ),
               controller: _passwordController,
               focusNode: _confirmPasswordFocusNode,
@@ -116,13 +114,15 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
           ),
           SizedBox(height: 20,),
           RaisedButton(
+            elevation: 0,
             child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
             onPressed: _submitForm,
           ),
+          SizedBox(height: 10,),
           FlatButton(
             child: Text(_isLogin ? 'DON\'T HAVE AN ACCOUNT' : 'ALREADY HAVE AN ACCOUNT'),
             onPressed: _toggleFormMode,
-            textColor: Theme.of(context).primaryColor,
+            textColor: Theme.of(context).textTheme.headline1.color,
           ),
           RichText(
             text: TextSpan(
@@ -142,7 +142,9 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                 )
               ]
             ),
-          )
+          ),
+          SizedBox(height: 40,),
+          FacebookLoginButton()
         ],
       ),
     );

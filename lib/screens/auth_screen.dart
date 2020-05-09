@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/auth_form.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
@@ -22,11 +23,8 @@ class AuthScreen extends StatelessWidget with ScreenWidget {
       Navigator.of(context).pushReplacementNamed(DebtsListScreen.routeName);
     } catch(error) {
       // TODO: handle error
-      Scaffold.of(context).hideCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Sometihng went wrong'),
-        backgroundColor: Theme.of(context).errorColor,
-      ));
+      print(error.toString());
+      ErrorHelper.showErrorSnackBar(context, 'Something went wrong');
     }
   }
 
@@ -35,17 +33,26 @@ class AuthScreen extends StatelessWidget with ScreenWidget {
     return Scaffold(
       body: Column(
         children: [
-          TopBlock(),
+          TopBlock(
+            child: Text(
+              'Simple Debts',
+              style: Theme.of(context).textTheme.headline2.copyWith(
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              child: SingleChildScrollView(
                 child: AuthFormWidget(
                   onSubmit: _submitAuthForm,
                 ),
               ),
             ),
-          )
+          ),
         ],
       )
     );

@@ -6,12 +6,20 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('image'),
-            Text('SPLASHHHH')
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/icon.png'),
+              SizedBox(height: 100,),
+              Text(
+                'Simple Debts',
+                style: Theme.of(context).textTheme.headline3,
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       ),
     );

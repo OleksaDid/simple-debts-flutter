@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'Simple Dets',
               theme: ThemeData(
+                primaryColor: Colors.redAccent,
                 colorScheme: ColorScheme.light(
                   primary: Color.fromRGBO(88, 210, 125, 1),
                   primaryVariant: Color.fromRGBO(199, 239, 209, 1),

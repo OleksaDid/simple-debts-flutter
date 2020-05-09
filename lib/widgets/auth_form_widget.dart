@@ -115,6 +115,8 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
           SizedBox(height: 20,),
           RaisedButton(
             elevation: 0,
+            color: Theme.of(context).primaryColor,
+            textColor: Colors.white,
             child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
             onPressed: _submitForm,
           ),
@@ -122,7 +124,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
           FlatButton(
             child: Text(_isLogin ? 'DON\'T HAVE AN ACCOUNT' : 'ALREADY HAVE AN ACCOUNT'),
             onPressed: _toggleFormMode,
-            textColor: Theme.of(context).textTheme.headline1.color,
+            textColor: Theme.of(context).primaryColor,
           ),
           RichText(
             text: TextSpan(

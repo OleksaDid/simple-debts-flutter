@@ -40,6 +40,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
     final isValid = _form.currentState.validate();
     if(isValid) {
       _form.currentState.save();
+      FocusScope.of(context).unfocus();
       showSpinner();
       try {
         await widget.onSubmit(_authForm, _isLogin);
@@ -103,6 +104,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
               hintText: 'password',
             ),
             obscureText: true,
+            controller: _passwordController,
             validator: _passwordValidator,
             focusNode: _passwordFocusNode,
             textInputAction: _isLogin ? TextInputAction.done : TextInputAction.next,
@@ -117,7 +119,6 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
               decoration: const InputDecoration(
                 hintText: 'confirm password',
               ),
-              controller: _passwordController,
               focusNode: _confirmPasswordFocusNode,
               validator: _confirmPasswordValidator,
               obscureText: true,

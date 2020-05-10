@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/auth_form.dart';
+import 'package:simpledebts/models/user.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
@@ -40,13 +41,11 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  Future<void> _updateUserData(String name, File image) async {
+  Future<User> _updateUserData(String name, File image) async {
     try {
       final updatedUser = await Provider.of<UsersProvider>(context, listen: false).updateUserData(name, image);
-      if(updatedUser != null) {
-        Provider.of<AuthProvider>(context, listen: false).updateUserInformation(updatedUser);
-      }
       _navigateToMainScreen();
+      return updatedUser;
     } catch(error) {
       ErrorHelper.handleError(error);
     }

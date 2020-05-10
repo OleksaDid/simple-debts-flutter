@@ -26,8 +26,10 @@ class TopBlock extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 240,
-          padding: const EdgeInsets.all(40),
+          height: 220,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 40
+          ),
           color: getMainColor(context),
           child: Center(
             child: child,

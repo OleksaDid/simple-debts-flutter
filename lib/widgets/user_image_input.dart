@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:simpledebts/widgets/image_lazy_load.dart';
 
 class UserImageInput extends StatefulWidget {
   final Function(File image) onPickImage;
@@ -64,43 +65,43 @@ class _UserImageInputState extends State<UserImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(100),
-      child: InkWell(
+    return Container(
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
-        onTap: _takePicture,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            Container(
-              height: 140,
-              width: 140,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: _storedImage == null
-                    ? Image.network(widget.defaultImageUrl)
-                    : Image.file(
-                  _storedImage,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: _takePicture,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: <Widget>[
+              Container(
+                height: 140,
+                width: 140,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
                 ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: ImageLazyLoad(
+                    _storedImage == null
+                      ? NetworkImage(widget.defaultImageUrl,)
+                      : FileImage(_storedImage,)
+                  ),
+                ),
+                alignment: Alignment.center,
               ),
-              alignment: Alignment.center,
-            ),
-            Container(
-              height: 45,
-              width: 140,
-              color: Colors.black54,
-              child: Icon(
-                Icons.camera_alt,
-                color: Colors.white70,
+              Container(
+                height: 45,
+                width: 140,
+                color: Colors.black54,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white70,
+                ),
+                alignment: Alignment.center,
               ),
-              alignment: Alignment.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

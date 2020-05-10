@@ -21,7 +21,7 @@ class AuthProvider extends ApiService with ChangeNotifier {
   }
 
   Map<String, String> get authHeaders {
-    return _getAuthBearerHeader(_authData.token);
+    return _getAuthBearerHeader(_authData?.token);
   }
 
   bool get isAuthenticated {
@@ -122,6 +122,7 @@ class AuthProvider extends ApiService with ChangeNotifier {
       refreshToken: _authData.refreshToken,
       user: user
     );
+    _saveDataToDevice();
     notifyListeners();
   }
 
@@ -165,9 +166,9 @@ class AuthProvider extends ApiService with ChangeNotifier {
   }
 
   Map<String, String> _getAuthBearerHeader(String token) {
-    return {
+    return token != null ? {
       'Authorization': 'Bearer $token'
-    };
+    } : {};
   }
 
   Future<void> _saveDataToDevice() async {

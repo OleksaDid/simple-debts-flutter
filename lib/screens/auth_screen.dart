@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
-import 'package:simpledebts/models/auth_form.dart';
-import 'package:simpledebts/models/user.dart';
+import 'package:simpledebts/models/auth/auth_form.dart';
+import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
-import 'package:simpledebts/widgets/auth_form_widget.dart';
-import 'package:simpledebts/widgets/top_block.dart';
-import 'package:simpledebts/widgets/user_data_form_widget.dart';
+import 'package:simpledebts/widgets/auth/auth_form_widget.dart';
+import 'package:simpledebts/widgets/common/top_block.dart';
+import 'package:simpledebts/widgets/profile/user_data_form_widget.dart';
 
 class AuthScreen extends StatefulWidget with ScreenWidget {
 

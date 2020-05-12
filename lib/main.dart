@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/providers/currency_provider.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/providers/operations_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
+import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/screens/splash_screen.dart';
@@ -36,6 +38,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<AuthProvider, OperationsProvider>(
           create: (_) => OperationsProvider(),
+          update: (context, auth, provider) => provider
+            ..setupAuthHeader(auth.authHeaders),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, CurrencyProvider>(
+          create: (_) => CurrencyProvider(),
           update: (context, auth, provider) => provider
             ..setupAuthHeader(auth.authHeaders),
         ),
@@ -71,18 +78,18 @@ class MyAppBody extends StatelessWidget {
             ),
             fontFamily: 'Roboto',
             textTheme: Theme.of(context).textTheme
-                .copyWith(
-              headline1: const TextStyle(fontFamily: 'Montserrat'),
-              headline2: const TextStyle(fontFamily: 'Montserrat'),
-              headline3: const TextStyle(fontFamily: 'Montserrat'),
-              headline4: const TextStyle(fontFamily: 'Montserrat'),
-              headline5: const TextStyle(fontFamily: 'Montserrat'),
-              headline6: const TextStyle(fontFamily: 'Montserrat'),
-            )
-                .apply(
+              .copyWith(
+                headline1: const TextStyle(fontFamily: 'Montserrat'),
+                headline2: const TextStyle(fontFamily: 'Montserrat'),
+                headline3: const TextStyle(fontFamily: 'Montserrat'),
+                headline4: const TextStyle(fontFamily: 'Montserrat'),
+                headline5: const TextStyle(fontFamily: 'Montserrat'),
+                headline6: const TextStyle(fontFamily: 'Montserrat'),
+              )
+              .apply(
                 bodyColor: const Color.fromRGBO(71, 82, 94, 1),
                 displayColor: const Color.fromRGBO(71, 82, 94, 1)
-            ),
+              ),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: startScreen,
@@ -90,6 +97,7 @@ class MyAppBody extends StatelessWidget {
             AuthScreen.routeName: (_) => AuthScreen(),
             DebtsListScreen.routeName: (_) => DebtsListScreen(),
             ProfileScreen.routeName: (_) => ProfileScreen(),
+            DebtScreen.routeName: (_) => DebtScreen(),
           },
         );
       },

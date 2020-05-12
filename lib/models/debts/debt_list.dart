@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:simpledebts/models/debt.dart';
-import 'package:simpledebts/models/debt_list_summary.dart';
+import 'package:simpledebts/models/debts/debt.dart';
+import 'package:simpledebts/models/debts/debt_list_summary.dart';
 
 part 'debt_list.g.dart';
 

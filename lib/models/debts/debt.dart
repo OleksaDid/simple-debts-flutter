@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:simpledebts/models/operation.dart';
-import 'package:simpledebts/models/user.dart';
+import 'package:simpledebts/models/debts/operation.dart';
+import 'package:simpledebts/models/user/user.dart';
 
 part 'debt.g.dart';
 
@@ -44,6 +44,24 @@ class Debt with ChangeNotifier {
 
   factory Debt.fromJson(Map<String, dynamic> json) => _$DebtFromJson(json);
   Map<String, dynamic> toJson() => _$DebtToJson(this);
+
+  bool get hasNotification {
+    return statusAcceptor != null && statusAcceptor != user.id;
+  }
+
+  bool get youReceiveMoney {
+    return moneyReceiver != null && moneyReceiver != user.id;
+  }
+
+  Color getSummaryColor(BuildContext context) {
+    if(summary == 0) {
+      return Theme.of(context).textTheme.headline6.color;
+    } else {
+      return youReceiveMoney
+          ? Theme.of(context).colorScheme.primary
+          : Theme.of(context).colorScheme.secondary;
+    }
+  }
 
   void addOperation(Operation operation) {
     moneyOperations.insert(0, operation);

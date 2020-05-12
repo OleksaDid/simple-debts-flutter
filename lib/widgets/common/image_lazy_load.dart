@@ -11,11 +11,8 @@ class ImageLazyLoad extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.white
+            color: Theme.of(context).primaryColor
           ),
-        ),
-        Center(
-          child: CircularProgressIndicator(),
         ),
         FadeInImage(
           image: image,

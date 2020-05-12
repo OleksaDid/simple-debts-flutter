@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
-import 'package:simpledebts/models/debt.dart';
-import 'package:simpledebts/models/debt_list.dart';
+import 'package:simpledebts/models/debts/debt.dart';
+import 'package:simpledebts/models/debts/debt_list.dart';
 
-class DebtsProvider extends ApiServiceWithAbstractHeaders with ChangeNotifier {
+class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   DebtList _debtList;
 
   DebtList get debtList {

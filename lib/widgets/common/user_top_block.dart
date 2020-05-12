@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simpledebts/widgets/image_lazy_load.dart';
+import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 
 class UserTopBlock extends StatelessWidget {
   final String imageUrl;

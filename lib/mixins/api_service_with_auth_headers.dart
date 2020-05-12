@@ -1,6 +1,6 @@
 import 'package:simpledebts/mixins/api_service.dart';
 
-class ApiServiceWithAbstractHeaders extends ApiService {
+class ApiServiceWithAuthHeaders extends ApiService {
   Map<String, String> _authHeaders;
 
   void setupAuthHeader(Map<String, String> headers) {

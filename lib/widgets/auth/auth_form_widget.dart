@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_state.dart';
-import 'package:simpledebts/models/auth_form.dart';
-import 'package:simpledebts/widgets/button_spinner.dart';
-import 'package:simpledebts/widgets/facebook_login_button.dart';
+import 'package:simpledebts/models/auth/auth_form.dart';
+import 'package:simpledebts/widgets/common/button_spinner.dart';
+import 'package:simpledebts/widgets/auth/facebook_login_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthFormWidget extends StatefulWidget {
@@ -30,6 +30,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
 
   @override
   void dispose() {
+    _passwordController.dispose();
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
     _privacyPolicyGestureRecognizer.dispose();

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
-import 'package:simpledebts/models/user.dart';
+import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
-import 'package:simpledebts/widgets/top_block.dart';
-import 'package:simpledebts/widgets/user_top_block.dart';
+import 'package:simpledebts/widgets/add_debt/add_debt_dialog.dart';
+import 'package:simpledebts/widgets/debt_list/debt_list_widget.dart';
+import 'package:simpledebts/widgets/common/top_block.dart';
+import 'package:simpledebts/widgets/common/user_top_block.dart';
 
 class DebtsListScreen extends StatelessWidget with ScreenWidget {
 
@@ -23,8 +25,11 @@ class DebtsListScreen extends StatelessWidget with ScreenWidget {
     Navigator.of(context).pushNamed(ProfileScreen.routeName);
   }
 
-  void _openAddDebtForm() {
-
+  void _openAddDebtForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AddDebtDialog()
+    );
   }
 
   @override
@@ -42,7 +47,7 @@ class DebtsListScreen extends StatelessWidget with ScreenWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: _openAddDebtForm,
+            onPressed: () => _openAddDebtForm(context),
           )
         ],
       ),
@@ -55,6 +60,9 @@ class DebtsListScreen extends StatelessWidget with ScreenWidget {
               onImageTap: () => _navigateToProfile(context),
             ),
             color: BlockColor.Green,
+          ),
+          Expanded(
+            child: DebtListWidget()
           )
         ],
       ),

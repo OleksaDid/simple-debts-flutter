@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:simpledebts/models/user.dart';
+import 'package:simpledebts/models/user/user.dart';
 
 part 'auth_data.g.dart';
 

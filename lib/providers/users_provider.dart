@@ -6,9 +6,9 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
-import 'package:simpledebts/models/user.dart';
+import 'package:simpledebts/models/user/user.dart';
 
-class UsersProvider extends ApiServiceWithAbstractHeaders with ChangeNotifier {
+class UsersProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
 
   Future<User> updateUserData(String name, File image) async {
     try {
@@ -42,7 +42,7 @@ class UsersProvider extends ApiServiceWithAbstractHeaders with ChangeNotifier {
   Future<List<User>> getUsers(String searchString) async {
     final url = '$baseUrl/users/?name=$searchString';
     final response = await get(url, headers: authHeaders);
-    final List<Map> users = jsonDecode(response.body);
+    final List users = jsonDecode(response.body);
     return users.map((user) => User.fromJson(user)).toList();
   }
 

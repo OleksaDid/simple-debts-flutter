@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:simpledebts/widgets/image_lazy_load.dart';
+import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 
 class UserImageInput extends StatefulWidget {
   final Function(File image) onPickImage;

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
-import 'package:simpledebts/models/operation.dart';
+import 'package:simpledebts/models/debts/operation.dart';
 
-class OperationsProvider extends ApiServiceWithAbstractHeaders with ChangeNotifier {
+class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
 
   Future<Operation> createOperation(String id, String description, String moneyReceiver, double moneyAmount) async {
     final url = '$baseUrl/operations';

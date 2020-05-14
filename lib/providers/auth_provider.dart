@@ -11,6 +11,7 @@ import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 
+// TODO: automate token refresh (can create static method, that checks if backend error is Access Token Expired and starts refresh)
 class AuthProvider extends ApiService with ChangeNotifier {
   final _deviceDataKey = 'authData';
 
@@ -94,10 +95,11 @@ class AuthProvider extends ApiService with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       if(prefs.containsKey(_deviceDataKey)) {
         final data = prefs.getString(_deviceDataKey);
-        _authData = AuthData.fromJson(jsonDecode(data));
+        final json = Map<String, dynamic>.from(jsonDecode(data));
+        _authData = AuthData.fromJson(json);
         final isValidToken = await _checkLoginStatus();
         if(isValidToken) {
-          _updateAuthData(jsonDecode(data));
+          _updateAuthData(data);
           return true;
         } else {
           try {
@@ -143,7 +145,8 @@ class AuthProvider extends ApiService with ChangeNotifier {
   }
 
   void _updateAuthData(String json) {
-    _authData = AuthData.fromJson(jsonDecode(json));
+    final jsonDecoded = Map<String, dynamic>.from(jsonDecode(json));
+    _authData = AuthData.fromJson(jsonDecoded);
     _saveDataToDevice();
     notifyListeners();
   }

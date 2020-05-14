@@ -35,8 +35,10 @@ class UserTopBlock extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.headline4.copyWith(
-            color: Colors.white
+            color: Colors.white,
+            fontSize: 30
           ),
+          textAlign: TextAlign.center,
         )
       ],
     );

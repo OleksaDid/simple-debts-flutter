@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpledebts/helpers/app_dialog.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/models/common/id_route_argument.dart';
+import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
@@ -70,16 +73,14 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
     _setCreationStep();
     try {
       final debtProvider = Provider.of<DebtsProvider>(context, listen: false);
-      String debtId;
+      Debt debt;
       if(_virtualUserName != null && _virtualUserName.isNotEmpty) {
-        debtId = await debtProvider.createSingleDebt(_virtualUserName, currency);
+        debt = await debtProvider.createSingleDebt(_virtualUserName, currency);
       } else {
-        debtId = await debtProvider.createMultipleDebt(_selectedUser.id, currency);
+        debt = await debtProvider.createMultipleDebt(_selectedUser.id, currency);
       }
       Navigator.of(context).pop();
-      Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: {
-        'id': debtId
-      });
+      Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
     } catch(error) {
       ErrorHelper.handleError(error);
     }
@@ -145,17 +146,8 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
   @override
   Widget build(BuildContext context) {
 
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12)
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 30.0,
-          horizontal: 40.0,
-        ),
-        child: _buildStep(),
-      ),
+    return DialogHelper.getThemedDialog(
+      child: _buildStep(),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/providers/currency_provider.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_item.dart';
 
 class DebtListWidget extends StatelessWidget {
@@ -34,29 +35,10 @@ class DebtListWidget extends StatelessWidget {
           final debts = _getDebtList(context);
 
           if(debts.length == 0) {
-            return Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.assistant,
-                      size: 80,
-                      color: Theme.of(context).textTheme.headline1.color,
-                    ),
-                    SizedBox(height: 20,),
-                    Text(
-                    'There are no items yet',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(height: 4,),
-                    Text(
-                      'press \'+\' to add the first debt',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
-                ),
-              ),
+            return EmptyListPlaceholder(
+              icon: Icons.assistant,
+              title: 'There are no items yet',
+              subtitle: 'press \'+\' to add the first debt',
             );
           } else {
             return RefreshIndicator(

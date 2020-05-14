@@ -8,19 +8,29 @@ import 'package:simpledebts/models/debts/operation.dart';
 
 class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
 
-  Future<Operation> createOperation(String id, String description, String moneyReceiver, double moneyAmount) async {
+  Future<void> createOperation({
+    @required String id,
+    @required String description,
+    @required String moneyReceiver,
+    @required double moneyAmount
+  }) async {
     final url = '$baseUrl/operations';
-    final response = await post(url, headers: authHeaders, body: {
+    final body = jsonEncode({
       'debtsId': id,
       'description': description,
       'moneyReceiver': moneyReceiver,
       'moneyAmount': moneyAmount
     });
+    final response = await post(url, headers: {
+      'content-type': 'application/json',
+      ...authHeaders
+    }, body: body);
     if(response.statusCode >= 400) {
+      print(response.body);
+      print('ERRROR');
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    return Operation.fromJson(jsonDecode(response.body));
   }
 
   Future<void> deleteOperation(String id) async {
@@ -32,18 +42,17 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     }
   }
 
-  Future<Operation> acceptOperation(String id) async {
+  Future<void> acceptOperation(String id) async {
     final url = '$baseUrl/operations/$id/creation/accept';
     final response = await post(url, headers: authHeaders);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    return Operation.fromJson(jsonDecode(response.body));
   }
 
   Future<void> declineOperation(String id) async {
-    final url = '$baseUrl/operstions/$id/creation/decline';
+    final url = '$baseUrl/operations/$id/creation/decline';
     final response = await post(url, headers: authHeaders);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);

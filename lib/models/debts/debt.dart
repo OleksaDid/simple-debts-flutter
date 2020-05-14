@@ -10,6 +10,7 @@ enum DebtAccountType {
   MULTIPLE_USERS
 }
 
+// TODO: user deleted & connect user screens
 enum DebtStatus {
   CREATION_AWAITING,
   UNCHANGED,
@@ -18,8 +19,14 @@ enum DebtStatus {
   CONNECT_USER
 }
 
+enum MoneyReceiveStatus {
+  None,
+  YouTake,
+  YouGive
+}
+
 @JsonSerializable(explicitToJson: true)
-class Debt with ChangeNotifier {
+class Debt {
   final String id;
   final User user;
   final DebtAccountType type;
@@ -49,43 +56,21 @@ class Debt with ChangeNotifier {
     return statusAcceptor != null && statusAcceptor != user.id;
   }
 
-  bool get youReceiveMoney {
-    return moneyReceiver != null && moneyReceiver != user.id;
+  MoneyReceiveStatus get moneyReceiveStatus {
+    return moneyReceiver == null
+        ? MoneyReceiveStatus.None
+        : moneyReceiver == user.id
+          ? MoneyReceiveStatus.YouGive
+          : MoneyReceiveStatus.YouTake;
   }
 
   Color getSummaryColor(BuildContext context) {
-    if(summary == 0) {
-      return Theme.of(context).textTheme.headline6.color;
-    } else {
-      return youReceiveMoney
-          ? Theme.of(context).colorScheme.primary
-          : Theme.of(context).colorScheme.secondary;
-    }
-  }
-
-  void addOperation(Operation operation) {
-    moneyOperations.insert(0, operation);
-    notifyListeners();
-  }
-
-  Map<int, Operation> removeOperation(String id) {
-    final operationIndex = moneyOperations.indexWhere((operation) => operation.id == id);
-    final operation = moneyOperations[operationIndex];
-    moneyOperations.removeAt(operationIndex);
-    notifyListeners();
-    return {
-      operationIndex: operation
+    Map<MoneyReceiveStatus, Color> moneyReceiveColors = {
+      MoneyReceiveStatus.None: Theme.of(context).textTheme.headline6.color,
+      MoneyReceiveStatus.YouTake: Theme.of(context).colorScheme.secondary,
+      MoneyReceiveStatus.YouGive: Theme.of(context).colorScheme.primary,
     };
-  }
 
-  void restoreOperation(Map<int, Operation> operationData) {
-    moneyOperations[operationData.keys.elementAt(0)] = operationData.values.elementAt(0);
-    notifyListeners();
-  }
-
-  void updateOperation(String id, Operation operation) {
-    final operationIndex = moneyOperations.indexWhere((operation) => operation.id == id);
-    moneyOperations[operationIndex] = operation;
-    notifyListeners();
+    return moneyReceiveColors[moneyReceiveStatus];
   }
 }

@@ -23,7 +23,7 @@ class ErrorHelper {
     throw error;
   }
 
-  static showErrorSnackBar(BuildContext context, String error) {
+  static showErrorSnackBar(BuildContext context, [String error = 'Something went wrong. Try again later']) {
     print(error);
     Scaffold.of(context).hideCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(

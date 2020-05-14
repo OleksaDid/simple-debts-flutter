@@ -37,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
     } catch(error) {
       // TODO: handle error
       print(error.toString());
-      ErrorHelper.showErrorSnackBar(context, 'Something went wrong');
+      ErrorHelper.showErrorSnackBar(context);
     }
   }
 

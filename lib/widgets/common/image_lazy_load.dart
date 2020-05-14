@@ -15,6 +15,7 @@ class ImageLazyLoad extends StatelessWidget {
           ),
         ),
         FadeInImage(
+          width: double.infinity,
           image: image,
           fit: BoxFit.cover,
           placeholder: AssetImage('assets/images/transparent_image.png'),

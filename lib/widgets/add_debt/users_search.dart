@@ -39,7 +39,7 @@ class _UsersSearchState extends State<UsersSearch> with SpinnerState {
       final users = await Provider.of<UsersProvider>(context, listen: false).getUsers(_searchQuery.text);
       setState(() =>_usersList = users);
     } catch(error) {
-      ErrorHelper.showErrorSnackBar(context, 'Something went wrong');
+      ErrorHelper.showErrorSnackBar(context);
     }
     hideSpinner();
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simpledebts/models/common/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 
@@ -8,17 +9,18 @@ class DebtListItem extends StatelessWidget {
   DebtListItem(this.debt);
   
   void _navigateToDebtDetails(BuildContext context) {
-    Navigator.of(context).pushNamed(DebtScreen.routeName);
+    Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
   }
 
+  // TODO: different trailing icons for different statuses
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigateToDebtDetails(context),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10
+            horizontal: 20,
+            vertical: 10
         ),
         leading: CircleAvatar(
           backgroundImage: NetworkImage(debt.user.picture),
@@ -31,7 +33,7 @@ class DebtListItem extends StatelessWidget {
         subtitle: Text(
           '${debt.currency} ${debt.summary.toStringAsFixed(0)}',
           style: TextStyle(
-            color: debt.getSummaryColor(context)
+              color: debt.getSummaryColor(context)
           ),
         ),
         trailing: Visibility(

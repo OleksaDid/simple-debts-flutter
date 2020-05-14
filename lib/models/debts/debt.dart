@@ -52,10 +52,6 @@ class Debt {
   factory Debt.fromJson(Map<String, dynamic> json) => _$DebtFromJson(json);
   Map<String, dynamic> toJson() => _$DebtToJson(this);
 
-  bool get hasNotification {
-    return statusAcceptor != null && statusAcceptor != user.id;
-  }
-
   MoneyReceiveStatus get moneyReceiveStatus {
     return moneyReceiver == null
         ? MoneyReceiveStatus.None

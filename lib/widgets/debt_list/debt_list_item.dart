@@ -12,7 +12,25 @@ class DebtListItem extends StatelessWidget {
     Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
   }
 
-  // TODO: different trailing icons for different statuses
+  // TODO: delete user and connect user
+  Widget _buildTrailing(BuildContext context) {
+    if(debt.status == DebtStatus.CREATION_AWAITING) {
+      return debt.statusAcceptor == debt.user.id
+          ? Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor))
+          : Text('NEW', style: TextStyle(color: Theme.of(context).accentColor));
+    }
+    if(debt.status == DebtStatus.CHANGE_AWAITING && debt.statusAcceptor != debt.user.id) {
+      return Container(
+        height: 16,
+        width: 16,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Theme.of(context).accentColor,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -36,17 +54,7 @@ class DebtListItem extends StatelessWidget {
               color: debt.getSummaryColor(context)
           ),
         ),
-        trailing: Visibility(
-          visible: debt.hasNotification,
-          child: Container(
-            height: 16,
-            width: 16,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
+        trailing: debt.status != DebtStatus.UNCHANGED ? _buildTrailing(context) : null
       ),
     );
   }

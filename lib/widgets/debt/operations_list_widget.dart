@@ -22,6 +22,7 @@ class OperationsListWidget extends StatelessWidget {
     this.showBottomButtons = true,
   });
 
+  // TODO: first list item has less padding on top
   Widget _buildMainBlock(BuildContext context, AsyncSnapshot snapshot) {
     if(snapshot.error != null) {
       return Center(

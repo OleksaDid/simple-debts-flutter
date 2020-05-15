@@ -36,10 +36,7 @@ class OperationsListItem extends StatelessWidget {
   Widget _buildTrailingBlock(BuildContext context) {
     if(operation.status == OperationStatus.CREATION_AWAITING) {
       if(operation.statusAcceptor == debt.user.id) {
-        return Icon(
-          Icons.watch_later,
-          color: Theme.of(context).accentColor,
-        );
+        return Text('WAITING FOR ACCEPT', style: TextStyle(color: Theme.of(context).accentColor),);
       } else {
         return OperationConfirmationButtons(
           operationId: operation.id,
@@ -48,10 +45,7 @@ class OperationsListItem extends StatelessWidget {
       }
     }
     if(operation.status == OperationStatus.CANCELLED) {
-      return Icon(
-        Icons.cancel,
-        color: Theme.of(context).errorColor,
-      );
+      return Text('CANCELED', style: TextStyle(color: Theme.of(context).errorColor),);
     }
     return null;
   }

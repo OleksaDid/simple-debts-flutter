@@ -10,7 +10,7 @@ enum DebtAccountType {
   MULTIPLE_USERS
 }
 
-// TODO: user deleted & connect user screens
+// TODO: connect user screens
 enum DebtStatus {
   CREATION_AWAITING,
   UNCHANGED,

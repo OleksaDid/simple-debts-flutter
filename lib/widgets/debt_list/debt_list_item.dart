@@ -12,22 +12,18 @@ class DebtListItem extends StatelessWidget {
     Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
   }
 
-  // TODO: delete user and connect user
+  // TODO: connect user
   Widget _buildTrailing(BuildContext context) {
     if(debt.status == DebtStatus.CREATION_AWAITING) {
       return debt.statusAcceptor == debt.user.id
           ? Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor))
           : Text('NEW', style: TextStyle(color: Theme.of(context).accentColor));
     }
+    if(debt.status == DebtStatus.USER_DELETED) {
+      return Text('USER LEFT', style: TextStyle(color: Theme.of(context).errorColor),);
+    }
     if(debt.status == DebtStatus.CHANGE_AWAITING && debt.statusAcceptor != debt.user.id) {
-      return Container(
-        height: 16,
-        width: 16,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Theme.of(context).accentColor,
-        ),
-      );
+      return Text('NEW OPERATIONS', style: TextStyle(color: Theme.of(context).accentColor),);
     }
   }
 

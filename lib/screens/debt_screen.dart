@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
@@ -36,7 +35,7 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
   // TODO: throws error
   Future<void> _deleteDebt(BuildContext context, String debtId) async {
     final debtProvider = Provider.of<DebtsProvider>(context, listen: false);
-    final bool deleteDebt = await debtProvider.requestDebtDelete(context);
+    final bool deleteDebt = await DialogHelper.showDeleteDialog(context, 'Delete this debt?');
     if(deleteDebt) {
       showSpinnerModal(context);
       try {

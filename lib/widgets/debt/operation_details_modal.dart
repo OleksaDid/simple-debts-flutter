@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:simpledebts/helpers/app_dialog.dart';
+import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/widgets/debt/delete_operation_button.dart';
 import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
 
 class OperationDetailsModal extends StatelessWidget {
@@ -99,7 +100,11 @@ class OperationDetailsModal extends StatelessWidget {
           SizedBox(height: 10,),
           Text(operation.description, style: TextStyle(fontSize: 18),),
           Text(formattedDate, textAlign: TextAlign.start,),
-          if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context, currentUser)
+          if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context, currentUser),
+          if(debt.type == DebtAccountType.SINGLE_USER) DeleteOperationButton(
+            operationId: operation.id,
+            debtId: debt.id,
+          )
         ],
       )
     );

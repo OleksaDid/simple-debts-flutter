@@ -3,6 +3,7 @@ import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
 import 'package:simpledebts/widgets/common/user_top_block.dart';
 import 'package:simpledebts/widgets/debt/debt_creation_accept.dart';
+import 'package:simpledebts/widgets/debt/debt_deleted_user.dart';
 import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
 
 
@@ -27,6 +28,11 @@ class DebtScreenBody extends StatelessWidget {
     if(debt.status == DebtStatus.CREATION_AWAITING) {
       return DebtCreationAccept(
         debt: debt,
+      );
+    }
+    if(debt.status == DebtStatus.USER_DELETED  && debt.statusAcceptor != null) {
+      return DebtDeletedUser(
+        debt: debt
       );
     }
     return OperationsListWidget(

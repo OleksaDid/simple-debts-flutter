@@ -14,10 +14,12 @@ import 'package:simpledebts/widgets/debt/operations_list_item.dart';
 class OperationsListWidget extends StatelessWidget {
   final List<Operation> operations;
   final Debt debt;
+  final bool showBottomButtons;
 
   OperationsListWidget({
     @required this.operations,
     @required this.debt,
+    this.showBottomButtons = true,
   });
 
   Widget _buildMainBlock(BuildContext context, AsyncSnapshot snapshot) {
@@ -37,17 +39,20 @@ class OperationsListWidget extends StatelessWidget {
           title: 'No operations yet',
           subtitle: 'Press one of the buttons below to add one',
         )
-        : ListView.builder(
+        : RefreshIndicator(
+          onRefresh: () => _fetchOperations(context, forceRefresh: true),
+          child: ListView.builder(
             itemCount: operations.length,
             itemBuilder: (context, index) => OperationsListItem(
               operation: operations[index],
               debt: debt,
             )
+          ),
         );
   }
 
-  Future<Debt> _fetchOperations(BuildContext context) async {
-    if(debt.moneyOperations == null) {
+  Future<Debt> _fetchOperations(BuildContext context, {bool forceRefresh = false}) async {
+    if(debt.moneyOperations == null || forceRefresh) {
       return Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debt.id);
     } else {
       return debt;
@@ -77,7 +82,7 @@ class OperationsListWidget extends StatelessWidget {
             builder: _buildMainBlock
           ),
         ),
-        BottomButtonsRow(
+        if(showBottomButtons) BottomButtonsRow(
           primaryButton: DebtScreenBottomButton(
             title: 'GIVE',
             onTap: () => _addOperation(context, debt,  debt.user.id),

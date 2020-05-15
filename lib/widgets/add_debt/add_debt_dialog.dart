@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simpledebts/helpers/app_dialog.dart';
+import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/common/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';

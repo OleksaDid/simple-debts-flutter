@@ -43,30 +43,6 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     return debt;
   }
 
-  Future<bool> requestDebtDelete(BuildContext context) {
-    return showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)
-          ),
-          title: Text('Delete this debt?'),
-          actions: [
-            FlatButton(
-              child: Text('NO'),
-              textColor: Theme.of(context).accentColor,
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            FlatButton(
-              child: Text('YES'),
-              textColor: Theme.of(context).accentColor,
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-          ],
-        )
-    );
-  }
-
   Future<void> deleteDebt(String id) async {
     final debt = getDebt(id);
     final debtTypePath = debt.type == DebtAccountType.SINGLE_USER ? 'single' : 'multiple';

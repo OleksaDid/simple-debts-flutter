@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/mixins/spinner_state.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/providers/operations_provider.dart';
 
 class AddOperationFormWidget extends StatefulWidget {

@@ -67,6 +67,14 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
             color: Theme.of(context).colorScheme.secondary,
             onTap: () => _declineCreation(context),
           ),
+        ),
+        if(debt.statusAcceptor == debt.user.id) Container(
+          width: double.infinity,
+          child: DebtScreenBottomButton(
+            title: 'CANCEL',
+            color: Theme.of(context).colorScheme.secondary,
+            onTap: () => _declineCreation(context),
+          ),
         )
       ],
     );

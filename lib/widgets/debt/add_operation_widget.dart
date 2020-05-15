@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simpledebts/helpers/app_dialog.dart';
+import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/widgets/debt/add_operation_form_widget.dart';
 

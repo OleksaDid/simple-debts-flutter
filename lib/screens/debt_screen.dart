@@ -7,6 +7,7 @@ import 'package:simpledebts/mixins/spinner_modal.dart';
 import 'package:simpledebts/models/common/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/widgets/debt/connect_user_dialog.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_body.dart';
 
 enum DropdownActions {
@@ -26,7 +27,7 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
       }
 
       case DropdownActions.connectUser: {
-        // TODO: implement connect user
+        _connectUser(context, debtId);
         break;
       }
     }
@@ -46,6 +47,13 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
       }
       hideSpinnerModal(context);
     }
+  }
+
+  void _connectUser(BuildContext context, String debtId) {
+    showDialog(
+      context: context,
+      builder: (context) => ConnectUserDialog(debtId: debtId,)
+    );
   }
 
   Debt _getDebt(BuildContext context) {
@@ -73,7 +81,7 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
                     child: Text('Delete debt'),
                     value: DropdownActions.deleteDebt,
                   ),
-                  if(debt.type == DebtAccountType.SINGLE_USER) PopupMenuItem(
+                  if(debt.type == DebtAccountType.SINGLE_USER && debt.status != DebtStatus.CONNECT_USER && debt.status != DebtStatus.USER_DELETED) PopupMenuItem(
                     child: Text('Connect registered user'),
                     value: DropdownActions.connectUser,
                   ),

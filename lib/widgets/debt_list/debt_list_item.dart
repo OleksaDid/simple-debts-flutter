@@ -12,9 +12,8 @@ class DebtListItem extends StatelessWidget {
     Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
   }
 
-  // TODO: connect user
   Widget _buildTrailing(BuildContext context) {
-    if(debt.status == DebtStatus.CREATION_AWAITING) {
+    if(debt.status == DebtStatus.CREATION_AWAITING || debt.status == DebtStatus.CONNECT_USER) {
       return debt.statusAcceptor == debt.user.id
           ? Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor))
           : Text('NEW', style: TextStyle(color: Theme.of(context).accentColor));

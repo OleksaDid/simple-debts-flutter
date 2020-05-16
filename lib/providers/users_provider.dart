@@ -46,6 +46,13 @@ class UsersProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     return users.map((user) => User.fromJson(user)).toList();
   }
 
+  Future<User> getUser(String id) async {
+    final url = '$baseUrl/users/$id';
+    final response = await get(url, headers: authHeaders);
+    return User.fromJson(jsonDecode(response.body));
+  }
+
+  // TODO: push notifications
   Future<void> pushDeviceToken(String token) async {
     final url = '$baseUrl/users/push_tokens';
     final response = await post(url, headers: authHeaders, body: {

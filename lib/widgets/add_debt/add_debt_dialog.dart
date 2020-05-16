@@ -9,7 +9,7 @@ import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/widgets/add_debt/add_virtual_user_debt_form.dart';
 import 'package:simpledebts/widgets/add_debt/debt_creation_confirmation.dart';
-import 'package:simpledebts/widgets/add_debt/users_search.dart';
+import 'package:simpledebts/widgets/common/users_search.dart';
 
 enum FormStep {
   Initial,
@@ -114,9 +114,20 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
       break;
 
       case FormStep.UsersSearch: {
-        return UsersSearch(
-          onSelectUser: _setRegisteredUser,
-          onCancel: _setInitialStep,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Find user',
+              style: TextStyle(
+                  fontSize: 20
+              ),
+            ),
+            UsersSearch(
+              onSelectUser: _setRegisteredUser,
+              onCancel: _setInitialStep,
+            ),
+          ],
         );
       }
       break;

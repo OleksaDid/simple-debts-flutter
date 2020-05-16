@@ -10,7 +10,6 @@ enum DebtAccountType {
   MULTIPLE_USERS
 }
 
-// TODO: connect user screens
 enum DebtStatus {
   CREATION_AWAITING,
   UNCHANGED,
@@ -68,5 +67,15 @@ class Debt {
     };
 
     return moneyReceiveColors[moneyReceiveStatus];
+  }
+
+  String getTitleText(User user) {
+    final Map<MoneyReceiveStatus, String> titles = {
+      MoneyReceiveStatus.None: '${user.name} \n owes you nothing',
+      MoneyReceiveStatus.YouTake: 'You owe ${user.name} \n ${summary.toStringAsFixed(2)} $currency',
+      MoneyReceiveStatus.YouGive: '${user.name} owes you \n ${summary.toStringAsFixed(2)} $currency',
+    };
+
+    return titles[moneyReceiveStatus];
   }
 }

@@ -37,6 +37,7 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
     super.dispose();
   }
 
+  // TODO: error handling
   Future<void> _submitForm() async {
     final isValid = _form.currentState.validate();
     if(isValid) {

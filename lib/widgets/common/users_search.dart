@@ -66,12 +66,6 @@ class _UsersSearchState extends State<UsersSearch> with SpinnerState {
       ),
       child: Column(
         children: [
-          Text(
-            'Find user',
-            style: TextStyle(
-              fontSize: 20
-            ),
-          ),
           SizedBox(height: 20,),
           TextField(
             controller: _searchQuery,

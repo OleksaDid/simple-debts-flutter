@@ -23,11 +23,16 @@ class ApiServiceWithAuthHeaders extends ApiService {
       }, onError: (DioError error) async {
         // TODO: log error
         if (error.response?.statusCode == 401) {
+          print(error.request.path);
+          print('token expired, need to update');
           http.interceptors.requestLock.lock();
           http.interceptors.responseLock.lock();
           RequestOptions options = error.response.request;
           final authData = await refreshToken();
-          options.headers[HttpHeaders.authorizationHeader] = "Bearer " + authData.token;
+          if(authData != null) {
+            options.headers[HttpHeaders.authorizationHeader] = "Bearer " + authData.token;
+            print('token sucessfully updated, resuming request');
+          }
 
           http.interceptors.requestLock.unlock();
           http.interceptors.responseLock.unlock();
@@ -44,18 +49,19 @@ class ApiServiceWithAuthHeaders extends ApiService {
     try {
       final authData = await _getAuthData();
       if(authData != null) {
+        print('refreshing token...');
         final response = await super.http().get('/login/refresh_token', options: Options(
             headers: {
               HttpHeaders.authorizationHeader: 'Bearer ' + authData.refreshToken
             }
         ));
-        if(response.statusCode >= 400) {
-          ErrorHelper.handleResponseError(response);
-        }
         final updatedAuthData = AuthData.fromJson(response.data);
         _updateAuthData(updatedAuthData);
+        print('token updated');
         return updatedAuthData;
       }
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     } catch(error) {
       ErrorHelper.handleError(error);
     }

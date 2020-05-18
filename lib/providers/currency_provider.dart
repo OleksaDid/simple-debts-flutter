@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
-import 'package:simpledebts/models/common/currency.dart';
+import 'package:simpledebts/models/common/currency/currency.dart';
 
 class CurrencyProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   
@@ -19,13 +21,17 @@ class CurrencyProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   
   Future<void> fetchAndSetCurrencies() async {
     if(_currencies.length == 0) {
-      final url = '/common/currency';
-      final response = await http().get(url);
-      final List currencies = response.data;
-      _currencies = currencies
-          .map((currency) => Currency.fromJson(currency))
-          .toList();
-      notifyListeners();
+      try {
+        final url = '/common/currency';
+        final response = await http().get(url);
+        final List currencies = response.data;
+        _currencies = currencies
+            .map((currency) => Currency.fromJson(currency))
+            .toList();
+        notifyListeners();
+      } on DioError catch(error) {
+        ErrorHelper.handleDioError(error);
+      }
     }
   }
 

@@ -1,19 +1,25 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simpledebts/models/common/errors/backend_error.dart';
 
 class ErrorHelper {
 
-  static Error handleResponseError(Response response) {
+  static  handleDioError(DioError error) {
     // TODO: log error
-    final body = jsonDecode(response.data);
-    final error = body['error'] ?? 'Unknown error';
-    print(response.request.path);
-    print(response.request.headers);
-    print('HTTP ERROR: ${response.statusCode} - $error');
-    throw error;
+    if(error.response != null) {
+      final backendError = BackendError.fromJson(error.response.data);
+      print(error.request.path);
+      print(error.request.headers);
+      print('BACKEND ERROR: ${error.response.statusCode} - ${backendError.message}');
+      if(backendError.fields != null && backendError.fields.length > 0) {
+        print('VALIDATION ERRORS: ${backendError.fields.toString()}');
+      }
+      throw error;
+    } else {
+      print(error.request);
+      print(error.message);
+    }
   }
 
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/models/common/id_route_argument.dart';
+import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/debts_provider.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simpledebts/models/common/id_route_argument.dart';
+import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:simpledebts/models/common/env.dart';
+import 'package:simpledebts/models/common/env/env.dart';
 
 class EnvHelper {
 

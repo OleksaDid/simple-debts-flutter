@@ -51,10 +51,9 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
               HttpHeaders.authorizationHeader: 'Bearer ' + loginResult.accessToken.token
             }
           ));
-          if(response.statusCode >= 400) {
-            ErrorHelper.handleResponseError(response);
-          }
           _updateAuthData(AuthData.fromJson(response.data));
+        } on DioError catch(error) {
+          ErrorHelper.handleDioError(error);
         } catch(error) {
           ErrorHelper.handleError(error);
         }
@@ -118,10 +117,9 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
       final Response response = await http().post(urlPath,
         data: authForm.toJson()
       );
-      if(response.statusCode >= 400) {
-        ErrorHelper.handleResponseError(response);
-      }
       _updateAuthData(AuthData.fromJson(response.data));
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     } catch(error) {
       ErrorHelper.handleError(error);
     }

@@ -25,39 +25,45 @@ class UsersProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
 
       final formData = FormData.fromMap(formDataMap);
       final response = await http().post(url, data: formData);
-      if(response.statusCode >= 400) {
-        print('Image Upload faild');
-        print(response.statusCode);
-        return null;
-      }
+
       return User.fromJson(response.data);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     } catch(error) {
       ErrorHelper.handleError(error);
     }
   }
 
   Future<List<User>> getUsers(String searchString) async {
-    final url = '/users/?name=$searchString';
-    final response = await http().get(url);
-    final List users = response.data;
-    return users.map((user) => User.fromJson(user)).toList();
+    try {
+      final url = '/users/?name=$searchString';
+      final response = await http().get(url);
+      final List users = response.data;
+      return users.map((user) => User.fromJson(user)).toList();
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
+    }
   }
 
   Future<User> getUser(String id) async {
-    final url = '/users/$id';
-    final response = await http().get(url);
-    return User.fromJson(response.data);
+    try {
+      final url = '/users/$id';
+      final response = await http().get(url);
+      return User.fromJson(response.data);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
+    }
   }
 
   // TODO: push notifications
   Future<void> pushDeviceToken(String token) async {
-    final url = '/users/push_tokens';
-    final response = await http().post(url, data: {
-      'token': token
-    });
-    if(response.statusCode >= 400) {
-      ErrorHelper.handleResponseError(response);
-      return null;
+    try {
+      final url = '/users/push_tokens';
+      await http().post(url, data: {
+        'token': token
+      });
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     }
   }
 

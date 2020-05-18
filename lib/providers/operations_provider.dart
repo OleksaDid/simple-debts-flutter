@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
@@ -10,46 +11,44 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     @required String moneyReceiver,
     @required double moneyAmount
   }) async {
-    final url = '/operations';
-    final body = {
-      'debtsId': id,
-      'description': description,
-      'moneyReceiver': moneyReceiver,
-      'moneyAmount': moneyAmount
-    };
-    final response = await http().post(url, data: body);
-    if(response.statusCode >= 400) {
-      print(response.data);
-      print('ERRROR');
-      ErrorHelper.handleResponseError(response);
-      return null;
+    try {
+      final url = '/operations';
+      final body = {
+        'debtsId': id,
+        'description': description,
+        'moneyReceiver': moneyReceiver,
+        'moneyAmount': moneyAmount
+      };
+      await http().post(url, data: body);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     }
   }
 
   Future<void> deleteOperation(String id) async {
-    final url = '/operations/$id';
-    final response = await http().delete(url);
-    if(response.statusCode >= 400) {
-      ErrorHelper.handleResponseError(response);
-      return null;
+    try {
+      final url = '/operations/$id';
+      await http().delete(url);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     }
   }
 
   Future<void> acceptOperation(String id) async {
-    final url = '/operations/$id/creation/accept';
-    final response = await http().post(url);
-    if(response.statusCode >= 400) {
-      ErrorHelper.handleResponseError(response);
-      return null;
+    try {
+      final url = '/operations/$id/creation/accept';
+      await http().post(url);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     }
   }
 
   Future<void> declineOperation(String id) async {
-    final url = '/operations/$id/creation/decline';
-    final response = await http().post(url);
-    if(response.statusCode >= 400) {
-      ErrorHelper.handleResponseError(response);
-      return null;
+    try {
+      final url = '/operations/$id/creation/decline';
+      await http().post(url);
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
     }
   }
 

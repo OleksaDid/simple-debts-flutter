@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
 import 'package:simpledebts/models/debts/debt.dart';
@@ -15,12 +12,12 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetDebtList() async {
-    final url = '$baseUrl/debts';
-    final Response response = await get(url, headers: authHeaders);
+    final url = '/debts';
+    final response = await http().get(url);
     if(response.statusCode >= 400) {
       return ErrorHelper.handleResponseError(response);
     }
-    _debtList = DebtList.fromJson(jsonDecode(response.body));
+    _debtList = DebtList.fromJson(response.data);
     notifyListeners();
   }
 
@@ -32,13 +29,13 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   }
 
   Future<Debt> fetchDebt(String id) async {
-    final url = '$baseUrl/debts/$id';
-    final Response response = await get(url, headers: authHeaders);
+    final url = '/debts/$id';
+    final response = await http().get(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
     return debt;
   }
@@ -46,8 +43,8 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   Future<void> deleteDebt(String id) async {
     final debt = getDebt(id);
     final debtTypePath = debt.type == DebtAccountType.SINGLE_USER ? 'single' : 'multiple';
-    final url = '$baseUrl/debts/$debtTypePath/$id';
-    final Response response = await delete(url, headers: authHeaders);
+    final url = '/debts/$debtTypePath/$id';
+    final response = await http().delete(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
@@ -56,55 +53,53 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   }
 
   Future<Debt> createMultipleDebt(String userId, String currency) async {
-    final url = '$baseUrl/debts/multiple';
-    final Response response = await post(url,
-      body: {
+    final url = '/debts/multiple';
+    final response = await http().post(url,
+      data: {
         'userId': userId,
         'currency': currency
       },
-      headers: authHeaders
     );
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _addDebt(debt);
     return debt;
   }
 
   Future<Debt> createSingleDebt(String userName, String currency) async {
-    final url = '$baseUrl/debts/single';
-    final Response response = await post(url,
-      body: {
+    final url = '/debts/single';
+    final response = await http().post(url,
+      data: {
         'userName': userName,
         'currency': currency
       },
-      headers: authHeaders
     );
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _addDebt(debt);
     return debt;
   }
 
   Future<void> acceptMultipleDebtCreation(String id) async {
-    final url = '$baseUrl/debts/multiple/$id/creation/accept';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/multiple/$id/creation/accept';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
   }
 
   Future<void> declineMultipleDebtCreation(String id) async {
-    final url = '$baseUrl/debts/multiple/$id/creation/decline';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/multiple/$id/creation/decline';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
@@ -112,54 +107,54 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   }
 
   Future<void> acceptAllOperations(String id) async {
-    final url = '$baseUrl/debts/multiple/$id/accept_all_operations';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/multiple/$id/accept_all_operations';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
   }
 
   Future<void> acceptUserDeletedFromDebt(String id) async {
-    final url = '$baseUrl/debts/single/$id/i_love_lsd';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/single/$id/i_love_lsd';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
   }
 
   Future<void> connectUserToSingleDebt(String id, String userId) async {
-    final url = '$baseUrl/debts/single/$id/connect_user';
-    final response = await post(url, headers: authHeaders, body: {
+    final url = '/debts/single/$id/connect_user';
+    final response = await http().post(url, data: {
       'userId': userId
     });
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
   }
 
   Future<void> acceptUserConnecting(String id) async {
-    final url = '$baseUrl/debts/single/$id/connect_user/accept';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/single/$id/connect_user/accept';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;
     }
-    final Debt debt = Debt.fromJson(jsonDecode(response.body));
+    final Debt debt = Debt.fromJson(response.data);
     _updateDebtById(id, debt);
   }
 
   Future<void> declineUserConnecting(String id) async {
-    final url = '$baseUrl/debts/single/$id/connect_user/decline';
-    final response = await post(url, headers: authHeaders);
+    final url = '/debts/single/$id/connect_user/decline';
+    final response = await http().post(url);
     if(response.statusCode >= 400) {
       ErrorHelper.handleResponseError(response);
       return null;

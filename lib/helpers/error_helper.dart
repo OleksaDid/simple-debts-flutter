@@ -1,16 +1,16 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class ErrorHelper {
 
   static Error handleResponseError(Response response) {
     // TODO: log error
-    final body = jsonDecode(response.body);
+    final body = jsonDecode(response.data);
     final error = body['error'] ?? 'Unknown error';
-    print(response.request.url);
+    print(response.request.path);
     print(response.request.headers);
     print('HTTP ERROR: ${response.statusCode} - $error');
     throw error;

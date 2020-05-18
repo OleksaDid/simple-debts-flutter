@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
 import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
 import 'package:simpledebts/models/common/currency.dart';
 
@@ -22,9 +19,9 @@ class CurrencyProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   
   Future<void> fetchAndSetCurrencies() async {
     if(_currencies.length == 0) {
-      final url = '$baseUrl/common/currency';
-      final response = await get(url, headers: authHeaders);
-      final List currencies = jsonDecode(response.body);
+      final url = '/common/currency';
+      final response = await http().get(url);
+      final List currencies = response.data;
       _currencies = currencies
           .map((currency) => Currency.fromJson(currency))
           .toList();

@@ -23,6 +23,7 @@ class DebtListWidget extends StatelessWidget {
       future: _refreshDebtsList(context),
       builder: (context, snapshot) {
         if(snapshot.error != null) {
+          print(snapshot.error);
           return Center(
             child: Text('Something went wrong. Try again later'),
           );

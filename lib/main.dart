@@ -26,25 +26,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
-        ChangeNotifierProxyProvider<AuthProvider, UsersProvider>(
+        ChangeNotifierProvider(
           create: (_) => UsersProvider(),
-          update: (context, auth, provider) => provider
-            ..setupAuthHeader(auth.authHeaders),
         ),
-        ChangeNotifierProxyProvider<AuthProvider, DebtsProvider>(
+        ChangeNotifierProvider(
           create: (_) => DebtsProvider(),
-          update: (context, auth, provider) => provider
-            ..setupAuthHeader(auth.authHeaders),
         ),
-        ChangeNotifierProxyProvider<AuthProvider, OperationsProvider>(
+        ChangeNotifierProvider(
           create: (_) => OperationsProvider(),
-          update: (context, auth, provider) => provider
-            ..setupAuthHeader(auth.authHeaders),
         ),
-        ChangeNotifierProxyProvider<AuthProvider, CurrencyProvider>(
+        ChangeNotifierProvider(
           create: (_) => CurrencyProvider(),
-          update: (context, auth, provider) => provider
-            ..setupAuthHeader(auth.authHeaders),
         ),
       ],
       child: MyAppBody()

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
+import 'package:simpledebts/mixins/http_service_use.dart';
 
-class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
+class OperationsProvider with ChangeNotifier, HttpServiceUse {
 
   Future<void> createOperation({
     @required String id,
@@ -19,7 +19,7 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
         'moneyReceiver': moneyReceiver,
         'moneyAmount': moneyAmount
       };
-      await http().post(url, data: body);
+      await http.post(url, data: body);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -28,7 +28,7 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   Future<void> deleteOperation(String id) async {
     try {
       final url = '/operations/$id';
-      await http().delete(url);
+      await http.delete(url);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -37,7 +37,7 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   Future<void> acceptOperation(String id) async {
     try {
       final url = '/operations/$id/creation/accept';
-      await http().post(url);
+      await http.post(url);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -46,7 +46,7 @@ class OperationsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
   Future<void> declineOperation(String id) async {
     try {
       final url = '/operations/$id/creation/decline';
-      await http().post(url);
+      await http.post(url);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }

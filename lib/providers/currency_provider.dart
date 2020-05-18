@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
+import 'package:simpledebts/mixins/http_service_use.dart';
 import 'package:simpledebts/models/common/currency/currency.dart';
 
-class CurrencyProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
-  
+class CurrencyProvider with ChangeNotifier, HttpServiceUse {
+
   List<Currency> _currencies = [];
   
   List<Currency> get currencies {
@@ -23,7 +23,7 @@ class CurrencyProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     if(_currencies.length == 0) {
       try {
         final url = '/common/currency';
-        final response = await http().get(url);
+        final response = await http.get(url);
         final List currencies = response.data;
         _currencies = currencies
             .map((currency) => Currency.fromJson(currency))

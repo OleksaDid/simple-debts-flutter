@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/helpers/shared_preferences_helper.dart';
-import 'package:simpledebts/mixins/api_service_with_auth_headers.dart';
+import 'package:simpledebts/mixins/http_service_use.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 
-class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
+class AuthProvider with ChangeNotifier, HttpServiceUse {
 
   AuthData _authData;
 
@@ -46,7 +46,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
       case FacebookLoginStatus.loggedIn:
         try {
           final url = '/login/facebook';
-          final response = await http().get(url, options: Options(
+          final response = await http.get(url, options: Options(
             headers: {
               HttpHeaders.authorizationHeader: 'Bearer ' + loginResult.accessToken.token
             }
@@ -81,7 +81,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
           return true;
         } else {
           try {
-            await refreshToken();
+            await httpService.refreshToken();
             return true;
           } catch(error) {
             return false;
@@ -114,7 +114,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
 
   Future<void> _authenticate(String urlPath, AuthForm authForm) async {
     try {
-      final Response response = await http().post(urlPath,
+      final Response response = await http.post(urlPath,
         data: authForm.toJson()
       );
       _updateAuthData(AuthData.fromJson(response.data));
@@ -131,7 +131,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     } else {
       try {
         final url = '/login/status';
-        final Response response = await http().get(url);
+        final Response response = await http.get(url);
         return response.statusCode < 400;
       } catch(error) {
         ErrorHelper.handleError(error);

@@ -27,7 +27,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
       final debts = Provider.of<DebtsProvider>(context, listen: false);
       await debts.declineUserConnecting(debt.id);
       if(debt.statusAcceptor != debt.user.id) {
-        await debts.fetchAndSetDebtList(context);
+        await debts.fetchAndSetDebtList();
         Navigator.of(context).pop();
       } else {
         await debts.fetchDebt(debt.id);

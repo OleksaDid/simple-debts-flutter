@@ -1,17 +1,68 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:simpledebts/helpers/env_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/helpers/shared_preferences_helper.dart';
-import 'package:simpledebts/mixins/api_service.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
 
-class ApiServiceWithAuthHeaders extends ApiService {
+class HttpService with ChangeNotifier {
+  @protected
+  final String baseUrl = EnvHelper.env.API_URL;
 
-  // TODO: one instance of Dio, so interceptors can work properly
-  @override
-  Dio http() {
-    final http = super.http();
+  Dio baseHttp;
+  Dio http;
+
+
+  HttpService._privateConstructor() {
+    _init();
+  }
+
+  static final HttpService _instance = HttpService._privateConstructor();
+
+  static HttpService get instance => _instance;
+
+
+  Future<AuthData> refreshToken() async {
+    try {
+      final authData = await _getAuthData();
+      if(authData != null) {
+        print('refreshing token...');
+        final response = await baseHttp.get('/login/refresh_token', options: Options(
+            headers: {
+              HttpHeaders.authorizationHeader: 'Bearer ' + authData.refreshToken
+            }
+        ));
+        final updatedAuthData = AuthData.fromJson(response.data);
+        await _updateAuthData(updatedAuthData);
+        print('token updated');
+        return updatedAuthData;
+      }
+    } on DioError catch(error) {
+      ErrorHelper.handleDioError(error);
+    } catch(error) {
+      ErrorHelper.handleError(error);
+    }
+    return null;
+  }
+
+
+  void _init() {
+    baseHttp = _createBaseHttp();
+    http = _createHttp();
+  }
+
+  Dio _createBaseHttp() {
+    return Dio(BaseOptions(
+        baseUrl: baseUrl,
+        responseType: ResponseType.json,
+        contentType: 'application/json'
+    ));
+  }
+
+  Dio _createHttp() {
+    final http = _createBaseHttp();
     http.interceptors.add(
       InterceptorsWrapper(onRequest: (RequestOptions requestOptions) async {
         http.interceptors.requestLock.lock();
@@ -48,30 +99,6 @@ class ApiServiceWithAuthHeaders extends ApiService {
     );
     return http;
   }
-
-  Future<AuthData> refreshToken() async {
-    try {
-      final authData = await _getAuthData();
-      if(authData != null) {
-        print('refreshing token...');
-        final response = await super.http().get('/login/refresh_token', options: Options(
-            headers: {
-              HttpHeaders.authorizationHeader: 'Bearer ' + authData.refreshToken
-            }
-        ));
-        final updatedAuthData = AuthData.fromJson(response.data);
-        await _updateAuthData(updatedAuthData);
-        print('token updated');
-        return updatedAuthData;
-      }
-    } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
-    } catch(error) {
-      ErrorHelper.handleError(error);
-    }
-    return null;
-  }
-
 
   Future<void> _updateAuthData(AuthData authData) {
     return SharedPreferencesHelper.saveAuthData(authData);

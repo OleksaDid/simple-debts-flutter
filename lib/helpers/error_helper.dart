@@ -9,16 +9,16 @@ class ErrorHelper {
     // TODO: log error
     if(error.response != null) {
       final backendError = BackendError.fromJson(error.response.data);
-      print(error.request.path);
-      print(error.request.headers);
+      print('PATH: ${error.request.path}');
+      print('HEADERS: ${error.request.headers}');
       print('BACKEND ERROR: ${error.response.statusCode} - ${backendError.message}');
       if(backendError.fields != null && backendError.fields.length > 0) {
         print('VALIDATION ERRORS: ${backendError.fields.toString()}');
       }
       throw error;
     } else {
-      print(error.request);
-      print(error.message);
+      print('REQUEST: ${error.request}');
+      print('ERROR: ${error.message}');
     }
   }
 

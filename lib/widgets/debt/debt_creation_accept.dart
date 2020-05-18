@@ -34,7 +34,7 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
       final debts = Provider.of<DebtsProvider>(context, listen: false);
       await debts.declineMultipleDebtCreation(debt.id);
       hideSpinnerModal(context);
-      debts.fetchAndSetDebtList();
+      debts.fetchAndSetDebtList(context);
       Navigator.pop(context);
     } catch(error) {
       hideSpinnerModal(context);

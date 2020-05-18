@@ -74,7 +74,7 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSta
         content: Text('Your profile was successfully updated'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ));
-      Provider.of<AuthProvider>(context, listen: false).updateUserInformation(user);
+      await Provider.of<AuthProvider>(context, listen: false).updateUserInformation(user);
     } catch(error) {
       ErrorHelper.handleError(error);
     }

@@ -51,7 +51,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
               HttpHeaders.authorizationHeader: 'Bearer ' + loginResult.accessToken.token
             }
           ));
-          _updateAuthData(AuthData.fromJson(response.data));
+          await _updateAuthData(AuthData.fromJson(response.data));
         } on DioError catch(error) {
           ErrorHelper.handleDioError(error);
         } catch(error) {
@@ -77,7 +77,7 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
         _authData = authData;
         final isValidToken = await _checkLoginStatus();
         if(isValidToken) {
-          _updateAuthData(authData);
+          await _updateAuthData(authData);
           return true;
         } else {
           try {
@@ -96,19 +96,19 @@ class AuthProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     }
   }
 
-  void updateUserInformation(User user) {
+  Future<void> updateUserInformation(User user) async {
     _authData = AuthData(
       token: _authData.token,
       refreshToken: _authData.refreshToken,
       user: user
     );
-    _updateAuthData(_authData);
+    await _updateAuthData(_authData);
   }
 
 
-  void _updateAuthData(AuthData authData) {
+  Future<void> _updateAuthData(AuthData authData) async {
     _authData = authData;
-    SharedPreferencesHelper.saveAuthData(_authData);
+    await SharedPreferencesHelper.saveAuthData(_authData);
     notifyListeners();
   }
 

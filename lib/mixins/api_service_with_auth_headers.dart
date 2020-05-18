@@ -8,6 +8,7 @@ import 'package:simpledebts/models/auth/auth_data.dart';
 
 class ApiServiceWithAuthHeaders extends ApiService {
 
+  // TODO: one instance of Dio, so interceptors can work properly
   @override
   Dio http() {
     final http = super.http();
@@ -29,14 +30,17 @@ class ApiServiceWithAuthHeaders extends ApiService {
           http.interceptors.responseLock.lock();
           RequestOptions options = error.response.request;
           final authData = await refreshToken();
+          http.interceptors.requestLock.unlock();
+          http.interceptors.responseLock.unlock();
           if(authData != null) {
             options.headers[HttpHeaders.authorizationHeader] = "Bearer " + authData.token;
             print('token sucessfully updated, resuming request');
+            return http.request(options.path,options: options);
+          } else {
+            print('refresh failed');
+            return error;
           }
 
-          http.interceptors.requestLock.unlock();
-          http.interceptors.responseLock.unlock();
-          return http.request(options.path,options: options);
         } else {
           return error;
         }
@@ -56,7 +60,7 @@ class ApiServiceWithAuthHeaders extends ApiService {
             }
         ));
         final updatedAuthData = AuthData.fromJson(response.data);
-        _updateAuthData(updatedAuthData);
+        await _updateAuthData(updatedAuthData);
         print('token updated');
         return updatedAuthData;
       }

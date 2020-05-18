@@ -10,7 +10,7 @@ class DebtListWidget extends StatelessWidget {
 
   Future<void> _refreshDebtsList(BuildContext context) async {
     await Provider.of<CurrencyProvider>(context, listen: false).fetchAndSetCurrencies();
-    return Provider.of<DebtsProvider>(context, listen: false).fetchAndSetDebtList();
+    return Provider.of<DebtsProvider>(context, listen: false).fetchAndSetDebtList(context);
   }
 
   List<Debt> _getDebtList(BuildContext context) {

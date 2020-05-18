@@ -12,7 +12,8 @@ class DebtsProvider extends ApiServiceWithAuthHeaders with ChangeNotifier {
     return _debtList;
   }
 
-  Future<void> fetchAndSetDebtList() async {
+  Future<void> fetchAndSetDebtList(BuildContext context) async {
+    print(context.widget.toString());
     try {
       final url = '/debts';
       final response = await http().get(url);

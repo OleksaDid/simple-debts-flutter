@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
-import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/widgets/add_debt/add_debt_dialog.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_widget.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
 import 'package:simpledebts/widgets/common/user_top_block.dart';
 
-class DebtsListScreen extends StatelessWidget with ScreenWidget {
+class DebtsListScreen extends StatefulWidget with ScreenWidget {
 
   static const String routeName = '/debts_list_screen';
 
-  void _logout(BuildContext context) {
-    return Provider.of<AuthProvider>(context, listen: false).logout(context);
-  }
+  @override
+  _DebtsListScreenState createState() => _DebtsListScreenState();
+}
 
-  User _getCurrentUser(BuildContext context) {
-    return Provider.of<AuthProvider>(context).authData?.user;
+class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
+
+  void _logout(BuildContext context) {
+    authStore.logout();
   }
 
   void _navigateToProfile(BuildContext context) {
@@ -34,7 +35,6 @@ class DebtsListScreen extends StatelessWidget with ScreenWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = _getCurrentUser(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,22 +51,23 @@ class DebtsListScreen extends StatelessWidget with ScreenWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          if(user != null) TopBlock(
-            child: UserTopBlock(
-              imageUrl: user.picture,
-              title: user.name,
-              onImageTap: () => _navigateToProfile(context),
+      body: Observer(
+        builder: (context) => Column(
+          children: [
+            if(authStore.currentUser != null) TopBlock(
+              child: UserTopBlock(
+                imageUrl: authStore.currentUser.picture,
+                title: authStore.currentUser.name,
+                onImageTap: () => _navigateToProfile(context),
+              ),
+              color: BlockColor.Green,
             ),
-            color: BlockColor.Green,
-          ),
-          Expanded(
-            child: DebtListWidget()
-          )
-        ],
+            Expanded(
+              child: DebtListWidget()
+            )
+          ],
+        ),
       ),
     );
   }
-
 }

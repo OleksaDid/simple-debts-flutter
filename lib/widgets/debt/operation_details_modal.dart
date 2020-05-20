@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
-import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/auth_provider.dart';
+import 'package:simpledebts/store/auth_data_store.dart';
 import 'package:simpledebts/widgets/debt/delete_operation_button.dart';
 import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
 
 class OperationDetailsModal extends StatelessWidget {
+  final authStore = GetIt.instance<AuthDataStore>();
   final Operation operation;
   final Debt debt;
 
@@ -18,16 +19,18 @@ class OperationDetailsModal extends StatelessWidget {
     @required this.debt,
   });
 
-  Widget _buildBottomBlock(BuildContext context, User currentUser) {
+  Widget _buildBottomBlock(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 10,),
         Divider(),
         SizedBox(height: 10,),
-        if(operation.status == OperationStatus.CANCELLED) Text(
-          'Operation was canceled by ${operation.cancelledBy == currentUser.id ? 'you' : debt.user.name}',
-          style: TextStyle(
-            color: Theme.of(context).errorColor
+        if(operation.status == OperationStatus.CANCELLED) Observer(
+          builder: (context) => Text(
+            'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
+            style: TextStyle(
+              color: Theme.of(context).errorColor
+            ),
           ),
         ),
         if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor == debt.user.id) Text(
@@ -48,7 +51,6 @@ class OperationDetailsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final youGiveMoney = operation.moneyReceiver == debt.user.id;
-    final User currentUser = Provider.of<AuthProvider>(context, listen: false).authData?.user;
     final String formattedDate = DateFormat().add_yMMMd().format(operation.date);
     final Color operationColor = operation.status == OperationStatus.UNCHANGED
         ? youGiveMoney
@@ -64,9 +66,11 @@ class OperationDetailsModal extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(currentUser.picture),
-                radius: 28,
+              Observer(
+                builder: (context) => CircleAvatar(
+                  backgroundImage: NetworkImage(authStore?.currentUser?.picture),
+                  radius: 28,
+                ),
               ),
               SizedBox(width: 20,),
               Icon(
@@ -100,7 +104,7 @@ class OperationDetailsModal extends StatelessWidget {
           SizedBox(height: 10,),
           Text(operation.description, style: TextStyle(fontSize: 18),),
           Text(formattedDate, textAlign: TextAlign.start,),
-          if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context, currentUser),
+          if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context),
           if(debt.type == DebtAccountType.SINGLE_USER) DeleteOperationButton(
             operationId: operation.id,
             debtId: debt.id,

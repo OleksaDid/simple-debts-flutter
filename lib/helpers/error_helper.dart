@@ -15,7 +15,6 @@ class ErrorHelper {
       if(backendError.fields != null && backendError.fields.length > 0) {
         print('VALIDATION ERRORS: ${backendError.fields.toString()}');
       }
-      throw error;
     } else {
       print('REQUEST: ${error.request}');
       print('ERROR: ${error.message}');
@@ -26,7 +25,6 @@ class ErrorHelper {
   static Error handleError(Error error) {
     // TODO: log error
     print('ERROR: ${error.toString()}');
-    throw error;
   }
 
   static showErrorSnackBar(BuildContext context, [String error = 'Something went wrong. Try again later']) {

@@ -6,11 +6,18 @@ import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/users_provider.dart';
+import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/widgets/profile/user_data_form_widget.dart';
 
-class ProfileScreen extends StatelessWidget with ScreenWidget {
+class ProfileScreen extends StatefulWidget with ScreenWidget {
 
   static const String routeName = '/profile_screen';
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends BaseScreenState<ProfileScreen> {
 
   Future<User> _updateUserInfo(BuildContext context, String name, File image) async {
     try {
@@ -18,6 +25,7 @@ class ProfileScreen extends StatelessWidget with ScreenWidget {
       return user;
     } catch(error) {
       ErrorHelper.handleError(error);
+      return null;
     }
   }
 
@@ -47,5 +55,4 @@ class ProfileScreen extends StatelessWidget with ScreenWidget {
       ),
     );
   }
-
 }

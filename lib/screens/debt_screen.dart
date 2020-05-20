@@ -7,6 +7,7 @@ import 'package:simpledebts/mixins/spinner_modal.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/widgets/debt/connect_user_dialog.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_body.dart';
 
@@ -15,10 +16,16 @@ enum DropdownActions {
   connectUser,
 }
 
-class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, SpinnerModal {
+class DebtScreen extends StatefulWidget with ScreenWidget<IdRouteArgument>, SpinnerModal {
 
   static const String routeName = '/debt_screen';
-  
+
+  @override
+  _DebtScreenState createState() => _DebtScreenState();
+}
+
+class _DebtScreenState extends BaseScreenState<DebtScreen> {
+
   Future<void> _onPopupMenuSelect(BuildContext context, DropdownActions action, String debtId) async {
     switch(action) {
       case DropdownActions.deleteDebt: {
@@ -33,19 +40,18 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
     }
   }
 
-  // TODO: throws error
   Future<void> _deleteDebt(BuildContext context, String debtId) async {
     final debtProvider = Provider.of<DebtsProvider>(context, listen: false);
     final bool deleteDebt = await DialogHelper.showDeleteDialog(context, 'Delete this debt?');
     if(deleteDebt) {
-      showSpinnerModal(context);
+      widget.showSpinnerModal(context);
       try {
         await debtProvider.deleteDebt(debtId);
         Navigator.of(context).pop();
       } catch(error) {
         ErrorHelper.showErrorSnackBar(context);
       }
-      hideSpinnerModal(context);
+      widget.hideSpinnerModal(context);
     }
   }
 
@@ -57,7 +63,7 @@ class DebtScreen extends StatelessWidget with ScreenWidget<IdRouteArgument>, Spi
   }
 
   Debt _getDebt(BuildContext context) {
-    final debtId = getRouteArguments(context).id;
+    final debtId = widget.getRouteArguments(context).id;
     return Provider.of<DebtsProvider>(context).getDebt(debtId);
   }
 

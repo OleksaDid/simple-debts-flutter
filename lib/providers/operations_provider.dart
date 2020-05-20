@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/http_service_use.dart';
+import 'package:simpledebts/mixins/http_auth_service_use.dart';
 
-class OperationsProvider with ChangeNotifier, HttpServiceUse {
+class OperationsProvider with ChangeNotifier, HttpAuthServiceUse {
 
   Future<void> createOperation({
     @required String id,

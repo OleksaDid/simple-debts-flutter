@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
-import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/auth_provider.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/store/auth_data_store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt/add_operation_widget.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
@@ -12,6 +13,7 @@ import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
 import 'package:simpledebts/widgets/debt/operations_list_item.dart';
 
 class OperationsListWidget extends StatelessWidget {
+  final authStore = GetIt.instance<AuthDataStore>();
   final List<Operation> operations;
   final Debt debt;
   final bool showBottomButtons;
@@ -73,7 +75,6 @@ class OperationsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser = Provider.of<AuthProvider>(context, listen: false).authData?.user;
 
     return Column(
       children: [
@@ -91,10 +92,10 @@ class OperationsListWidget extends StatelessWidget {
           ),
           secondaryButton: DebtScreenBottomButton(
             title: 'TAKE',
-            onTap: () => _addOperation(context, debt, currentUser.id),
+            onTap: () => _addOperation(context, debt, authStore.currentUser.id),
             color: Theme.of(context).colorScheme.secondary,
           ),
-        )
+        ),
       ],
     );
   }

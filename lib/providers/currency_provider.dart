@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/http_service_use.dart';
+import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/common/currency/currency.dart';
 
-class CurrencyProvider with ChangeNotifier, HttpServiceUse {
+class CurrencyProvider with ChangeNotifier, HttpAuthServiceUse {
 
   List<Currency> _currencies = [];
   

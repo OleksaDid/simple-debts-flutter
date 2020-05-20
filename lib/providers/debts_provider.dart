@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/http_service_use.dart';
+import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/debt_list.dart';
 
-class DebtsProvider with ChangeNotifier, HttpServiceUse{
+class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
   DebtList _debtList;
 
   DebtList get debtList {

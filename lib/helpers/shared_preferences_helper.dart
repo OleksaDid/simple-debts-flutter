@@ -20,7 +20,7 @@ class SharedPreferencesHelper {
     try {
       final prefs = await SharedPreferences.getInstance();
       final data = jsonEncode(authData.toJson());
-      prefs.setString(_authDataKey, data);
+      return prefs.setString(_authDataKey, data);
     } catch(error) {
       print(error);
       throw error;

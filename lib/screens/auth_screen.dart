@@ -6,8 +6,8 @@ import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/auth_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
+import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/widgets/auth/auth_form_widget.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
@@ -21,17 +21,16 @@ class AuthScreen extends StatefulWidget with ScreenWidget {
   _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends BaseScreenState<AuthScreen> {
   bool _showUserDataForm = false;
 
   Future<void> _submitAuthForm(AuthForm authForm, bool isLogin) async {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
     try {
       if(isLogin) {
-        await auth.login(authForm);
+        await authStore.login(authForm);
         _navigateToMainScreen();
       } else {
-        await auth.signUp(authForm);
+        await authStore.signUp(authForm);
         setState(() => _showUserDataForm = true);
       }
     } catch(error) {

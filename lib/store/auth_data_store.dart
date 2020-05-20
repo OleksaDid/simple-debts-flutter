@@ -4,7 +4,7 @@ import 'package:simpledebts/helpers/shared_preferences_helper.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/auth_service.dart';
+import 'package:simpledebts/services/auth_service.dart';
 
 part 'auth_data_store.g.dart';
 

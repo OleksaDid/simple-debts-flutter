@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/currency_provider.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/store/currency_store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_item.dart';
 
 class DebtListWidget extends StatelessWidget {
 
   Future<void> _refreshDebtsList(BuildContext context) async {
-    await Provider.of<CurrencyProvider>(context, listen: false).fetchAndSetCurrencies();
+    await GetIt.instance<CurrencyStore>().fetchCurrencies();
     return Provider.of<DebtsProvider>(context, listen: false).fetchAndSetDebtList();
   }
 

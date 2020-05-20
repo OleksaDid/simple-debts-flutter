@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:simpledebts/helpers/http_auth_service.dart';
+import 'package:simpledebts/services/http_auth_service.dart';
 
 mixin HttpAuthServiceUse {
   @protected

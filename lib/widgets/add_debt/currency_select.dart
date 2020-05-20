@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:simpledebts/providers/currency_provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:simpledebts/store/currency_store.dart';
 
 class CurrencySelect extends StatelessWidget {
   final void Function(String currency) onSelect;
@@ -13,7 +13,7 @@ class CurrencySelect extends StatelessWidget {
   });
 
   void _openCurrencySelector(BuildContext context) {
-    final currencies = getCurrencies(context);
+    final currencies = getCurrencies();
     new Picker(
         adapter: PickerDataAdapter<String>(
           data: currencies.map((currency) => PickerItem(
@@ -28,8 +28,8 @@ class CurrencySelect extends StatelessWidget {
     ).showModal(context); //_scaffoldKey.currentState);
   }
 
-  List<String> getCurrencies(BuildContext context) {
-    return Provider.of<CurrencyProvider>(context, listen: false).setOfCurrencyIso;
+  List<String> getCurrencies() {
+    return GetIt.instance<CurrencyStore>().setOfCurrencyIso;
   }
 
   @override

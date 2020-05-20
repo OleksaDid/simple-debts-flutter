@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:simpledebts/helpers/http_auth_service.dart';
-import 'package:simpledebts/helpers/http_service.dart';
-import 'package:simpledebts/providers/auth_service.dart';
-import 'package:simpledebts/providers/currency_provider.dart';
+import 'package:simpledebts/services/currency_service.dart';
+import 'package:simpledebts/services/http_auth_service.dart';
+import 'package:simpledebts/services/http_service.dart';
+import 'package:simpledebts/services/auth_service.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/providers/operations_provider.dart';
 import 'package:simpledebts/providers/users_provider.dart';
@@ -15,6 +15,7 @@ import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/store/auth_data_store.dart';
 import 'package:simpledebts/screens/start_screen.dart';
+import 'package:simpledebts/store/currency_store.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
@@ -27,6 +28,8 @@ void setup() {
   GetIt.I.registerSingleton<AuthService>(AuthService());
   GetIt.I.registerSingleton<AuthDataStore>(AuthDataStore());
   GetIt.I.registerSingleton<HttpAuthService>(HttpAuthService());
+  GetIt.I.registerSingleton<CurrencyService>(CurrencyService());
+  GetIt.I.registerSingleton<CurrencyStore>(CurrencyStore());
 }
 
 class MyApp extends StatelessWidget {
@@ -43,9 +46,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => OperationsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => CurrencyProvider(),
         ),
       ],
       child: MyAppBody()

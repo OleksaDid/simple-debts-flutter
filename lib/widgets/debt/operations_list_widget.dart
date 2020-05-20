@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
@@ -24,7 +23,6 @@ class OperationsListWidget extends StatelessWidget {
     this.showBottomButtons = true,
   });
 
-  // TODO: first list item has less padding on top
   Widget _buildMainBlock(BuildContext context, AsyncSnapshot snapshot) {
     if(snapshot.error != null) {
       return Center(

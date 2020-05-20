@@ -76,7 +76,7 @@ class OperationsListItem extends StatelessWidget {
             trailing: _buildTrailingBlock(context),
           ),
         ),
-        Divider()
+        Divider(height: 2,)
       ],
     );
   }

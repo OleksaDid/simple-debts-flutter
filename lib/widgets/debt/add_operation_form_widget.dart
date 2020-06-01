@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/operations_provider.dart';
+import 'package:simpledebts/services/operations_service.dart';
 
 class AddOperationFormWidget extends StatefulWidget {
   final Debt debt;
@@ -68,7 +68,7 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
     showSpinner();
     try {
       FocusScope.of(context).unfocus();
-      await Provider.of<OperationsProvider>(context, listen: false).createOperation(
+      await GetIt.instance<OperationsService>().createOperation(
           id: widget.debt.id,
           description: _description,
           moneyReceiver: widget.moneyReceiver,

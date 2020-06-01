@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/http_auth_service_use.dart';
 
-class OperationsProvider with ChangeNotifier, HttpAuthServiceUse {
+class OperationsService with HttpAuthServiceUse {
 
   Future<void> createOperation({
     @required String id,
@@ -51,5 +51,4 @@ class OperationsProvider with ChangeNotifier, HttpAuthServiceUse {
       ErrorHelper.handleDioError(error);
     }
   }
-
 }

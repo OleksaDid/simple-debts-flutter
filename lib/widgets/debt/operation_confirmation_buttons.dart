@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
-import 'package:simpledebts/providers/operations_provider.dart';
+import 'package:simpledebts/services/operations_service.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse {
@@ -20,7 +21,7 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
   Future<void> _acceptOperation(BuildContext context) async {
     showSpinner();
     try {
-      await Provider.of<OperationsProvider>(context, listen: false).acceptOperation(operationId);
+      await GetIt.instance<OperationsService>().acceptOperation(operationId);
       await Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debtId);
     } catch(error) {
       ErrorHelper.handleError(error);
@@ -31,7 +32,7 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
   Future<void> _declineOperation(BuildContext context) async {
     showSpinner();
     try {
-      await Provider.of<OperationsProvider>(context, listen: false).declineOperation(operationId);
+      await GetIt.instance<OperationsService>().declineOperation(operationId);
       await Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debtId);
     } catch(error) {
       ErrorHelper.handleError(error);

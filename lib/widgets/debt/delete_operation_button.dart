@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
-import 'package:simpledebts/providers/operations_provider.dart';
+import 'package:simpledebts/services/operations_service.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
@@ -20,7 +21,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
     if(deleteOperation == true) {
       showSpinner();
       try {
-        await Provider.of<OperationsProvider>(context, listen: false).deleteOperation(operationId);
+        await GetIt.instance<OperationsService>().deleteOperation(operationId);
         await Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debtId);
         Navigator.of(context).pop();
         hideSpinner();

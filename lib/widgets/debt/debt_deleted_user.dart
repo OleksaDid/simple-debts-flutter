@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
 
-class DebtDeletedUser extends StatefulWidget {
+class DebtDeletedUser extends StatelessWidget with SpinnerStoreUse {
   final Debt debt;
 
   DebtDeletedUser({
     @required this.debt
   });
 
-  @override
-  _DebtDeletedUserState createState() => _DebtDeletedUserState();
-}
-
-class _DebtDeletedUserState extends State<DebtDeletedUser> with SpinnerState {
   Future<void> _acceptInfo(BuildContext context) async {
     showSpinner();
     try {
-      await Provider.of<DebtsProvider>(context, listen: false).acceptUserDeletedFromDebt(widget.debt.id);
+      await Provider.of<DebtsProvider>(context, listen: false).acceptUserDeletedFromDebt(debt.id);
     } catch(error) {
       ErrorHelper.handleError(error);
     }
@@ -47,20 +42,22 @@ class _DebtDeletedUserState extends State<DebtDeletedUser> with SpinnerState {
                 'Another user has left. You can continue using this debt with virtual user',
                 textAlign: TextAlign.center,
               ),
-              if(!spinnerVisible) FlatButton(
-                child: Text('OK'),
-                textColor: Theme.of(context).accentColor,
-                onPressed: () => _acceptInfo(context),
-              ),
-              if(spinnerVisible) ButtonSpinner(radius: 20,)
+              spinnerContainer(
+                spinner: ButtonSpinner(radius: 20,),
+                replacement: FlatButton(
+                  child: Text('OK'),
+                  textColor: Theme.of(context).accentColor,
+                  onPressed: () => _acceptInfo(context),
+                )
+              )
             ],
           ),
         ),
         Divider(thickness: 2,),
         Expanded(
           child: OperationsListWidget(
-            operations: widget.debt.moneyOperations,
-            debt: widget.debt,
+            operations: debt.moneyOperations,
+            debt: debt,
           ),
         )
       ],

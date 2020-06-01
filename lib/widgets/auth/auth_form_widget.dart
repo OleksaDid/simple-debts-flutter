@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/auth/facebook_login_button.dart';
@@ -18,7 +18,7 @@ class AuthFormWidget extends StatefulWidget {
   _AuthFormWidgetState createState() => _AuthFormWidgetState();
 }
 
-class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
+class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerStoreUse {
   final _form = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
@@ -127,16 +127,15 @@ class _AuthFormWidgetState extends State<AuthFormWidget> with SpinnerState {
             ),
           ),
           const SizedBox(height: 20,),
-          Visibility(
-            visible: !spinnerVisible,
-            child: RaisedButton(
+          spinnerContainer(
+            spinner: ButtonSpinner(),
+            replacement: RaisedButton(
               elevation: 0,
               color: Theme.of(context).primaryColor,
               textColor: Colors.white,
               child: Text(_isLogin ? 'LOGIN' : 'SIGN UP'),
               onPressed: _submitForm,
             ),
-            replacement: ButtonSpinner(),
           ),
           const SizedBox(height: 10,),
           FlatButton(

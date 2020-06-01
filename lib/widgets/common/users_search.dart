@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/users_provider.dart';
+import 'package:simpledebts/store/user_search_store.dart';
+import 'package:simpledebts/widgets/common/debounce_input.dart';
 
-class UsersSearch extends StatefulWidget {
+class UsersSearch extends StatelessWidget with SpinnerStoreUse {
+  final _usersStore = UserSearchStore();
+
   final void Function(User user) onSelectUser;
   final void Function() onCancel;
 
@@ -16,46 +19,15 @@ class UsersSearch extends StatefulWidget {
     @required this.onCancel,
   });
 
-  @override
-  _UsersSearchState createState() => _UsersSearchState();
-}
-
-class _UsersSearchState extends State<UsersSearch> with SpinnerState {
-  final _searchQuery = TextEditingController();
-  Timer _debounce;
-  List<User> _usersList = [];
-
-  _onSearchChanged() {
-    if (_debounce?.isActive ?? false) _debounce.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () => _getUsersList());
-  }
-
-  Future<void> _getUsersList() async {
-    if(_searchQuery.text == null || _searchQuery.text.isEmpty) {
-      return;
-    }
+  Future<void> _getUsersList(String name) async {
     showSpinner();
     try {
-      final users = await Provider.of<UsersProvider>(context, listen: false).getUsers(_searchQuery.text);
-      setState(() =>_usersList = users);
+      await _usersStore.getUsers(name);
     } catch(error) {
-      ErrorHelper.showErrorSnackBar(context);
+      // TODO: log error
+      ErrorHelper.handleError(error);
     }
     hideSpinner();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _searchQuery.addListener(_onSearchChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchQuery.removeListener(_onSearchChanged);
-    _searchQuery.dispose();
-    _debounce.cancel();
-    super.dispose();
   }
 
   @override
@@ -67,42 +39,46 @@ class _UsersSearchState extends State<UsersSearch> with SpinnerState {
       child: Column(
         children: [
           SizedBox(height: 20,),
-          TextField(
-            controller: _searchQuery,
-            decoration: InputDecoration(
+          DebounceInput(
+            inputDecoration: InputDecoration(
               hintText: 'type user name',
             ),
+            onInputChange: _getUsersList,
           ),
           SizedBox(height: 10,),
           Expanded(
             child: Stack(
               children: [
-                ListView.builder(
-                  itemCount: _usersList.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () => widget.onSelectUser(_usersList[index]),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(_usersList[index].picture),
+                Observer(
+                  builder: (_) => ListView.builder(
+                    itemCount: _usersStore.userList.length,
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () => onSelectUser(_usersStore.userList[index]),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(_usersStore.userList[index].picture),
+                        ),
+                        title: Text(_usersStore.userList[index].name),
                       ),
-                      title: Text(_usersList[index].name),
                     ),
                   ),
                 ),
-                if(spinnerVisible) Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  color: Colors.white54,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                spinnerContainer(
+                  spinner: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    color: Colors.white54,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                 )
               ],
             ),
           ),
           FlatButton(
             child: Text('BACK'),
-            onPressed: widget.onCancel,
+            onPressed: onCancel,
             textColor: Theme.of(context).primaryColor,
           )
         ],

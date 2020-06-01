@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/user/user.dart';
 
-class UsersProvider with ChangeNotifier, HttpAuthServiceUse {
+class UsersService with HttpAuthServiceUse {
 
   Future<User> updateUserData(String name, File image) async {
     try {
@@ -42,6 +41,7 @@ class UsersProvider with ChangeNotifier, HttpAuthServiceUse {
       return users.map((user) => User.fromJson(user)).toList();
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
+      throw error;
     }
   }
 

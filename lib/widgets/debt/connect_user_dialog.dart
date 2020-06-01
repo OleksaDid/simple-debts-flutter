@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
@@ -19,7 +19,7 @@ class ConnectUserDialog extends StatefulWidget {
   _ConnectUserDialogState createState() => _ConnectUserDialogState();
 }
 
-class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerState {
+class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerStoreUse {
   User _selectedUser;
 
   Future<void> _connectUser() async {
@@ -83,22 +83,24 @@ class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerState
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(height: 16,),
-                if(!spinnerVisible) Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlatButton(
-                      child: Text('CHANGE'),
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: _resetUser,
-                    ),
-                    FlatButton(
-                      child: Text('ADD'),
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: _connectUser,
-                    ),
-                  ],
-                ),
-                if(spinnerVisible) ButtonSpinner(radius: 30,),
+                spinnerContainer(
+                  spinner: ButtonSpinner(radius: 30,),
+                  replacement: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FlatButton(
+                        child: Text('CHANGE'),
+                        textColor: Theme.of(context).primaryColor,
+                        onPressed: _resetUser,
+                      ),
+                      FlatButton(
+                        child: Text('ADD'),
+                        textColor: Theme.of(context).primaryColor,
+                        onPressed: _connectUser,
+                      ),
+                    ],
+                  )
+                )
               ],
             )
           ],

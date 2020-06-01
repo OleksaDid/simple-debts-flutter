@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/users_provider.dart';
+import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/widgets/auth/auth_form_widget.dart';
@@ -42,7 +42,7 @@ class _AuthScreenState extends BaseScreenState<AuthScreen> {
 
   Future<User> _updateUserData(String name, File image) async {
     try {
-      final updatedUser = await Provider.of<UsersProvider>(context, listen: false).updateUserData(name, image);
+      final updatedUser = await GetIt.instance<UsersService>().updateUserData(name, image);
       _navigateToMainScreen();
       return updatedUser;
     } catch(error) {

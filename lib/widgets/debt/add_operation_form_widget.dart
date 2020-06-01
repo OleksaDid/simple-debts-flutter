@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/providers/operations_provider.dart';
 
@@ -20,7 +20,7 @@ class AddOperationFormWidget extends StatefulWidget {
   _AddOperationFormWidgetState createState() => _AddOperationFormWidgetState();
 }
 
-class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with SpinnerState {
+class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with SpinnerStoreUse {
   final _form = GlobalKey<FormState>();
   final FocusNode _descriptionFocusNode = FocusNode();
   String _description = '';
@@ -128,12 +128,14 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
                 )
               ],
             ),
-            if(spinnerVisible) Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.white54,
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
+            spinnerContainer(
+              spinner: Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Colors.white54,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(),
+              )
             )
           ],
         ),

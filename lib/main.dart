@@ -8,7 +8,7 @@ import 'package:simpledebts/services/http_service.dart';
 import 'package:simpledebts/services/auth_service.dart';
 import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/providers/operations_provider.dart';
-import 'package:simpledebts/providers/users_provider.dart';
+import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
@@ -30,6 +30,7 @@ void setup() {
   GetIt.I.registerSingleton<HttpAuthService>(HttpAuthService());
   GetIt.I.registerSingleton<CurrencyService>(CurrencyService());
   GetIt.I.registerSingleton<CurrencyStore>(CurrencyStore());
+  GetIt.I.registerSingleton<UsersService>(UsersService());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,9 +39,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => UsersProvider(),
-        ),
         ChangeNotifierProvider(
           create: (_) => DebtsProvider(),
         ),

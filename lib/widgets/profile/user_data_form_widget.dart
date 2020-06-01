@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/mixins/spinner_state.dart';
+import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/store/auth_data_store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
@@ -23,7 +23,7 @@ class UserDataFormWidget extends StatefulWidget {
   _UserDataFormWidgetState createState() => _UserDataFormWidgetState();
 }
 
-class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerState {
+class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerStoreUse {
   final authStore = GetIt.instance<AuthDataStore>();
   final _form = GlobalKey<FormState>();
   File _userImage;
@@ -72,7 +72,7 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSta
         content: Text('Your profile was successfully updated'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ));
-      await authStore.updateUserData(user);
+      authStore.updateUserData(user);
     } catch(error) {
       ErrorHelper.handleError(error);
     }
@@ -102,9 +102,9 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSta
             onSaved: (value) => _name = value.trim(),
           ),
           SizedBox(height: 15,),
-          Visibility(
-            visible: !spinnerVisible,
-            child: FlatButton(
+          spinnerContainer(
+            spinner: ButtonSpinner(),
+            replacement: FlatButton(
               child: Text(
                 'SAVE',
                 style: TextStyle(
@@ -114,7 +114,6 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSta
               textColor: Theme.of(context).primaryColor,
               onPressed: _submitForm,
             ),
-            replacement: ButtonSpinner()
           )
         ],
       ),

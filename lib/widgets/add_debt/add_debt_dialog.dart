@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
+import 'package:simpledebts/store/debt_list.store.dart';
 import 'package:simpledebts/widgets/add_debt/add_virtual_user_debt_form.dart';
 import 'package:simpledebts/widgets/add_debt/debt_creation_confirmation.dart';
 import 'package:simpledebts/widgets/common/users_search.dart';
@@ -72,7 +72,7 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
   Future<void> _createDebt(String currency) async {
     _setCreationStep();
     try {
-      final debtProvider = Provider.of<DebtsProvider>(context, listen: false);
+      final debtProvider = GetIt.instance<DebtListStore>();
       Debt debt;
       if(_virtualUserName != null && _virtualUserName.isNotEmpty) {
         debt = await debtProvider.createSingleDebt(_virtualUserName, currency);

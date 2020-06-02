@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
 import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
 
 class ConnectUserBlock extends StatelessWidget with SpinnerModal {
+  final _debtStore = GetIt.instance<DebtStore>();
   final Debt debt;
 
   ConnectUserBlock({
@@ -24,14 +25,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   Future<void> _cancelConnectionRequest(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      final debts = Provider.of<DebtsProvider>(context, listen: false);
-      await debts.declineUserConnecting(debt.id);
-      if(debt.statusAcceptor != debt.user.id) {
-        await debts.fetchAndSetDebtList();
-        Navigator.of(context).pop();
-      } else {
-        await debts.fetchDebt(debt.id);
-      }
+      await _debtStore.declineUserConnecting(debt.id);
     } catch(error) {
       ErrorHelper.handleError(error);
     }
@@ -41,10 +35,8 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   Future<void> _acceptConnectionRequest(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      final debts = Provider.of<DebtsProvider>(context, listen: false);
-      await debts.acceptUserConnecting(debt.id);
+      await _debtStore.acceptUserConnecting(debt.id);
       hideSpinnerModal(context);
-      await debts.fetchDebt(debt.id);
     } catch(error) {
       ErrorHelper.handleError(error);
     }

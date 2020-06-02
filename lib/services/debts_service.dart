@@ -1,54 +1,36 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/debt_list.dart';
 
-class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
-  DebtList _debtList;
+class DebtsService with HttpAuthServiceUse {
 
-  DebtList get debtList {
-    return _debtList;
-  }
-
-  Future<void> fetchAndSetDebtList() async {
+  Future<DebtList> fetchAndSetDebtList() async {
     try {
       final url = '/debts';
       final response = await http.get(url);
-      _debtList = DebtList.fromJson(response.data);
-      notifyListeners();
+      return DebtList.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
-  }
-
-  Debt getDebt(String id) {
-    return _debtList?.debts?.firstWhere(
-      (debt) => debt.id == id,
-      orElse: () => null
-    );
   }
 
   Future<Debt> fetchDebt(String id) async {
     try {
       final url = '/debts/$id';
       final response = await http.get(url);
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
-      return debt;
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
   }
 
-  Future<void> deleteDebt(String id) async {
+  Future<void> deleteDebt(String id, DebtAccountType type) async {
     try {
-      final debt = getDebt(id);
-      final debtTypePath = debt.type == DebtAccountType.SINGLE_USER ? 'single' : 'multiple';
+      final debtTypePath = type == DebtAccountType.SINGLE_USER ? 'single' : 'multiple';
       final url = '/debts/$debtTypePath/$id';
       await http.delete(url);
-      _removeDebtById(id);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -63,9 +45,7 @@ class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
           'currency': currency
         },
       );
-      final Debt debt = Debt.fromJson(response.data);
-      _addDebt(debt);
-      return debt;
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -80,20 +60,17 @@ class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
           'currency': currency
         },
       );
-      final Debt debt = Debt.fromJson(response.data);
-      _addDebt(debt);
-      return debt;
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
   }
 
-  Future<void> acceptMultipleDebtCreation(String id) async {
+  Future<Debt> acceptMultipleDebtCreation(String id) async {
     try {
       final url = '/debts/multiple/$id/creation/accept';
       final response = await http.post(url);
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -108,47 +85,43 @@ class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
     }
   }
 
-  Future<void> acceptAllOperations(String id) async {
+  Future<Debt> acceptAllOperations(String id) async {
     try {
       final url = '/debts/multiple/$id/accept_all_operations';
       final response = await http.post(url);
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
   }
 
-  Future<void> acceptUserDeletedFromDebt(String id) async {
+  Future<Debt> acceptUserDeletedFromDebt(String id) async {
     try {
       final url = '/debts/single/$id/i_love_lsd';
       final response = await http.post(url);
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
   }
 
-  Future<void> connectUserToSingleDebt(String id, String userId) async {
+  Future<Debt> connectUserToSingleDebt(String id, String userId) async {
     try {
       final url = '/debts/single/$id/connect_user';
       final response = await http.post(url, data: {
         'userId': userId
       });
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
   }
 
-  Future<void> acceptUserConnecting(String id) async {
+  Future<Debt> acceptUserConnecting(String id) async {
     try {
       final url = '/debts/single/$id/connect_user/accept';
       final response = await http.post(url);
-      final Debt debt = Debt.fromJson(response.data);
-      _updateDebtById(id, debt);
+      return Debt.fromJson(response.data);
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
@@ -161,24 +134,6 @@ class DebtsProvider with ChangeNotifier, HttpAuthServiceUse{
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
     }
-  }
-
-
-  void _addDebt(Debt debt) {
-    _debtList.debts.insert(0, debt);
-    notifyListeners();
-  }
-
-  void _updateDebtById(String id, Debt debt) {
-    final debtIndex = _debtList.debts.indexWhere((debt) => debt.id == id);
-    _debtList.debts[debtIndex] = debt;
-    notifyListeners();
-  }
-
-  void _removeDebtById(String id) {
-    final debtIndex = _debtList.debts.indexWhere((debt) => debt.id == id);
-    _debtList.debts.removeAt(debtIndex);
-    notifyListeners();
   }
 
 }

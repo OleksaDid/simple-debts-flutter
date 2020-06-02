@@ -48,7 +48,7 @@ class DebtScreenBody extends StatelessWidget {
         TopBlock(
           color: debt?.moneyReceiveStatus != MoneyReceiveStatus.YouTake ? BlockColor.Green : BlockColor.Red,
           child: UserTopBlock(
-            imageUrl: debt.user.picture,
+            imageUrl: debt?.user?.picture,
             title: debt?.getTitleText(debt.user),
           ),
         ),

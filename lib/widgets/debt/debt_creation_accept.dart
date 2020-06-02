@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
 
 class DebtCreationAccept extends StatelessWidget with SpinnerModal {
+  final DebtStore _debtStore = GetIt.instance<DebtStore>();
   final Debt debt;
 
   DebtCreationAccept({
@@ -18,10 +19,8 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
   Future<void> _acceptCreation(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      final debts = Provider.of<DebtsProvider>(context, listen: false);
-      await debts.acceptMultipleDebtCreation(debt.id);
+      await _debtStore.acceptMultipleDebtCreation(debt.id);
       hideSpinnerModal(context);
-      await debts.fetchDebt(debt.id);
     } catch(error) {
       hideSpinnerModal(context);
       ErrorHelper.showErrorSnackBar(context);
@@ -31,11 +30,8 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
   Future<void> _declineCreation(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      final debts = Provider.of<DebtsProvider>(context, listen: false);
-      await debts.declineMultipleDebtCreation(debt.id);
+      await _debtStore.declineMultipleDebtCreation(debt.id);
       hideSpinnerModal(context);
-      debts.fetchAndSetDebtList();
-      Navigator.pop(context);
     } catch(error) {
       hideSpinnerModal(context);
       ErrorHelper.showErrorSnackBar(context);

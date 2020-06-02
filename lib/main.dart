@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:simpledebts/services/currency_service.dart';
+import 'package:simpledebts/services/debts_service.dart';
 import 'package:simpledebts/services/http_auth_service.dart';
 import 'package:simpledebts/services/http_service.dart';
 import 'package:simpledebts/services/auth_service.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/services/operations_service.dart';
 import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
@@ -16,6 +15,7 @@ import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/store/auth_data_store.dart';
 import 'package:simpledebts/screens/start_screen.dart';
 import 'package:simpledebts/store/currency_store.dart';
+import 'package:simpledebts/store/debt_list.store.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
@@ -32,30 +32,17 @@ void setup() {
   GetIt.I.registerSingleton<CurrencyStore>(CurrencyStore());
   GetIt.I.registerSingleton<UsersService>(UsersService());
   GetIt.I.registerSingleton<OperationsService>(OperationsService());
+  GetIt.I.registerSingleton<DebtsService>(DebtsService());
+  GetIt.I.registerSingleton<DebtListStore>(DebtListStore());
 }
 
+// TODO: route animations
 class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => DebtsProvider(),
-        ),
-      ],
-      child: MyAppBody()
-    );
-  }
-}
-
-// TODO: route animations
-class MyAppBody extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Dets',
+      title: 'Simple Debts',
       theme: ThemeData(
         primaryColor: Colors.redAccent,
         accentColor: Colors.orangeAccent,

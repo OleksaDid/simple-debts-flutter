@@ -78,4 +78,8 @@ class Debt {
 
     return titles[moneyReceiveStatus];
   }
+  
+  bool get isUserConnectAllowed {
+    return type == DebtAccountType.SINGLE_USER && status != DebtStatus.CONNECT_USER && status != DebtStatus.USER_DELETED;
+  }
 }

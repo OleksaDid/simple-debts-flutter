@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
 
@@ -17,7 +17,7 @@ class DebtDeletedUser extends StatelessWidget with SpinnerStoreUse {
   Future<void> _acceptInfo(BuildContext context) async {
     showSpinner();
     try {
-      await Provider.of<DebtsProvider>(context, listen: false).acceptUserDeletedFromDebt(debt.id);
+      await GetIt.instance<DebtStore>().acceptUserDeletedFromDebt(debt.id);
     } catch(error) {
       ErrorHelper.handleError(error);
     }

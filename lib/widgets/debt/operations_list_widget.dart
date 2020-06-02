@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt/add_operation_widget.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
@@ -41,7 +40,7 @@ class OperationsListWidget extends StatelessWidget {
           subtitle: 'Press one of the buttons below to add one',
         )
         : RefreshIndicator(
-          onRefresh: () => _fetchOperations(context, forceRefresh: true),
+          onRefresh: () => _fetchOperations(forceRefresh: true),
           child: ListView.builder(
             itemCount: operations.length,
             itemBuilder: (context, index) => OperationsListItem(
@@ -52,9 +51,9 @@ class OperationsListWidget extends StatelessWidget {
         );
   }
 
-  Future<Debt> _fetchOperations(BuildContext context, {bool forceRefresh = false}) async {
+  Future<Debt> _fetchOperations({bool forceRefresh = false}) async {
     if(debt.moneyOperations == null || forceRefresh) {
-      return Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debt.id);
+      return GetIt.instance<DebtStore>().fetchDebt(debt.id);
     } else {
       return debt;
     }
@@ -66,7 +65,7 @@ class OperationsListWidget extends StatelessWidget {
       builder: (context) => AddOperationWidget(
         debt: debt,
         moneyReceiver: moneyReceiver,
-        onOperationAdded: () => Provider.of<DebtsProvider>(context, listen: false).fetchDebt(debt.id),
+        onOperationAdded: () => _fetchOperations(forceRefresh: true),
       )
     );
   }
@@ -78,7 +77,7 @@ class OperationsListWidget extends StatelessWidget {
       children: [
         Expanded(
           child: FutureBuilder<Debt>(
-            future: _fetchOperations(context),
+            future: _fetchOperations(),
             builder: _buildMainBlock
           ),
         ),

@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/providers/debts_provider.dart';
 import 'package:simpledebts/store/currency_store.dart';
+import 'package:simpledebts/store/debt_list.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_item.dart';
 
 class DebtListWidget extends StatelessWidget {
+  final DebtListStore _debtListStore = GetIt.instance<DebtListStore>();
+  final CurrencyStore _currencyStore = GetIt.instance<CurrencyStore>();
 
-  Future<void> _refreshDebtsList(BuildContext context) async {
-    await GetIt.instance<CurrencyStore>().fetchCurrencies();
-    return Provider.of<DebtsProvider>(context, listen: false).fetchAndSetDebtList();
+  Future<void> _refreshDebtsList() async {
+    await _currencyStore.fetchCurrencies();
+    return _debtListStore.fetchAndSetDebtList();
   }
 
-  List<Debt> _getDebtList(BuildContext context) {
-    return Provider.of<DebtsProvider>(context).debtList.debts;
-  }
+  Stream<List<Debt>> get _debts$ => Stream.fromFuture(_refreshDebtsList()).flatMap((_) => _debtListStore.debts$);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _refreshDebtsList(context),
+    return StreamBuilder(
+      stream: _debts$,
       builder: (context, snapshot) {
         if(snapshot.error != null) {
           print(snapshot.error);
@@ -34,7 +34,7 @@ class DebtListWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          final debts = _getDebtList(context);
+          final debts = snapshot.data;
 
           if(debts.length == 0) {
             return EmptyListPlaceholder(
@@ -44,7 +44,7 @@ class DebtListWidget extends StatelessWidget {
             );
           } else {
             return RefreshIndicator(
-              onRefresh: () => _refreshDebtsList(context),
+              onRefresh: () => _refreshDebtsList(),
               child: ListView.builder(
                   itemCount: debts.length,
                   itemBuilder: (context, index) => DebtListItem(debts[index])
@@ -52,7 +52,7 @@ class DebtListWidget extends StatelessWidget {
             );
           }
         }
-      }
+      },
     );
   }
 

@@ -10,7 +10,7 @@ class DebounceInput extends StatefulWidget {
   DebounceInput({
     @required this.onInputChange,
     @required this.inputDecoration,
-    this.debounceMs = 500,
+    this.debounceMs = 1000,
   });
 
   @override

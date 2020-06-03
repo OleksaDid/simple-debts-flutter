@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/store/user_search_store.dart';
+import 'package:simpledebts/store/user_search.store.dart';
 import 'package:simpledebts/widgets/common/debounce_input.dart';
 
 class UsersSearch extends StatelessWidget with SpinnerStoreUse {
@@ -49,19 +48,30 @@ class UsersSearch extends StatelessWidget with SpinnerStoreUse {
           Expanded(
             child: Stack(
               children: [
-                Observer(
-                  builder: (_) => ListView.builder(
-                    itemCount: _usersStore.userList.length,
-                    itemBuilder: (context, index) => InkWell(
-                      onTap: () => onSelectUser(_usersStore.userList[index]),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(_usersStore.userList[index].picture),
+                StreamBuilder<List<User>>(
+                  stream: _usersStore.users$,
+                  builder: (context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      final users = snapshot.data;
+
+                      return ListView.builder(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () => onSelectUser(users[index]),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(users[index].picture),
+                            ),
+                            title: Text(users[index].name),
+                          ),
                         ),
-                        title: Text(_usersStore.userList[index].name),
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+                  },
                 ),
                 spinnerContainer(
                   spinner: Container(

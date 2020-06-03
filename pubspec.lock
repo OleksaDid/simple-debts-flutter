@@ -353,7 +353,7 @@ packages:
     source: hosted
     version: "0.9.6+3"
   mobx:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: mobx
       url: "https://pub.dartlang.org"

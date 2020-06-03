@@ -1,26 +1,21 @@
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/services/users_service.dart';
 
-part 'user_search_store.g.dart';
-
-class UserSearchStore = _UserSearchStore with _$UserSearchStore;
-
-abstract class _UserSearchStore with Store {
+class UserSearchStore {
   final _usersService = GetIt.instance<UsersService>();
 
-  @observable
-  var userList = ObservableList<User>();
+  final BehaviorSubject<List<User>> _userList = BehaviorSubject.seeded([]);
 
-  @action
+  Stream<List<User>> get users$ => _userList.stream;
+
   Future<void> getUsers(String name) async {
     if(name == null || name.isEmpty) {
-      userList.clear();
+      _userList.add([]);
     } else {
       final users = await _usersService.getUsers(name);
-      userList.clear();
-      userList.addAll(users);
+      _userList.add(users);
     }
   }
 }

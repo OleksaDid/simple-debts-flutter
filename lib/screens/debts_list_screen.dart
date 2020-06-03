@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
+import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/widgets/add_debt/add_debt_dialog.dart';
@@ -16,6 +17,7 @@ class DebtsListScreen extends StatefulWidget with ScreenWidget {
 }
 
 class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
+  Stream<User> _currentUser$;
 
   void _logout(BuildContext context) {
     authStore.logout();
@@ -34,6 +36,9 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if(_currentUser$ == null) {
+      _currentUser$ = authStore.currentUser$;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -52,13 +57,22 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
       ),
       body: Column(
         children: [
-          if(authStore.currentUser != null) TopBlock(
-            child: UserTopBlock(
-              imageUrl: authStore.currentUser.picture,
-              title: authStore.currentUser.name,
-              onImageTap: () => _navigateToProfile(context),
-            ),
-            color: BlockColor.Green,
+          StreamBuilder<User>(
+            stream: _currentUser$,
+            builder: (context, snapshot) {
+              if(snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox();
+              }
+              final user = snapshot.data;
+              return TopBlock(
+                child: UserTopBlock(
+                  imageUrl: user.picture,
+                  title: user.name,
+                  onImageTap: () => _navigateToProfile(context),
+                ),
+                color: BlockColor.Green,
+              );
+            }
           ),
           Expanded(
               child: DebtListWidget()

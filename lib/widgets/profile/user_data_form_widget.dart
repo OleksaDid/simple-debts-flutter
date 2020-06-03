@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
@@ -85,11 +84,9 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
       key: _form,
       child: Column(
         children: [
-          Observer(
-            builder: (context) => UserImageInput(
-              onPickImage: _setImage,
-              defaultImageUrl: authStore.currentUser.picture,
-            ),
+          UserImageInput(
+            onPickImage: _setImage,
+            defaultImageUrl: authStore.currentUser.picture,
           ),
           SizedBox(height: 15,),
           TextFormField(

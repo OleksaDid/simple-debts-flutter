@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:get_it/get_it.dart';
-import 'package:simpledebts/store/currency_store.dart';
+import 'package:simpledebts/store/currency.store.dart';
 
 class CurrencySelect extends StatelessWidget {
   final void Function(String currency) onSelect;

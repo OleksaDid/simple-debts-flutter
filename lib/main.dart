@@ -14,7 +14,7 @@ import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/screens/start_screen.dart';
-import 'package:simpledebts/store/currency_store.dart';
+import 'package:simpledebts/store/currency.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
 
 Future<void> main() async {

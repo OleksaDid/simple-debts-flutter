@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/store/currency_store.dart';
+import 'package:simpledebts/store/currency.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_item.dart';

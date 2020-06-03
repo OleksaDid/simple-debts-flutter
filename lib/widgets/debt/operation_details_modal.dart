@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
-import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/widgets/debt/delete_operation_button.dart';
 import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
 
 class OperationDetailsModal extends StatelessWidget {
-  final authStore = GetIt.instance<AuthDataStore>();
+  final authStore = GetIt.instance<AuthStore>();
   final Operation operation;
   final Debt debt;
 
@@ -25,12 +24,10 @@ class OperationDetailsModal extends StatelessWidget {
         SizedBox(height: 10,),
         Divider(),
         SizedBox(height: 10,),
-        if(operation.status == OperationStatus.CANCELLED) Observer(
-          builder: (context) => Text(
-            'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
-            style: TextStyle(
+        if(operation.status == OperationStatus.CANCELLED) Text(
+          'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
+          style: TextStyle(
               color: Theme.of(context).errorColor
-            ),
           ),
         ),
         if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor == debt.user.id) Text(
@@ -66,11 +63,9 @@ class OperationDetailsModal extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Observer(
-                builder: (context) => CircleAvatar(
-                  backgroundImage: NetworkImage(authStore?.currentUser?.picture),
-                  radius: 28,
-                ),
+              CircleAvatar(
+                backgroundImage: NetworkImage(authStore.currentUser.picture),
+                radius: 28,
               ),
               SizedBox(width: 20,),
               Icon(

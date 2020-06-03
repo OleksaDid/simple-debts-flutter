@@ -8,6 +8,7 @@ import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
+import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
 import 'package:simpledebts/widgets/debt/connect_user_dialog.dart';
@@ -26,16 +27,9 @@ class DebtScreen extends StatefulWidget with ScreenWidget<IdRouteArgument>, Spin
   _DebtScreenState createState() => _DebtScreenState();
 }
 
-class _DebtScreenState extends State<DebtScreen> {
+class _DebtScreenState extends BaseScreenState<DebtScreen> {
   final DebtListStore _debtListStore = GetIt.instance<DebtListStore>();
-
-  StreamSubscription _debtRemovalSubscription;
-
-  @override
-  dispose() {
-    _unsubscribeFromDebtDelete();
-    super.dispose();
-  }
+  Stream<Debt> _debt$;
 
   Future<void> _onPopupMenuSelect(BuildContext context, DropdownActions action, String debtId) async {
     switch(action) {
@@ -96,22 +90,20 @@ class _DebtScreenState extends State<DebtScreen> {
   }
 
   void _subscribeOnDebtDelete() {
-    _debtRemovalSubscription = GetIt.instance<DebtStore>()
+    addSubscription(GetIt.instance<DebtStore>()
         .debtRemoved$
-        .listen((_) => Navigator.of(context).pop());
-  }
-
-  void _unsubscribeFromDebtDelete() {
-    if(_debtRemovalSubscription != null) {
-      _debtRemovalSubscription.cancel();
-    }
+        .listen((_) => Navigator.of(context).pop()));
   }
 
   @override
   Widget build(BuildContext context) {
+    // run _getDebt$ only once during lifecycle
+    if(_debt$ == null) {
+      _debt$ = _getDebt$(context);
+    }
 
     return StreamBuilder(
-      stream: _getDebt$(context),
+      stream: _debt$,
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting) {
           return Center(

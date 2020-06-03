@@ -1,16 +1,12 @@
-import 'package:mobx/mobx.dart';
+import 'package:rxdart/rxdart.dart';
 
-part 'spinner_store.g.dart';
+class SpinnerStore {
+  final BehaviorSubject<bool> _spinner = BehaviorSubject.seeded(false);
 
-class SpinnerStore = _SpinnerStore with _$SpinnerStore;
+  Stream<bool> get spinner$ => _spinner.stream;
+  bool get spinner => _spinner.value;
 
-abstract class _SpinnerStore with Store {
-  @observable
-  bool spinnerVisible = false;
+  void showSpinner() => _spinner.add(true);
 
-  @action
-  void showSpinner() => spinnerVisible = true;
-
-  @action
-  void hideSpinner() => spinnerVisible = false;
+  void hideSpinner() => _spinner.add(false);
 }

@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/profile/user_image_input.dart';
 
@@ -24,7 +24,7 @@ class UserDataFormWidget extends StatefulWidget {
 }
 
 class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerStoreUse {
-  final authStore = GetIt.instance<AuthDataStore>();
+  final authStore = GetIt.instance<AuthStore>();
   final _form = GlobalKey<FormState>();
   File _userImage;
   String _name;

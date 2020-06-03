@@ -12,7 +12,7 @@ import 'package:simpledebts/screens/auth_screen.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
-import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/screens/start_screen.dart';
 import 'package:simpledebts/store/currency_store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
@@ -26,7 +26,7 @@ Future<void> main() async {
 void setup() {
   GetIt.I.registerSingleton<HttpService>(HttpService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
-  GetIt.I.registerSingleton<AuthDataStore>(AuthDataStore());
+  GetIt.I.registerSingleton<AuthStore>(AuthStore());
   GetIt.I.registerSingleton<HttpAuthService>(HttpAuthService());
   GetIt.I.registerSingleton<CurrencyService>(CurrencyService());
   GetIt.I.registerSingleton<CurrencyStore>(CurrencyStore());

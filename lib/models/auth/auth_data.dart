@@ -16,9 +16,6 @@ class AuthData {
     @required this.refreshToken
   });
 
-  const AuthData.empty()
-    : user = null, token = null, refreshToken = null;
-
   factory AuthData.fromJson(Map<String, dynamic> json) => _$AuthDataFromJson(json);
   Map<String, dynamic> toJson() => _$AuthDataToJson(this);
 

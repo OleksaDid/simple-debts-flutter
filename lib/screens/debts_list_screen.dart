@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
@@ -51,22 +50,20 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
           )
         ],
       ),
-      body: Observer(
-        builder: (context) => Column(
-          children: [
-            if(authStore.currentUser != null) TopBlock(
-              child: UserTopBlock(
-                imageUrl: authStore.currentUser.picture,
-                title: authStore.currentUser.name,
-                onImageTap: () => _navigateToProfile(context),
-              ),
-              color: BlockColor.Green,
+      body: Column(
+        children: [
+          if(authStore.currentUser != null) TopBlock(
+            child: UserTopBlock(
+              imageUrl: authStore.currentUser.picture,
+              title: authStore.currentUser.name,
+              onImageTap: () => _navigateToProfile(context),
             ),
-            Expanded(
+            color: BlockColor.Green,
+          ),
+          Expanded(
               child: DebtListWidget()
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

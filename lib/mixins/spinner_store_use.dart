@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:simpledebts/store/spinner_store.dart';
 
 mixin SpinnerStoreUse {
   final _spinnerStore = SpinnerStore();
 
-  bool get spinnerVisible => _spinnerStore.spinnerVisible;
+  bool get spinnerVisible => _spinnerStore.spinner;
 
   void showSpinner() => _spinnerStore.showSpinner();
 
@@ -15,8 +14,9 @@ mixin SpinnerStoreUse {
     @required Widget spinner,
     Widget replacement = const SizedBox.shrink()
   }) {
-    return Observer(
-      builder: (context) => Visibility(
+    return StreamBuilder(
+      stream: _spinnerStore.spinner$,
+      builder: (context, snapshot) => Visibility(
         visible: spinnerVisible,
         child: spinner,
         replacement: replacement,

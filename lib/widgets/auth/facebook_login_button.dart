@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
-import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/auth.store.dart';
 
 class FacebookLoginButton extends StatelessWidget {
-  final authStore = GetIt.instance<AuthDataStore>();
+  final authStore = GetIt.instance<AuthStore>();
 
   Future<void> _loginWithFacebook(BuildContext context) async {
     try {
-      await authStore.facebookLogin();
-      if(authStore.isAuthenticated) {
+      final authData = await authStore.facebookLogin();
+      if(authData != null) {
         Navigator.of(context).pushReplacementNamed(DebtsListScreen.routeName);
       }
     } catch(error) {

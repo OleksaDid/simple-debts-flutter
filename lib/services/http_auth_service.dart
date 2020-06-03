@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/services/http_service.dart';
-import 'package:simpledebts/store/auth_data_store.dart';
+import 'package:simpledebts/store/auth.store.dart';
 
 
 class HttpAuthService {
   final httpService = GetIt.instance<HttpService>();
-  final authStore = GetIt.instance<AuthDataStore>();
+  final authStore = GetIt.instance<AuthStore>();
 
   Dio http;
 

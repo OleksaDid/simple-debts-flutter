@@ -1,4 +1,4 @@
-package com.simpledebts
+package com.simpledebts.test
 
 import io.flutter.embedding.android.FlutterActivity
 

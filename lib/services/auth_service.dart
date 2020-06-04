@@ -108,11 +108,9 @@ class AuthService with HttpServiceUse {
       );
       return AuthData.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
-      return null;
+      throw ErrorHelper.handleDioError(error);
     } catch(error) {
-      ErrorHelper.handleError(error);
-      return null;
+      throw ErrorHelper.handleError(error);
     }
   }
 

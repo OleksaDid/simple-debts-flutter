@@ -1,20 +1,20 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:simpledebts/models/common/errors/field_validation_error.dart';
 
-part 'backend_error.g.dart';
+part 'failure.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class BackendError {
+class Failure {
   final dynamic error;
   final List<FieldValidationError> fields;
 
-  BackendError({
+  Failure({
     this.error,
     this.fields
   });
 
-  factory BackendError.fromJson(Map<String, dynamic> json) => _$BackendErrorFromJson(json);
-  Map<String, dynamic> toJson() => _$BackendErrorToJson(this);
+  factory Failure.fromJson(Map<String, dynamic> json) => _$FailureFromJson(json);
+  Map<String, dynamic> toJson() => _$FailureToJson(this);
 
   String get message => (error?.toString() ?? '');
 }

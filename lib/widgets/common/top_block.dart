@@ -6,7 +6,7 @@ class TopBlock extends StatelessWidget {
   final Widget child;
   final BlockColor color;
 
-  TopBlock({
+  const TopBlock({
     @required this.child,
     @required this.color,
   });

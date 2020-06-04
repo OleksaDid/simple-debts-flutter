@@ -132,8 +132,11 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
                   elevation: 0,
                   backgroundColor: _getHeaderColor(debt)
               ),
-              body: DebtScreenBody(
-                debt: debt,
+              body: Visibility(
+                visible: debt != null,
+                child: DebtScreenBody(
+                  debt: debt,
+                ),
               )
           );
         }

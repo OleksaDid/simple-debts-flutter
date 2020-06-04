@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'backend_error.dart';
+part of 'failure.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BackendError _$BackendErrorFromJson(Map<String, dynamic> json) {
-  return BackendError(
+Failure _$FailureFromJson(Map<String, dynamic> json) {
+  return Failure(
     error: json['error'],
     fields: (json['fields'] as List)
         ?.map((e) => e == null
@@ -17,8 +17,7 @@ BackendError _$BackendErrorFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$BackendErrorToJson(BackendError instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$FailureToJson(Failure instance) => <String, dynamic>{
       'error': instance.error,
       'fields': instance.fields?.map((e) => e?.toJson())?.toList(),
     };

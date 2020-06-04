@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:simpledebts/services/currency_service.dart';
 import 'package:simpledebts/services/debts_service.dart';
 import 'package:simpledebts/services/http_auth_service.dart';
@@ -19,11 +20,12 @@ import 'package:simpledebts/store/debt_list.store.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
-  setup();
+  setupSingletonServices();
+  setupCrashlytics();
   runApp(MyApp());
 }
 
-void setup() {
+void setupSingletonServices() {
   GetIt.I.registerSingleton<HttpService>(HttpService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   GetIt.I.registerSingleton<AuthStore>(AuthStore());
@@ -34,6 +36,17 @@ void setup() {
   GetIt.I.registerSingleton<OperationsService>(OperationsService());
   GetIt.I.registerSingleton<DebtsService>(DebtsService());
   GetIt.I.registerSingleton<DebtListStore>(DebtListStore());
+}
+
+void setupCrashlytics() {
+  // Set `enableInDevMode` to true to see reports while in debug mode
+  // This is only to be used for confirming that reports are being
+  // submitted as expected. It is not intended to be used for everyday
+  // development.
+  Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
 }
 
 // TODO: route animations

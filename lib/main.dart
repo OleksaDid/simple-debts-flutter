@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:simpledebts/helpers/env_helper.dart';
 import 'package:simpledebts/services/currency_service.dart';
 import 'package:simpledebts/services/debts_service.dart';
 import 'package:simpledebts/services/http_auth_service.dart';
@@ -19,7 +19,7 @@ import 'package:simpledebts/store/currency.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
 
 Future<void> main() async {
-  await DotEnv().load('.env');
+  await EnvHelper.setupEnvironment();
   setupSingletonServices();
   setupCrashlytics();
   runApp(MyApp());

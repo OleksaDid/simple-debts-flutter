@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/services/operations_service.dart';
 
@@ -76,8 +78,8 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
       );
       await widget.onOperationAdded();
       Navigator.of(context).pop();
-    } catch(error) {
-      print(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorDialog(context, error.message);
     }
     hideSpinner();
   }

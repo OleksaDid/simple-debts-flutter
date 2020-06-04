@@ -18,5 +18,5 @@ class CurrencyStore {
 
   Future<void> fetchCurrencies() => _currencyService
       .fetchAndSetCurrencies(currencies)
-      .then((value) => currencies.length == 0 ? _currencies.add(value) : null);
+      ..then((value) => currencies.length == 0 ? _currencies.add(value) : null);
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 
 class SharedPreferencesHelper {
   static final _authDataKey = 'authData';
@@ -23,7 +24,7 @@ class SharedPreferencesHelper {
       return prefs.setString(_authDataKey, data);
     } catch(error) {
       print(error);
-      throw error;
+      throw Failure(error: error);
     }
   }
 
@@ -33,7 +34,7 @@ class SharedPreferencesHelper {
       return prefs.clear();
     } catch(error) {
       print(error);
-      throw error;
+      throw Failure(error: error);
     }
   }
 }

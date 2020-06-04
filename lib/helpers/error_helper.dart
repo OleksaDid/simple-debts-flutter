@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
 
 class ErrorHelper {
 
   static Failure handleDioError(DioError error) {
-    // TODO: log error
     switch (error.type) {
       case DioErrorType.RESPONSE:
         if(error.response.statusCode >= 500) {
@@ -32,8 +33,9 @@ class ErrorHelper {
     }
   }
 
-  static Failure handleError(Error error) {
-    print('UNEXPECTED ERROR: ${error.toString()}');
+  static logError(Error error) {
+    print(error.toString());
+    Crashlytics.instance.recordFlutterError(FlutterErrorDetails(exception: error));
   }
 
 
@@ -43,5 +45,20 @@ class ErrorHelper {
       content: Text(error),
       backgroundColor: Theme.of(context).errorColor,
     ));
+  }
+
+  static void showErrorDialog(BuildContext context, [String error = 'Something went wrong. Try again later']) {
+    showDialog(
+      context: context,
+      builder: (context) => DialogHelper.getThemedAlertDialog(
+        title: error,
+        actions: [
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ]
+      )
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/user/user.dart';
@@ -9,7 +10,7 @@ import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
 import 'package:simpledebts/widgets/add_debt/add_virtual_user_debt_form.dart';
 import 'package:simpledebts/widgets/add_debt/debt_creation_confirmation.dart';
-import 'package:simpledebts/widgets/common/users_search.dart';
+import 'package:simpledebts/widgets/common/user_search/users_search.dart';
 
 enum FormStep {
   Initial,
@@ -81,8 +82,8 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
       }
       Navigator.of(context).pop();
       Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
-    } catch(error) {
-      ErrorHelper.handleError(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorDialog(context, error.message);
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
@@ -26,8 +27,8 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
     showSpinnerModal(context);
     try {
       await _debtStore.declineUserConnecting(debt.id);
-    } catch(error) {
-      ErrorHelper.handleError(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
     hideSpinnerModal(context);
   }
@@ -37,8 +38,8 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
     try {
       await _debtStore.acceptUserConnecting(debt.id);
       hideSpinnerModal(context);
-    } catch(error) {
-      ErrorHelper.handleError(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
   }
 

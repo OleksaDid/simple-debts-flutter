@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
-import 'package:simpledebts/models/user/user.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
+import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/profile/user_image_input.dart';
 
 class UserDataFormWidget extends StatefulWidget {
-  final Future<User> Function(String name, File image) onSubmit;
+  final void Function() onSuccess;
   final void Function() onSkip;
 
   UserDataFormWidget({
-    @required this.onSubmit,
+    this.onSuccess,
     this.onSkip
   });
 
@@ -23,7 +24,7 @@ class UserDataFormWidget extends StatefulWidget {
 }
 
 class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerStoreUse {
-  final authStore = GetIt.instance<AuthStore>();
+  final _authStore = GetIt.instance<AuthStore>();
   final _form = GlobalKey<FormState>();
   File _userImage;
   String _name;
@@ -46,7 +47,7 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
   }
 
   String get _defaultName {
-    return authStore.currentUser.name;
+    return _authStore.currentUser.name;
   }
 
   bool get _isFormChanged {
@@ -56,7 +57,7 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
   Future<void> _submitForm() async {
     final isValid = _form.currentState.validate();
     if(!isValid) {
-      throw 'Invalid form';
+      return ErrorHelper.showErrorSnackBar(context, "Invalid form");
     }
     FocusScope.of(context).unfocus();
     _form.currentState.save();
@@ -65,15 +66,19 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
     }
     showSpinner();
     try {
-      final user = await widget.onSubmit(_name, _userImage);
+      final user = await GetIt.instance<UsersService>().updateUserData(_name, _userImage);
+      print(user.name);
+      if(widget.onSuccess != null) {
+        widget.onSuccess();
+      }
       Scaffold.of(context).hideCurrentSnackBar();
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Your profile was successfully updated'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ));
-      authStore.updateUserData(user);
-    } catch(error) {
-      ErrorHelper.handleError(error);
+      _authStore.updateUserData(user);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
     hideSpinner();
   }
@@ -86,7 +91,7 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
         children: [
           UserImageInput(
             onPickImage: _setImage,
-            defaultImageUrl: authStore.currentUser.picture,
+            defaultImageUrl: _authStore.currentUser.picture,
           ),
           SizedBox(height: 15,),
           TextFormField(

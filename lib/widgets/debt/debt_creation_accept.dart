@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
@@ -21,9 +22,9 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
     try {
       await _debtStore.acceptMultipleDebtCreation(debt.id);
       hideSpinnerModal(context);
-    } catch(error) {
+    } on Failure catch(error) {
       hideSpinnerModal(context);
-      ErrorHelper.showErrorSnackBar(context);
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
   }
 
@@ -32,9 +33,9 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
     try {
       await _debtStore.declineMultipleDebtCreation(debt.id);
       hideSpinnerModal(context);
-    } catch(error) {
+    } on Failure catch(error) {
       hideSpinnerModal(context);
-      ErrorHelper.showErrorSnackBar(context);
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
   }
 

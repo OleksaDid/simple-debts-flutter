@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
@@ -18,8 +19,8 @@ class DebtDeletedUser extends StatelessWidget with SpinnerStoreUse {
     showSpinner();
     try {
       await GetIt.instance<DebtStore>().acceptUserDeletedFromDebt(debt.id);
-    } catch(error) {
-      ErrorHelper.handleError(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
     }
     hideSpinner();
   }

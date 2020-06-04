@@ -32,14 +32,30 @@ class DialogHelper {
     ),
   );
 
+  static AlertDialog getThemedAlertDialog({
+    Key key,
+    Color backgroundColor,
+    EdgeInsets insetPadding,
+    Clip clipBehavior = Clip.none,
+    String title,
+    List<Widget> actions
+  }) => AlertDialog(
+    key: key,
+    backgroundColor: backgroundColor,
+    insetPadding: insetPadding,
+    clipBehavior: clipBehavior,
+    title: Text(title),
+    actions: actions,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12)
+    ),
+  );
+
   static Future<bool> showDeleteDialog(BuildContext context, String title) {
     return showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)
-          ),
-          title: Text(title),
+        builder: (context) => getThemedAlertDialog(
+          title: title,
           actions: [
             FlatButton(
               child: Text('NO'),

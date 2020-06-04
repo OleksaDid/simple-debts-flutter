@@ -25,7 +25,7 @@ class AuthStore {
   User get currentUser => authData?.user;
 
 
-  void updateUserData(User user) => _authData.add(AuthData(
+  void updateUserData(User user) => _updateData(AuthData(
       token: authData.token,
       refreshToken: authData.refreshToken,
       user: user

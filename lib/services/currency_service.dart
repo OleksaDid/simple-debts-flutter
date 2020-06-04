@@ -15,8 +15,7 @@ class CurrencyService with HttpAuthServiceUse {
             .map((currency) => Currency.fromJson(currency))
             .toList();
       } on DioError catch(error) {
-        ErrorHelper.handleDioError(error);
-        return currencies;
+        throw ErrorHelper.handleDioError(error);
       }
     }
     return currencies;

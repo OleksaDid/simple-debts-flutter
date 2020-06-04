@@ -6,6 +6,7 @@ import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/mixins/spinner_modal.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
@@ -52,8 +53,8 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
       try {
         await _debtListStore.deleteDebt(debtId);
         Navigator.of(context).pop();
-      } catch(error) {
-        ErrorHelper.showErrorSnackBar(context);
+      } on Failure catch(error) {
+        ErrorHelper.showErrorSnackBar(context, error.message);
       }
       widget.hideSpinnerModal(context);
     }

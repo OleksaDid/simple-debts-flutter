@@ -3,10 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
-import 'package:simpledebts/widgets/common/users_search.dart';
+import 'package:simpledebts/widgets/common/user_search/users_search.dart';
 
 class ConnectUserDialog extends StatefulWidget {
   final String debtId;
@@ -27,8 +28,8 @@ class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerStore
     try {
       await GetIt.instance<DebtStore>().connectUserToSingleDebt(widget.debtId, _selectedUser.id);
       Navigator.of(context).pop();
-    } catch(error) {
-      ErrorHelper.handleError(error);
+    } on Failure catch(error) {
+      ErrorHelper.showErrorDialog(context, error.message);
     }
     hideSpinner();
   }

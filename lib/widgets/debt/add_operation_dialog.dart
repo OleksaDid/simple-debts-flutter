@@ -3,12 +3,12 @@ import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/widgets/debt/add_operation_form_widget.dart';
 
-class AddOperationWidget extends StatelessWidget {
+class AddOperationDialog extends StatelessWidget {
   final Debt debt;
   final String moneyReceiver;
   final Future<void> Function() onOperationAdded;
 
-  AddOperationWidget({
+  AddOperationDialog({
     @required this.debt,
     @required this.moneyReceiver,
     @required this.onOperationAdded,

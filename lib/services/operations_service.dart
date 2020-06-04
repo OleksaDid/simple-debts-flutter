@@ -21,7 +21,7 @@ class OperationsService with HttpAuthServiceUse {
       };
       await http.post(url, data: body);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -30,7 +30,7 @@ class OperationsService with HttpAuthServiceUse {
       final url = '/operations/$id';
       await http.delete(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -39,7 +39,7 @@ class OperationsService with HttpAuthServiceUse {
       final url = '/operations/$id/creation/accept';
       await http.post(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -48,7 +48,7 @@ class OperationsService with HttpAuthServiceUse {
       final url = '/operations/$id/creation/decline';
       await http.post(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 }

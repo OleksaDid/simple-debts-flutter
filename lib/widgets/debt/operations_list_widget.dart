@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
-import 'package:simpledebts/widgets/debt/add_operation_widget.dart';
+import 'package:simpledebts/widgets/debt/add_operation_dialog.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
 import 'package:simpledebts/widgets/debt/operations_list_item.dart';
@@ -62,7 +64,12 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
 
   Future<Debt> _fetchOperations({bool forceRefresh = false}) async {
     if(widget.debt.moneyOperations == null || forceRefresh) {
-      return GetIt.instance<DebtStore>().fetchDebt(widget.debt.id);
+      try {
+        return GetIt.instance<DebtStore>().fetchDebt(widget.debt.id);
+      } on Failure catch(error) {
+        ErrorHelper.showErrorSnackBar(context, error.message);
+        throw error;
+      }
     } else {
       return widget.debt;
     }
@@ -71,7 +78,7 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
   Future<void> _addOperation(BuildContext context, Debt debt, String moneyReceiver) async {
     await showDialog<Operation>(
       context: context,
-      builder: (context) => AddOperationWidget(
+      builder: (context) => AddOperationDialog(
         debt: debt,
         moneyReceiver: moneyReceiver,
         onOperationAdded: () => _fetchOperations(forceRefresh: true),

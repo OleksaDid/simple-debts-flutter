@@ -27,9 +27,7 @@ class UsersService with HttpAuthServiceUse {
 
       return User.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
-    } catch(error) {
-      ErrorHelper.handleError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -40,8 +38,7 @@ class UsersService with HttpAuthServiceUse {
       final List users = response.data;
       return users.map((user) => User.fromJson(user)).toList();
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
-      throw error;
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -51,7 +48,7 @@ class UsersService with HttpAuthServiceUse {
       final response = await http.get(url);
       return User.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -63,7 +60,7 @@ class UsersService with HttpAuthServiceUse {
         'token': token
       });
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 

@@ -12,7 +12,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.get(url);
       return DebtList.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -22,7 +22,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.get(url);
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -32,7 +32,7 @@ class DebtsService with HttpAuthServiceUse {
       final url = '/debts/$debtTypePath/$id';
       await http.delete(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -47,7 +47,7 @@ class DebtsService with HttpAuthServiceUse {
       );
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -62,7 +62,7 @@ class DebtsService with HttpAuthServiceUse {
       );
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -72,7 +72,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.post(url);
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -81,7 +81,7 @@ class DebtsService with HttpAuthServiceUse {
       final url = '/debts/multiple/$id/creation/decline';
       await http.post(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -91,7 +91,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.post(url);
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -101,7 +101,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.post(url);
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -113,7 +113,7 @@ class DebtsService with HttpAuthServiceUse {
       });
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -123,7 +123,7 @@ class DebtsService with HttpAuthServiceUse {
       final response = await http.post(url);
       return Debt.fromJson(response.data);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 
@@ -132,7 +132,7 @@ class DebtsService with HttpAuthServiceUse {
       final url = '/debts/single/$id/connect_user/decline';
       await http.post(url);
     } on DioError catch(error) {
-      ErrorHelper.handleDioError(error);
+      throw ErrorHelper.handleDioError(error);
     }
   }
 

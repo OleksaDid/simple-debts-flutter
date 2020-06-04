@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
-import 'package:simpledebts/widgets/debt/operation_details_modal.dart';
+import 'package:simpledebts/widgets/debt/operation_details_dialog.dart';
 
 class OperationsListItem extends StatelessWidget {
   final Operation operation;
@@ -16,7 +16,7 @@ class OperationsListItem extends StatelessWidget {
   void _openOperationDetails(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => OperationDetailsModal(
+      builder: (context) => OperationDetailsDialog(
         operation: operation,
         debt: debt,
       )

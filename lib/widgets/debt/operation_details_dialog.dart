@@ -8,12 +8,12 @@ import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/widgets/debt/delete_operation_button.dart';
 import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
 
-class OperationDetailsModal extends StatelessWidget {
+class OperationDetailsDialog extends StatelessWidget {
   final authStore = GetIt.instance<AuthStore>();
   final Operation operation;
   final Debt debt;
 
-  OperationDetailsModal({
+  OperationDetailsDialog({
     @required this.operation,
     @required this.debt,
   });

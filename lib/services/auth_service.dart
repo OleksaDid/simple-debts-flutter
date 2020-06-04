@@ -7,6 +7,7 @@ import 'package:simpledebts/helpers/shared_preferences_helper.dart';
 import 'package:simpledebts/mixins/http_service_use.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 
 class AuthService with HttpServiceUse {
 
@@ -32,18 +33,14 @@ class AuthService with HttpServiceUse {
           ));
           return AuthData.fromJson(response.data);
         } on DioError catch(error) {
-          ErrorHelper.handleDioError(error);
-          return null;
-        } catch(error) {
-          ErrorHelper.handleError(error);
-          return null;
+          throw ErrorHelper.handleDioError(error);
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
         return null;
         break;
       case FacebookLoginStatus.error:
-        return null;
+        throw Failure(error: loginResult.errorMessage);
         break;
     }
   }
@@ -62,7 +59,7 @@ class AuthService with HttpServiceUse {
             ErrorHelper.handleDioError(error);
             return null;
           } catch(error) {
-            ErrorHelper.handleError(error);
+            ErrorHelper.logError(error);
             return null;
           }
         }
@@ -73,7 +70,7 @@ class AuthService with HttpServiceUse {
       ErrorHelper.handleDioError(error);
       return null;
     } catch(error) {
-      ErrorHelper.handleError(error);
+      ErrorHelper.logError(error);
       return null;
     }
   }
@@ -95,7 +92,7 @@ class AuthService with HttpServiceUse {
       ErrorHelper.handleDioError(error);
       return null;
     } catch(error) {
-      ErrorHelper.handleError(error);
+      ErrorHelper.logError(error);
       return null;
     }
   }
@@ -109,8 +106,6 @@ class AuthService with HttpServiceUse {
       return AuthData.fromJson(response.data);
     } on DioError catch(error) {
       throw ErrorHelper.handleDioError(error);
-    } catch(error) {
-      throw ErrorHelper.handleError(error);
     }
   }
 
@@ -130,7 +125,7 @@ class AuthService with HttpServiceUse {
         ErrorHelper.handleDioError(error);
         return false;
       } catch(error) {
-        ErrorHelper.handleError(error);
+        ErrorHelper.logError(error);
         return false;
       }
     }

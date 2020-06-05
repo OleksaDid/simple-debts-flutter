@@ -10,11 +10,6 @@ import 'package:simpledebts/widgets/common/button_spinner.dart';
 import 'package:simpledebts/widgets/common/user_search/users_search.dart';
 
 class ConnectUserDialog extends StatefulWidget {
-  final String debtId;
-
-  ConnectUserDialog({
-    @required this.debtId
-  });
 
   @override
   _ConnectUserDialogState createState() => _ConnectUserDialogState();
@@ -26,7 +21,7 @@ class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerStore
   Future<void> _connectUser() async {
     showSpinner();
     try {
-      await GetIt.instance<DebtStore>().connectUserToSingleDebt(widget.debtId, _selectedUser.id);
+      await GetIt.instance<DebtStore>().connectUserToSingleDebt(_selectedUser.id);
       Navigator.of(context).pop();
     } on Failure catch(error) {
       ErrorHelper.showErrorDialog(context, error.message);

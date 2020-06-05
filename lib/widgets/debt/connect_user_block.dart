@@ -7,7 +7,7 @@ import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
-import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
+import 'package:simpledebts/widgets/debt/operations/operations_list_widget.dart';
 
 class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   final _debtStore = GetIt.instance<DebtStore>();
@@ -26,7 +26,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   Future<void> _cancelConnectionRequest(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      await _debtStore.declineUserConnecting(debt.id);
+      await _debtStore.declineUserConnecting();
     } on Failure catch(error) {
       ErrorHelper.showErrorSnackBar(context, error.message);
     }
@@ -36,7 +36,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   Future<void> _acceptConnectionRequest(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      await _debtStore.acceptUserConnecting(debt.id);
+      await _debtStore.acceptUserConnecting();
       hideSpinnerModal(context);
     } on Failure catch(error) {
       ErrorHelper.showErrorSnackBar(context, error.message);

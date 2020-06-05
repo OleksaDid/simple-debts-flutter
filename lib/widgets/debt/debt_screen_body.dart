@@ -5,7 +5,7 @@ import 'package:simpledebts/widgets/common/user_top_block.dart';
 import 'package:simpledebts/widgets/debt/connect_user_block.dart';
 import 'package:simpledebts/widgets/debt/debt_creation_accept.dart';
 import 'package:simpledebts/widgets/debt/debt_deleted_user.dart';
-import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
+import 'package:simpledebts/widgets/debt/operations/operations_list_widget.dart';
 
 
 class DebtScreenBody extends StatelessWidget {

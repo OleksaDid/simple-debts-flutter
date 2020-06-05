@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/helpers/shared_preferences_helper.dart';
@@ -103,7 +104,10 @@ class AuthService with HttpServiceUse {
       final Response response = await http.post(urlPath,
         data: authForm.toJson()
       );
-      return AuthData.fromJson(response.data);
+      final authData = AuthData.fromJson(response.data);
+      Crashlytics.instance.setUserIdentifier(authData.user.id);
+      Crashlytics.instance.setUserName(authData.user.name);
+      return authData;
     } on DioError catch(error) {
       throw ErrorHelper.handleDioError(error);
     }

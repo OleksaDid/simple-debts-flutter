@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
-import 'package:simpledebts/widgets/debt/add_operation_form_widget.dart';
+import 'package:simpledebts/widgets/debt/operations/add_operation_form_widget.dart';
 
 class AddOperationDialog extends StatelessWidget {
   final Debt debt;

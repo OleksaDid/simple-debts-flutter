@@ -6,6 +6,7 @@ import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/services/operations_service.dart';
+import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class AddOperationFormWidget extends StatefulWidget {
   final Debt debt;
@@ -43,6 +44,9 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
   String _descriptionValidator(String value) {
     if(value == null || value.length < 3) {
       return 'Minimum 3 symbols';
+    }
+    if(value.length > 70) {
+      return 'Maximum 70 symbols';
     }
     return null;
   }
@@ -89,7 +93,9 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
     return Form(
       key: _form,
       child: Container(
-        height: 218,
+        constraints: BoxConstraints(
+          maxHeight: 320
+        ),
         child: Stack(
           children: [
             Column(
@@ -120,25 +126,21 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
                   ),
                   validator: _descriptionValidator,
                   focusNode: _descriptionFocusNode,
+                  maxLength: 70,
+                  maxLengthEnforced: true,
                   onSaved: (value) => _description = value.trim(),
                 ),
                 SizedBox(height: 20,),
-                FlatButton(
-                  child: Text('ADD'),
-                  textColor: Theme.of(context).primaryColor,
-                  onPressed: _submitForm,
+                spinnerContainer(
+                  spinner: ButtonSpinner(),
+                  replacement: FlatButton(
+                    child: Text('ADD'),
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: _submitForm,
+                  ),
                 )
               ],
             ),
-            spinnerContainer(
-              spinner: Container(
-                height: double.infinity,
-                width: double.infinity,
-                color: Colors.white54,
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(),
-              )
-            )
           ],
         ),
       )

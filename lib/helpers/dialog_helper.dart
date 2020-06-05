@@ -37,14 +37,17 @@ class DialogHelper {
     Color backgroundColor,
     EdgeInsets insetPadding,
     Clip clipBehavior = Clip.none,
-    String title,
+    Widget title,
     List<Widget> actions
   }) => AlertDialog(
     key: key,
     backgroundColor: backgroundColor,
     insetPadding: insetPadding,
     clipBehavior: clipBehavior,
-    title: Text(title),
+    title: Container(
+      width: 270,
+      child: title
+    ),
     actions: actions,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12)
@@ -55,7 +58,7 @@ class DialogHelper {
     return showDialog<bool>(
         context: context,
         builder: (context) => getThemedAlertDialog(
-          title: title,
+          title: Text(title),
           actions: [
             FlatButton(
               child: Text('NO'),

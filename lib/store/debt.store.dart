@@ -26,50 +26,50 @@ class DebtStore {
   }
 
 
-  Future<Debt> fetchDebt(String id) => _debtsService
-      .fetchDebt(id)
+  Future<Debt> fetchDebt() => _debtsService
+      .fetchDebt(debt.id)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> acceptMultipleDebtCreation(String id) => _debtsService
-      .acceptMultipleDebtCreation(id)
+  Future<void> acceptMultipleDebtCreation() => _debtsService
+      .acceptMultipleDebtCreation(debt.id)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> declineMultipleDebtCreation(String id) => _debtsService
-      .declineMultipleDebtCreation(id)
+  Future<void> declineMultipleDebtCreation() => _debtsService
+      .declineMultipleDebtCreation(debt.id)
       ..then((_) => _debtListStore.fetchAndSetDebtList())
       ..then((_) => _removeDebt());
 
-  Future<void> acceptAllOperations(String id) => _debtsService
-      .acceptAllOperations(id)
+  Future<void> acceptAllOperations() => _debtsService
+      .acceptAllOperations(debt.id)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> acceptUserDeletedFromDebt(String id) => _debtsService
-      .acceptUserDeletedFromDebt(id)
+  Future<void> acceptUserDeletedFromDebt() => _debtsService
+      .acceptUserDeletedFromDebt(debt.id)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> connectUserToSingleDebt(String id, String userId) => _debtsService
-      .connectUserToSingleDebt(id, userId)
+  Future<void> connectUserToSingleDebt(String userId) => _debtsService
+      .connectUserToSingleDebt(debt.id, userId)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> acceptUserConnecting(String id) => _debtsService
-      .acceptUserConnecting(id)
+  Future<void> acceptUserConnecting() => _debtsService
+      .acceptUserConnecting(debt.id)
       ..then((debt) => _debt.add(debt))
-      ..then((debt) => _debtListStore.updateDebtById(id, debt));
+      ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
-  Future<void> declineUserConnecting(String id) => _debtsService
-      .declineUserConnecting(id)
+  Future<void> declineUserConnecting() => _debtsService
+      .declineUserConnecting(debt.id)
       ..then((_) {
         if(debt.statusAcceptor != debt.user.id) {
           return _debtListStore
               .fetchAndSetDebtList()
               ..then((_) => _removeDebt());
         } else {
-          return fetchDebt(debt.id);
+          return fetchDebt();
         }
       });
 }

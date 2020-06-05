@@ -23,7 +23,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
       showSpinner();
       try {
         await GetIt.instance<OperationsService>().deleteOperation(operationId);
-        await GetIt.instance<DebtStore>().fetchDebt(debtId);
+        await GetIt.instance<DebtStore>().fetchDebt();
         Navigator.of(context).pop();
         hideSpinner();
       } on Failure catch(error) {

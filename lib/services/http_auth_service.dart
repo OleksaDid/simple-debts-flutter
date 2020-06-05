@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/services/http_service.dart';
 import 'package:simpledebts/store/auth.store.dart';
 
@@ -26,8 +27,8 @@ class HttpAuthService {
     final http = httpService.createBaseHttp();
     http.interceptors.add(
       InterceptorsWrapper(
-          onRequest: (requestOptions) => _addAccessToken(http, requestOptions),
-          onError: (error) => _onError(http, error)
+        onRequest: (requestOptions) => _addAccessToken(http, requestOptions),
+        onError: (error) => _onError(http, error)
       ),
     );
     return http;
@@ -46,7 +47,12 @@ class HttpAuthService {
 
   dynamic _onError(Dio http, DioError error) async {
     // TODO: log error
-    if (error.response?.statusCode == 401) {
+    final failure = error?.response?.data != null
+        ? Failure.fromJson(error.response.data)
+        : null;
+    final isInvalidToken = failure?.error == 'Invalid Token';
+
+    if (error.response?.statusCode == 401 || isInvalidToken) {
       print(error.request.path);
       print('token expired, need to update');
 

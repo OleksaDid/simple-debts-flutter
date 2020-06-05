@@ -20,7 +20,7 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
   Future<void> _acceptCreation(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      await _debtStore.acceptMultipleDebtCreation(debt.id);
+      await _debtStore.acceptMultipleDebtCreation();
       hideSpinnerModal(context);
     } on Failure catch(error) {
       hideSpinnerModal(context);
@@ -31,7 +31,7 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
   Future<void> _declineCreation(BuildContext context) async {
     showSpinnerModal(context);
     try {
-      await _debtStore.declineMultipleDebtCreation(debt.id);
+      await _debtStore.declineMultipleDebtCreation();
       hideSpinnerModal(context);
     } on Failure catch(error) {
       hideSpinnerModal(context);

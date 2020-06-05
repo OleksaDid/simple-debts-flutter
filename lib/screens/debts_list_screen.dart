@@ -69,6 +69,7 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
                   imageUrl: user.picture,
                   title: user.name,
                   onImageTap: () => _navigateToProfile(context),
+                  fontSize: 34,
                 ),
                 color: BlockColor.Green,
               );

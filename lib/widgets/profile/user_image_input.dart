@@ -49,7 +49,7 @@ class _UserImageInputState extends State<UserImageInput> {
     return showDialog<ImageSource>(
       context: context,
       builder: (context) => DialogHelper.getThemedAlertDialog(
-        title: 'Select image source',
+        title: Text('Select image source'),
         actions: [
           FlatButton(
             child: Text('Gallery'),

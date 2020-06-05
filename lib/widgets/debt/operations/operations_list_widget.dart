@@ -7,10 +7,10 @@ import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/empty_list_placeholder.dart';
-import 'package:simpledebts/widgets/debt/add_operation_dialog.dart';
+import 'package:simpledebts/widgets/debt/operations/add_operation_dialog.dart';
 import 'package:simpledebts/widgets/debt/bottom_buttons_row.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_bottom_button.dart';
-import 'package:simpledebts/widgets/debt/operations_list_item.dart';
+import 'package:simpledebts/widgets/debt/operations/operations_list_item.dart';
 
 class OperationsListWidget extends StatefulWidget {
   final List<Operation> operations;
@@ -65,7 +65,7 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
   Future<Debt> _fetchOperations({bool forceRefresh = false}) async {
     if(widget.debt.moneyOperations == null || forceRefresh) {
       try {
-        return GetIt.instance<DebtStore>().fetchDebt(widget.debt.id);
+        return GetIt.instance<DebtStore>().fetchDebt();
       } on Failure catch(error) {
         ErrorHelper.showErrorSnackBar(context, error.message);
         throw error;

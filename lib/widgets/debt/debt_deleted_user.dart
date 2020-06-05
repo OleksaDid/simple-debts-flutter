@@ -6,7 +6,7 @@ import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
-import 'package:simpledebts/widgets/debt/operations_list_widget.dart';
+import 'package:simpledebts/widgets/debt/operations/operations_list_widget.dart';
 
 class DebtDeletedUser extends StatelessWidget with SpinnerStoreUse {
   final Debt debt;
@@ -18,7 +18,7 @@ class DebtDeletedUser extends StatelessWidget with SpinnerStoreUse {
   Future<void> _acceptInfo(BuildContext context) async {
     showSpinner();
     try {
-      await GetIt.instance<DebtStore>().acceptUserDeletedFromDebt(debt.id);
+      await GetIt.instance<DebtStore>().acceptUserDeletedFromDebt();
     } on Failure catch(error) {
       ErrorHelper.showErrorSnackBar(context, error.message);
     }

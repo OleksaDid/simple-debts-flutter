@@ -82,4 +82,10 @@ class Debt {
   bool get isUserConnectAllowed {
     return type == DebtAccountType.SINGLE_USER && status != DebtStatus.CONNECT_USER && status != DebtStatus.USER_DELETED;
   }
+
+  bool get hasUnacceptedOperations {
+    return moneyOperations != null
+        ? moneyOperations.any((operation) => operation.status == OperationStatus.CREATION_AWAITING)
+        : false;
+  }
 }

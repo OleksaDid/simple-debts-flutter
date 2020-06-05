@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
-import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
-import 'package:simpledebts/widgets/debt/operation_details_dialog.dart';
+import 'package:simpledebts/widgets/debt/operations/operation_confirmation_buttons.dart';
+import 'package:simpledebts/widgets/debt/operations/operation_details_dialog.dart';
 
 class OperationsListItem extends StatelessWidget {
   final Operation operation;
@@ -40,7 +40,6 @@ class OperationsListItem extends StatelessWidget {
       } else {
         return OperationConfirmationButtons(
           operationId: operation.id,
-          debtId: debt.id,
         );
       }
     }
@@ -72,7 +71,10 @@ class OperationsListItem extends StatelessWidget {
                   fontWeight: FontWeight.bold
               ),
             ),
-            subtitle: Text(operation.description),
+            subtitle: Text(
+              operation.description,
+              overflow: TextOverflow.ellipsis,
+            ),
             trailing: _buildTrailingBlock(context),
           ),
         ),

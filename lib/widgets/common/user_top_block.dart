@@ -4,12 +4,14 @@ import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 class UserTopBlock extends StatelessWidget {
   final String imageUrl;
   final String title;
+  final double fontSize;
   final void Function() onImageTap;
 
   UserTopBlock({
     @required this.imageUrl,
     @required this.title,
-    this.onImageTap
+    this.fontSize = 24,
+    this.onImageTap,
   });
 
   @override
@@ -31,12 +33,12 @@ class UserTopBlock extends StatelessWidget {
             )
           )
         ),
-        SizedBox(height: 10,),
+        SizedBox(height: 14,),
         Text(
           title,
           style: Theme.of(context).textTheme.headline4.copyWith(
             color: Colors.white,
-            fontSize: 30
+            fontSize: fontSize
           ),
           textAlign: TextAlign.center,
         )

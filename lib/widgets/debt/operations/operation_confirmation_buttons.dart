@@ -9,12 +9,10 @@ import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse {
   final String operationId;
-  final String debtId;
   final MainAxisSize rowSize;
 
   OperationConfirmationButtons({
     @required this.operationId,
-    @required this.debtId,
     this.rowSize = MainAxisSize.min,
   });
 
@@ -22,7 +20,7 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
     showSpinner();
     try {
       await GetIt.instance<OperationsService>().acceptOperation(operationId);
-      await GetIt.instance<DebtStore>().fetchDebt(debtId);
+      await GetIt.instance<DebtStore>().fetchDebt();
     } on Failure catch(error) {
       ErrorHelper.showErrorDialog(context, error.message);
     }
@@ -33,7 +31,7 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
     showSpinner();
     try {
       await GetIt.instance<OperationsService>().declineOperation(operationId);
-      await GetIt.instance<DebtStore>().fetchDebt(debtId);
+      await GetIt.instance<DebtStore>().fetchDebt();
     } on Failure catch(error) {
       ErrorHelper.showErrorDialog(context, error.message);
     }
@@ -42,22 +40,29 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: rowSize,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if(!spinnerVisible) FlatButton(
-          child: Text('DECLINE'),
-          onPressed: () => _declineOperation(context),
-          textColor: Theme.of(context).accentColor,
+    return
+      spinnerContainer(
+        spinner: Container(
+          width: 40,
+          height: 48,
+          child: ButtonSpinner(radius: 20,)
         ),
-        if(!spinnerVisible) FlatButton(
-          child: Text('ACCEPT'),
-          onPressed: () => _acceptOperation(context),
-          textColor: Theme.of(context).accentColor,
+        replacement: Row(
+          mainAxisSize: rowSize,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FlatButton(
+              child: Text('DECLINE'),
+              onPressed: () => _declineOperation(context),
+              textColor: Theme.of(context).accentColor,
+            ),
+            FlatButton(
+              child: Text('ACCEPT'),
+              onPressed: () => _acceptOperation(context),
+              textColor: Theme.of(context).accentColor,
+            ),
+          ],
         ),
-        if(spinnerVisible) ButtonSpinner(radius: 20,)
-      ],
-    );
+      );
   }
 }

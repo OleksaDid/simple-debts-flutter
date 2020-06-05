@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +17,8 @@ class ErrorHelper {
           print('SERVER ERROR: ${error.response.statusCode} - ${error.message}');
           return Failure(error: 'Something went wrong, try again later...');
         }
+        print(error.response.data);
+        print(jsonEncode(error.response.data));
         final failure = Failure.fromJson(error.response.data);
         print('PATH: ${error.request.path}');
         print('HEADERS: ${error.request.headers}');
@@ -51,9 +55,22 @@ class ErrorHelper {
     showDialog(
       context: context,
       builder: (context) => DialogHelper.getThemedAlertDialog(
-        title: error,
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.error_outline,
+              color: Theme.of(context).errorColor,
+              size: 40,
+            ),
+            SizedBox(height: 10,),
+            Text(error),
+          ],
+        ),
         actions: [
           FlatButton(
+            textColor: Theme.of(context).errorColor,
             child: Text('OK'),
             onPressed: () => Navigator.of(context).pop(),
           )

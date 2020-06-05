@@ -30,28 +30,31 @@ class DebtScreen extends StatefulWidget with ScreenWidget<IdRouteArgument>, Spin
 
 class _DebtScreenState extends BaseScreenState<DebtScreen> {
   final DebtListStore _debtListStore = GetIt.instance<DebtListStore>();
+  DebtStore _debtStore;
   Stream<Debt> _debt$;
 
-  Future<void> _onPopupMenuSelect(BuildContext context, DropdownActions action, String debtId) async {
+  Debt get debt => _debtStore.debt;
+
+  Future<void> _onPopupMenuSelect(BuildContext context, DropdownActions action) async {
     switch(action) {
       case DropdownActions.deleteDebt: {
-        _deleteDebt(debtId);
+        _deleteDebt();
         break;
       }
 
       case DropdownActions.connectUser: {
-        _connectUser(debtId);
+        _connectUser();
         break;
       }
     }
   }
 
-  Future<void> _deleteDebt(String debtId) async {
+  Future<void> _deleteDebt() async {
     final bool deleteDebt = await DialogHelper.showDeleteDialog(context, 'Delete this debt?');
     if(deleteDebt) {
       widget.showSpinnerModal(context);
       try {
-        await _debtListStore.deleteDebt(debtId);
+        await _debtListStore.deleteDebt(debt.id);
         Navigator.of(context).pop();
       } on Failure catch(error) {
         ErrorHelper.showErrorSnackBar(context, error.message);
@@ -60,18 +63,28 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
     }
   }
 
-  void _connectUser(String debtId) {
+  Future<void> _acceptAllOperations() async {
+    widget.showSpinnerModal(context);
+    try {
+      await _debtStore.acceptAllOperations();
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
+    }
+    widget.hideSpinnerModal(context);
+  }
+
+  void _connectUser() {
     showDialog(
       context: context,
-      builder: (context) => ConnectUserDialog(debtId: debtId,)
+      builder: (context) => ConnectUserDialog()
     );
   }
 
   Stream<Debt> _getDebt$(BuildContext context) {
     final debtId = widget.getRouteArguments(context).id;
     final debt = _debtListStore.getDebt(debtId);
-    final debtStore = _setupDebtStore(debt);
-    return debtStore.debt$;
+    _setupDebtStore(debt);
+    return _debtStore.debt$;
   }
 
   Color _getHeaderColor(Debt debt) {
@@ -80,14 +93,14 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
         : Theme.of(context).colorScheme.secondary;
   }
 
-  DebtStore _setupDebtStore(Debt debt) {
+  void _setupDebtStore(Debt debt) {
     final getIt = GetIt.instance;
     if(getIt.isRegistered<DebtStore>()) {
       getIt.unregister<DebtStore>();
     }
     getIt.registerSingleton<DebtStore>(DebtStore(debt));
     _subscribeOnDebtDelete();
-    return getIt<DebtStore>();
+    _debtStore = getIt<DebtStore>();
   }
 
   void _subscribeOnDebtDelete() {
@@ -115,6 +128,11 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
           return Scaffold(
               appBar: AppBar(
                   actions: [
+                    if(debt.hasUnacceptedOperations) FlatButton(
+                      child: Text('ACCEPT ALL'),
+                      textColor: Colors.white,
+                      onPressed: _acceptAllOperations,
+                    ),
                     PopupMenuButton(
                       icon: Icon(Icons.more_vert),
                       itemBuilder: (_) => [
@@ -127,7 +145,7 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
                           value: DropdownActions.connectUser,
                         ),
                       ],
-                      onSelected: (value) => _onPopupMenuSelect(context, value, debt.id),
+                      onSelected: (value) => _onPopupMenuSelect(context, value),
                     )
                   ],
                   elevation: 0,

@@ -5,8 +5,8 @@ import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/store/auth.store.dart';
-import 'package:simpledebts/widgets/debt/delete_operation_button.dart';
-import 'package:simpledebts/widgets/debt/operation_confirmation_buttons.dart';
+import 'package:simpledebts/widgets/debt/operations/delete_operation_button.dart';
+import 'package:simpledebts/widgets/debt/operations/operation_confirmation_buttons.dart';
 
 class OperationDetailsDialog extends StatelessWidget {
   final authStore = GetIt.instance<AuthStore>();
@@ -38,7 +38,6 @@ class OperationDetailsDialog extends StatelessWidget {
         ),
         if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor != debt.user.id) OperationConfirmationButtons(
           operationId: operation.id,
-          debtId: debt.id,
           rowSize: MainAxisSize.max,
         )
       ],

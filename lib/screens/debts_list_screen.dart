@@ -3,6 +3,7 @@ import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
+import 'package:simpledebts/services/push_notifications_service.dart';
 import 'package:simpledebts/widgets/add_debt/add_debt_dialog.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_widget.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
@@ -19,6 +20,12 @@ class DebtsListScreen extends StatefulWidget with ScreenWidget {
 class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
   Stream<User> _currentUser$;
 
+  @override
+  void initState() {
+    super.initState();
+    _setupPushNotifications();
+  }
+
   void _logout(BuildContext context) {
     authStore.logout();
   }
@@ -32,6 +39,10 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
       context: context,
       builder: (context) => AddDebtDialog()
     );
+  }
+
+  void _setupPushNotifications() {
+    PushNotificationsService().init();
   }
 
   @override

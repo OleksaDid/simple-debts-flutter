@@ -7,6 +7,7 @@ import 'package:simpledebts/services/debts_service.dart';
 import 'package:simpledebts/services/http_auth_service.dart';
 import 'package:simpledebts/services/http_service.dart';
 import 'package:simpledebts/services/auth_service.dart';
+import 'package:simpledebts/services/navigation_service.dart';
 import 'package:simpledebts/services/operations_service.dart';
 import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
 }
 
 void setupSingletonServices() {
+  GetIt.I.registerSingleton<NavigationService>(NavigationService());
   GetIt.I.registerSingleton<HttpService>(HttpService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   GetIt.I.registerSingleton<AuthStore>(AuthStore());
@@ -81,6 +83,7 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      navigatorKey: GetIt.instance<NavigationService>().navigatorKey,
       home: StartScreen(),
       routes: {
         AuthScreen.routeName: (_) => AuthScreen(),

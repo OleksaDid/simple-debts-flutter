@@ -24,6 +24,7 @@ class DebtListItem extends StatelessWidget {
     if(debt.status == DebtStatus.CHANGE_AWAITING && debt.statusAcceptor != debt.user.id) {
       return Text('NEW OPERATIONS', style: TextStyle(color: Theme.of(context).accentColor),);
     }
+    return SizedBox();
   }
 
   @override

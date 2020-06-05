@@ -85,7 +85,8 @@ class Debt {
 
   bool get hasUnacceptedOperations {
     return moneyOperations != null
-        ? moneyOperations.any((operation) => operation.status == OperationStatus.CREATION_AWAITING)
+        ? moneyOperations.any((operation) => operation.status == OperationStatus.CREATION_AWAITING &&
+          operation.statusAcceptor != user.id)
         : false;
   }
 }

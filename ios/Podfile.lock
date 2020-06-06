@@ -12,6 +12,8 @@ PODS:
     - FBSDKLoginKit/Login (= 5.15.1)
   - FBSDKLoginKit/Login (5.15.1):
     - FBSDKCoreKit (~> 5.0)
+  - Firebase/Analytics (6.23.0):
+    - Firebase/Core
   - Firebase/Core (6.23.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.4.2)
@@ -20,6 +22,10 @@ PODS:
   - Firebase/Messaging (6.23.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 4.3.1)
+  - firebase_analytics (0.0.1):
+    - Firebase/Analytics (~> 6.0)
+    - Firebase/Core
+    - Flutter
   - firebase_crashlytics (0.0.1):
     - Crashlytics
     - Fabric
@@ -135,6 +141,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
@@ -175,6 +182,8 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
+  firebase_analytics:
+    :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   firebase_messaging:
@@ -212,6 +221,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
+  firebase_analytics: c3f1a6c8189b737c4f2c677fec8432c475d08617
   firebase_crashlytics: bd8c58df07f107cb7e1a20cb190b9a468e0a69fd
   firebase_messaging: 21344b3b3a7d9d325d63a70e3750c0c798fe1e03
   FirebaseAnalytics: 558f7a03d19de451093032c806f39d5f9dff096e

@@ -4,7 +4,6 @@ import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
-import 'package:simpledebts/services/operations_service.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 
@@ -22,8 +21,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
     if(deleteOperation == true) {
       showSpinner();
       try {
-        await GetIt.instance<OperationsService>().deleteOperation(operationId);
-        await GetIt.instance<DebtStore>().fetchDebt();
+        await GetIt.instance<DebtStore>().deleteOperation(operationId);
         Navigator.of(context).pop();
         hideSpinner();
       } on Failure catch(error) {

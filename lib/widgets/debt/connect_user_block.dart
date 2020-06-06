@@ -18,7 +18,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
   });
 
   String _getInfoBlockText() {
-    return debt.statusAcceptor != debt.user.id
+    return debt.isUserStatusAcceptor
         ? '${debt.user.name} has invited you to join this record'
         : 'You have requiested ${debt.user.name} to join this record';
   }
@@ -68,7 +68,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
             showBottomButtons: false,
           ),
         ),
-        if(debt.statusAcceptor == debt.user.id) Container(
+        if(!debt.isUserStatusAcceptor) Container(
           width: double.infinity,
           child: DebtScreenBottomButton(
             title: 'CANCEL REQUEST',
@@ -76,7 +76,7 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
             onTap: () => _cancelConnectionRequest(context),
           ),
         ),
-        if(debt.statusAcceptor != debt.user.id) BottomButtonsRow(
+        if(debt.isUserStatusAcceptor) BottomButtonsRow(
           secondaryButton: DebtScreenBottomButton(
             title: 'DECLINE',
             color: Theme.of(context).colorScheme.secondary,

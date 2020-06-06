@@ -1,7 +1,9 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:simpledebts/helpers/env_helper.dart';
+import 'package:simpledebts/services/analytics_service.dart';
 import 'package:simpledebts/services/currency_service.dart';
 import 'package:simpledebts/services/debts_service.dart';
 import 'package:simpledebts/services/http_auth_service.dart';
@@ -27,6 +29,7 @@ Future<void> main() async {
 }
 
 void setupSingletonServices() {
+  GetIt.I.registerSingleton<AnalyticsService>(AnalyticsService());
   GetIt.I.registerSingleton<NavigationService>(NavigationService());
   GetIt.I.registerSingleton<HttpService>(HttpService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
@@ -84,6 +87,11 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       navigatorKey: GetIt.instance<NavigationService>().navigatorKey,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(
+          analytics: GetIt.instance<AnalyticsService>().analytics
+        ),
+      ],
       home: StartScreen(),
       routes: {
         AuthScreen.routeName: (_) => AuthScreen(),

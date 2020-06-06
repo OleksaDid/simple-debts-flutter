@@ -61,7 +61,6 @@ class PushNotificationsService {
 
   Future<void> _sendDeviceToken() async {
     String token = await _firebaseMessaging.getToken();
-    print("FirebaseMessaging token: $token");
     return _usersService.pushDeviceToken(token);
   }
 

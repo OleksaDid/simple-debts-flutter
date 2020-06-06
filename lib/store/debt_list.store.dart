@@ -1,11 +1,12 @@
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:simpledebts/mixins/analytics_use.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/debt_list.dart';
 import 'package:simpledebts/models/debts/debt_list_summary.dart';
 import 'package:simpledebts/services/debts_service.dart';
 
-class DebtListStore {
+class DebtListStore with AnalyticsUse {
   final DebtsService _debtsService = GetIt.instance<DebtsService>();
   final BehaviorSubject<DebtList> _debtList = BehaviorSubject();
 
@@ -34,17 +35,20 @@ class DebtListStore {
       .fetchAndSetDebtList()
       ..then((list) => _debtList.add(list));
 
-  Future<void> deleteDebt(String id) => _debtsService
+  Future<void> deleteDebt(String id) =>  _debtsService
       .deleteDebt(id, getDebt(id).type)
+      ..then((_) => analyticsService.logDebtDelete(getDebt(id)))
       ..then((_) => _removeDebtById(id));
 
   Future<Debt> createMultipleDebt(String userId, String currency) => _debtsService
       .createMultipleDebt(userId, currency)
-      ..then((debt) => _addDebt(debt));
+      ..then((debt) => _addDebt(debt))
+      ..then((_) => analyticsService.logDebtCreate(DebtAccountType.MULTIPLE_USERS, currency));
 
   Future<Debt> createSingleDebt(String userName, String currency) => _debtsService
       .createSingleDebt(userName, currency)
-      ..then((debt) => _addDebt(debt));
+      ..then((debt) => _addDebt(debt))
+      ..then((_) => analyticsService.logDebtCreate(DebtAccountType.SINGLE_USER, currency));
 
 
   void _addDebt(Debt debt) {

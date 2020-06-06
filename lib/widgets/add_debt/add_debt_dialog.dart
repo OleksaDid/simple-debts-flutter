@@ -84,6 +84,7 @@ class _AddDebtDialogState extends State<AddDebtDialog> {
       Navigator.of(context).pushNamed(DebtScreen.routeName, arguments: IdRouteArgument(debt.id));
     } on Failure catch(error) {
       ErrorHelper.showErrorDialog(context, error.message);
+      _setInitialStep();
     }
   }
 

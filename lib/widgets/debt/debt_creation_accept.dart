@@ -48,12 +48,12 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
           child: EmptyListPlaceholder(
             icon: Icons.add,
             title: 'New debt',
-            subtitle: debt.statusAcceptor == debt.user.id
+            subtitle: !debt.isUserStatusAcceptor
                 ? 'You have invited ${debt.user.name} to create debt \n Waiting for response'
                 : '${debt.user.name} invites you to create debt',
           ),
         ),
-        if(debt.statusAcceptor != debt.user.id) BottomButtonsRow(
+        if(debt.isUserStatusAcceptor) BottomButtonsRow(
           primaryButton: DebtScreenBottomButton(
             title: 'ACCEPT',
             color: Theme.of(context).colorScheme.primary,
@@ -65,7 +65,7 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
             onTap: () => _declineCreation(context),
           ),
         ),
-        if(debt.statusAcceptor == debt.user.id) Container(
+        if(!debt.isUserStatusAcceptor) Container(
           width: double.infinity,
           child: DebtScreenBottomButton(
             title: 'CANCEL',

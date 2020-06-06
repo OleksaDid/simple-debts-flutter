@@ -6,17 +6,16 @@ import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/services/operations_service.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class AddOperationFormWidget extends StatefulWidget {
   final Debt debt;
   final String moneyReceiver;
-  final Future<void> Function() onOperationAdded;
 
   AddOperationFormWidget({
     @required this.debt,
     @required this.moneyReceiver,
-    @required this.onOperationAdded
   });
 
   @override
@@ -59,7 +58,7 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
       return 'Should be a valid number';
     }
     if(double.parse(value).isNegative || double.parse(value) == 0) {
-      return 'SHould be a positive number';
+      return 'Should be a positive number';
     }
     return null;
   }
@@ -74,13 +73,11 @@ class _AddOperationFormWidgetState extends State<AddOperationFormWidget> with Sp
     showSpinner();
     try {
       FocusScope.of(context).unfocus();
-      await GetIt.instance<OperationsService>().createOperation(
-          id: widget.debt.id,
+      await GetIt.instance<DebtStore>().addOperation(
           description: _description,
           moneyReceiver: widget.moneyReceiver,
           moneyAmount: double.parse(_moneyAmount)
       );
-      await widget.onOperationAdded();
       Navigator.of(context).pop();
     } on Failure catch(error) {
       ErrorHelper.showErrorDialog(context, error.message);

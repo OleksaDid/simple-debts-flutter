@@ -78,15 +78,34 @@ class Debt {
 
     return titles[moneyReceiveStatus];
   }
+
+  Operation getOperation(String id) {
+    return moneyOperations.firstWhere(
+      (operation) => operation.id == id,
+      orElse: () => null
+    );
+  }
   
   bool get isUserConnectAllowed {
     return type == DebtAccountType.SINGLE_USER && status != DebtStatus.CONNECT_USER && status != DebtStatus.USER_DELETED;
   }
 
-  bool get hasUnacceptedOperations {
+  int get unacceptedOperationsAmount {
     return moneyOperations != null
-        ? moneyOperations.any((operation) => operation.status == OperationStatus.CREATION_AWAITING &&
-          operation.statusAcceptor != user.id)
-        : false;
+        ? moneyOperations
+            .fold(0, (amount, operation) {
+              final isUnaccepted = operation.status == OperationStatus.CREATION_AWAITING &&
+                  operation.statusAcceptor != user.id;
+              return amount += isUnaccepted ? 1 : 0;
+            })
+        : 0;
+  }
+
+  bool get hasUnacceptedOperations {
+    return unacceptedOperationsAmount > 0;
+  }
+
+  bool get isUserStatusAcceptor {
+    return statusAcceptor != user.id;
   }
 }

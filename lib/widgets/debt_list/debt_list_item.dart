@@ -14,14 +14,14 @@ class DebtListItem extends StatelessWidget {
 
   Widget _buildTrailing(BuildContext context) {
     if(debt.status == DebtStatus.CREATION_AWAITING || debt.status == DebtStatus.CONNECT_USER) {
-      return debt.statusAcceptor == debt.user.id
-          ? Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor))
-          : Text('NEW', style: TextStyle(color: Theme.of(context).accentColor));
+      return debt.isUserStatusAcceptor
+          ? Text('NEW', style: TextStyle(color: Theme.of(context).accentColor))
+          : Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor));
     }
     if(debt.status == DebtStatus.USER_DELETED) {
       return Text('USER LEFT', style: TextStyle(color: Theme.of(context).errorColor),);
     }
-    if(debt.status == DebtStatus.CHANGE_AWAITING && debt.statusAcceptor != debt.user.id) {
+    if(debt.status == DebtStatus.CHANGE_AWAITING && debt.isUserStatusAcceptor) {
       return Text('NEW OPERATIONS', style: TextStyle(color: Theme.of(context).accentColor),);
     }
     return SizedBox();

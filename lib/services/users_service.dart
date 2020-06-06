@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
+import 'package:simpledebts/mixins/analytics_use.dart';
 import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/user/user.dart';
 
-class UsersService with HttpAuthServiceUse {
+class UsersService with HttpAuthServiceUse, AnalyticsUse {
 
   Future<User> updateUserData(String name, File image) async {
     try {
@@ -14,8 +15,9 @@ class UsersService with HttpAuthServiceUse {
       final Map<String, dynamic> formDataMap = {
         'name': name
       };
+      final bool hasImage = image != null;
 
-      if(image != null) {
+      if(hasImage) {
         final extension = image.path.split('.').last;
         formDataMap.addAll({
           'image': await MultipartFile.fromFile(image.path, contentType: MediaType('image', extension))
@@ -24,6 +26,7 @@ class UsersService with HttpAuthServiceUse {
 
       final formData = FormData.fromMap(formDataMap);
       final response = await http.post(url, data: formData);
+      analyticsService.logProfileUpdate(hasImage);
 
       return User.fromJson(response.data);
     } on DioError catch(error) {
@@ -52,7 +55,6 @@ class UsersService with HttpAuthServiceUse {
     }
   }
 
-  // TODO: push notifications
   Future<void> pushDeviceToken(String token) async {
     try {
       final url = '/users/push_tokens';

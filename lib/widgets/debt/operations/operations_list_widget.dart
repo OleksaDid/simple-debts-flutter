@@ -81,7 +81,6 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
       builder: (context) => AddOperationDialog(
         debt: debt,
         moneyReceiver: moneyReceiver,
-        onOperationAdded: () => _fetchOperations(forceRefresh: true),
       )
     );
   }

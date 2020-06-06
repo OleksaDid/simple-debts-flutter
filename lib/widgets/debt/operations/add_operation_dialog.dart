@@ -6,12 +6,10 @@ import 'package:simpledebts/widgets/debt/operations/add_operation_form_widget.da
 class AddOperationDialog extends StatelessWidget {
   final Debt debt;
   final String moneyReceiver;
-  final Future<void> Function() onOperationAdded;
 
   AddOperationDialog({
     @required this.debt,
     @required this.moneyReceiver,
-    @required this.onOperationAdded,
   });
 
   @override
@@ -20,7 +18,6 @@ class AddOperationDialog extends StatelessWidget {
       child: AddOperationFormWidget(
         debt: debt,
         moneyReceiver: moneyReceiver,
-        onOperationAdded: onOperationAdded,
       ),
     );
   }

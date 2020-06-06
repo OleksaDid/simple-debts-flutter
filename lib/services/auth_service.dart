@@ -5,19 +5,23 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/helpers/shared_preferences_helper.dart';
+import 'package:simpledebts/mixins/analytics_use.dart';
 import 'package:simpledebts/mixins/http_service_use.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
 import 'package:simpledebts/models/auth/auth_form.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
+import 'package:simpledebts/services/analytics_service.dart';
 
-class AuthService with HttpServiceUse {
+class AuthService with HttpServiceUse, AnalyticsUse {
 
   Future<AuthData> login(AuthForm authForm) {
-    return _authenticate('/login/local', authForm);
+    return _authenticate('/login/local', authForm)
+      ..then((_) => analyticsService.logLogin());
   }
   
   Future<AuthData> signUp(AuthForm authForm) {
-    return _authenticate('/sign_up/local', authForm);
+    return _authenticate('/sign_up/local', authForm)
+      ..then((_) => analyticsService.logSignUp(SignUpMethod.email));
   }
 
   Future<AuthData> facebookLogin() async {
@@ -32,6 +36,7 @@ class AuthService with HttpServiceUse {
               HttpHeaders.authorizationHeader: 'Bearer ' + loginResult.accessToken.token
             }
           ));
+          analyticsService.logSignUp(SignUpMethod.facebook);
           return AuthData.fromJson(response.data);
         } on DioError catch(error) {
           throw ErrorHelper.handleDioError(error);
@@ -57,20 +62,25 @@ class AuthService with HttpServiceUse {
           try {
             return refreshToken(authData);
           } on DioError catch(error) {
+            analyticsService.logAutoLoginFailed();
             ErrorHelper.handleDioError(error);
             return null;
           } catch(error) {
+            analyticsService.logAutoLoginFailed();
             ErrorHelper.logError(error);
             return null;
           }
         }
       } else {
+        analyticsService.logAutoLoginFailed();
         return null;
       }
     } on DioError catch(error) {
+      analyticsService.logAutoLoginFailed();
       ErrorHelper.handleDioError(error);
       return null;
     } catch(error) {
+      analyticsService.logAutoLoginFailed();
       ErrorHelper.logError(error);
       return null;
     }
@@ -86,13 +96,16 @@ class AuthService with HttpServiceUse {
             }
         ));
         print('token updated');
+        analyticsService.logTokenRefresh();
         return AuthData.fromJson(response.data);
       }
       return null;
     } on DioError catch(error) {
       ErrorHelper.handleDioError(error);
+      analyticsService.logTokenRefreshError();
       return null;
     } catch(error) {
+      analyticsService.logTokenRefreshError();
       ErrorHelper.logError(error);
       return null;
     }
@@ -106,7 +119,7 @@ class AuthService with HttpServiceUse {
       );
       final authData = AuthData.fromJson(response.data);
       Crashlytics.instance.setUserIdentifier(authData.user.id);
-      Crashlytics.instance.setUserName(authData.user.name);
+      analyticsService.setUserId(authData.user.id);
       return authData;
     } on DioError catch(error) {
       throw ErrorHelper.handleDioError(error);

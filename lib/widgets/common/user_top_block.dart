@@ -25,7 +25,7 @@ class UserTopBlock extends StatelessWidget {
           onTap: onImageTap,
           child: HeroImageCircle(
             diameter: 120,
-            imageUrl: imageUrl,
+            image: NetworkImage(imageUrl),
             tag: imageTag,
           )
         ),

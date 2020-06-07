@@ -90,20 +90,21 @@ class _UserDataFormWidgetState extends State<UserDataFormWidget> with SpinnerSto
       child: Column(
         children: [
           UserImageInput(
+            imageTag: _authStore.currentUser.id,
             onPickImage: _setImage,
             defaultImageUrl: _authStore.currentUser.picture,
           ),
           SizedBox(height: 15,),
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'name',
+              hintText: 'type your name',
             ),
             validator: _nameValidator,
             initialValue: _defaultName,
             textAlign: TextAlign.center,
             onSaved: (value) => _name = value.trim(),
           ),
-          SizedBox(height: 15,),
+          SizedBox(height: 35,),
           spinnerContainer(
             spinner: ButtonSpinner(),
             replacement: FlatButton(

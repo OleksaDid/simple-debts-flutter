@@ -71,10 +71,10 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
           StreamBuilder<User>(
             stream: _currentUser$,
             builder: (context, snapshot) {
-              if(snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+              final user = snapshot.data ?? authStore.currentUser;
+              if(user == null) {
                 return SizedBox();
               }
-              final user = snapshot.data;
               return TopBlock(
                 child: UserTopBlock(
                   imageUrl: user.picture,

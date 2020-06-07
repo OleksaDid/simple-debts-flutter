@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class HeroImageCircle extends StatelessWidget {
-  final String imageUrl;
+  final ImageProvider image;
   final String tag;
   final double diameter;
 
 
   HeroImageCircle({
-    @required this.imageUrl,
+    @required this.image,
     @required this.diameter,
     @required this.tag,
   });
@@ -28,13 +28,9 @@ class HeroImageCircle extends StatelessWidget {
         return hero.child;
       },
       child: CircleAvatar(
+        radius: diameter / 2,
+        backgroundImage: image,
         backgroundColor: Colors.white,
-        radius: (diameter + 6) / 2,
-        child: CircleAvatar(
-          radius: diameter / 2,
-          backgroundImage: NetworkImage(imageUrl),
-          backgroundColor: Colors.white,
-        ),
       )
     );
   }

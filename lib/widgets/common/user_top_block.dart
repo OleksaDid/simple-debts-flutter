@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:simpledebts/widgets/common/hero_image_circle.dart';
 import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 
 class UserTopBlock extends StatelessWidget {
   final String imageUrl;
   final String title;
   final double fontSize;
+  final String imageTag;
   final void Function() onImageTap;
 
   UserTopBlock({
     @required this.imageUrl,
     @required this.title,
+    @required this.imageTag,
     this.fontSize = 24,
     this.onImageTap,
   });
@@ -20,17 +23,10 @@ class UserTopBlock extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: onImageTap,
-          child: Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(width: 3, color: Colors.white),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: ImageLazyLoad(NetworkImage(imageUrl))
-            )
+          child: HeroImageCircle(
+            diameter: 120,
+            imageUrl: imageUrl,
+            tag: imageTag,
           )
         ),
         SizedBox(height: 14,),

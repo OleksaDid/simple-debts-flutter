@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
+import 'package:simpledebts/widgets/common/hero_image_circle.dart';
 
 class DebtListItem extends StatelessWidget {
   final Debt debt;
@@ -36,9 +37,10 @@ class DebtListItem extends StatelessWidget {
             horizontal: 20,
             vertical: 10
         ),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(debt.user.picture),
-          radius: 28,
+        leading: HeroImageCircle(
+          diameter: 56,
+          imageUrl: debt.user.picture,
+          tag: debt.user.id,
         ),
         title: Text(
           debt.user.name,

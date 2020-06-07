@@ -78,6 +78,7 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
               return TopBlock(
                 child: UserTopBlock(
                   imageUrl: user.picture,
+                  imageTag: user.id,
                   title: user.name,
                   onImageTap: () => _navigateToProfile(context),
                   fontSize: 34,

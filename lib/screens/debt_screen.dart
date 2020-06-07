@@ -119,46 +119,37 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
     return StreamBuilder(
       stream: _debt$,
       builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          final Debt debt = snapshot.data;
-          return Scaffold(
-              appBar: AppBar(
-                  actions: [
-                    if(debt.hasUnacceptedOperations) FlatButton(
-                      child: Text('ACCEPT ALL'),
-                      textColor: Colors.white,
-                      onPressed: _acceptAllOperations,
-                    ),
-                    PopupMenuButton(
-                      icon: Icon(Icons.more_vert),
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          child: Text('Delete debt'),
-                          value: DropdownActions.deleteDebt,
-                        ),
-                        if(debt.isUserConnectAllowed) PopupMenuItem(
-                          child: Text('Connect registered user'),
-                          value: DropdownActions.connectUser,
-                        ),
-                      ],
-                      onSelected: (value) => _onPopupMenuSelect(context, value),
-                    )
-                  ],
-                  elevation: 0,
-                  backgroundColor: _getHeaderColor(debt)
-              ),
-              body: Visibility(
-                visible: debt != null,
-                child: DebtScreenBody(
-                  debt: debt,
-                ),
-              )
-          );
-        }
+        final Debt debt = snapshot.data ?? _debtStore.debt;
+        return Scaffold(
+            appBar: AppBar(
+                actions: [
+                  if(debt.hasUnacceptedOperations) FlatButton(
+                    child: Text('ACCEPT ALL'),
+                    textColor: Colors.white,
+                    onPressed: _acceptAllOperations,
+                  ),
+                  PopupMenuButton(
+                    icon: Icon(Icons.more_vert),
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        child: Text('Delete debt'),
+                        value: DropdownActions.deleteDebt,
+                      ),
+                      if(debt.isUserConnectAllowed) PopupMenuItem(
+                        child: Text('Connect registered user'),
+                        value: DropdownActions.connectUser,
+                      ),
+                    ],
+                    onSelected: (value) => _onPopupMenuSelect(context, value),
+                  )
+                ],
+                elevation: 0,
+                backgroundColor: _getHeaderColor(debt)
+            ),
+            body: DebtScreenBody(
+              debt: debt,
+            )
+        );
       },
     );
   }

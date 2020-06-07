@@ -71,19 +71,19 @@ class MyApp extends StatelessWidget {
           secondaryVariant: const Color.fromRGBO(253, 196, 200, 1),
         ),
         fontFamily: 'Roboto',
-        textTheme: Theme.of(context).textTheme
+        textTheme: Theme.of(context)
+            .textTheme
             .copyWith(
-          headline1: const TextStyle(fontFamily: 'Montserrat'),
-          headline2: const TextStyle(fontFamily: 'Montserrat'),
-          headline3: const TextStyle(fontFamily: 'Montserrat'),
-          headline4: const TextStyle(fontFamily: 'Montserrat'),
-          headline5: const TextStyle(fontFamily: 'Montserrat'),
-          headline6: const TextStyle(fontFamily: 'Montserrat'),
-        )
-            .apply(
-            bodyColor: const Color.fromRGBO(71, 82, 94, 1),
-            displayColor: const Color.fromRGBO(71, 82, 94, 1)
-        ),
+              headline1: const TextStyle(fontFamily: 'Montserrat'),
+              headline2: const TextStyle(fontFamily: 'Montserrat'),
+              headline3: const TextStyle(fontFamily: 'Montserrat'),
+              headline4: const TextStyle(fontFamily: 'Montserrat'),
+              headline5: const TextStyle(fontFamily: 'Montserrat'),
+              headline6: const TextStyle(fontFamily: 'Montserrat'),
+            ).apply(
+                bodyColor: const Color.fromRGBO(71, 82, 94, 1),
+                displayColor: const Color.fromRGBO(71, 82, 94, 1)
+            ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       navigatorKey: GetIt.instance<NavigationService>().navigatorKey,

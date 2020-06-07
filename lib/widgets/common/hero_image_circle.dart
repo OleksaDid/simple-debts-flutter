@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 
 class HeroImageCircle extends StatelessWidget {
   final String imageUrl;
@@ -18,6 +17,16 @@ class HeroImageCircle extends StatelessWidget {
     return Hero(
       tag: tag,
       transitionOnUserGestures: true,
+      flightShuttleBuilder: (
+          BuildContext flightContext,
+          Animation<double> animation,
+          HeroFlightDirection flightDirection,
+          BuildContext fromHeroContext,
+          BuildContext toHeroContext,
+          ) {
+        final Hero hero = flightDirection == HeroFlightDirection.push ? toHeroContext.widget : fromHeroContext.widget;
+        return hero.child;
+      },
       child: CircleAvatar(
         backgroundColor: Colors.white,
         radius: (diameter + 6) / 2,

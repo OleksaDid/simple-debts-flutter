@@ -55,19 +55,9 @@ class ErrorHelper {
     showDialog(
       context: context,
       builder: (context) => DialogHelper.getThemedAlertDialog(
-        title: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.error_outline,
-              color: Theme.of(context).errorColor,
-              size: 40,
-            ),
-            SizedBox(height: 10,),
-            Text(error),
-          ],
-        ),
+        title: Text(error),
+        icon: Icons.error_outline,
+        iconColor: Theme.of(context).errorColor,
         actions: [
           FlatButton(
             textColor: Theme.of(context).errorColor,

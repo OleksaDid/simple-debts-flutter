@@ -51,7 +51,7 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
 
   Future<void> _deleteDebt() async {
     final bool deleteDebt = await DialogHelper.showDeleteDialog(context, 'Delete this debt?');
-    if(deleteDebt) {
+    if(deleteDebt == true) {
       widget.showSpinnerModal(context);
       try {
         await _debtListStore.deleteDebt(debt.id);

@@ -67,13 +67,17 @@ class _UserImageInputState extends State<UserImageInput> {
       context: context,
       builder: (context) => DialogHelper.getThemedAlertDialog(
         title: Text('Select image source'),
+        icon: Icons.image,
+        iconColor: Theme.of(context).primaryColor,
         actions: [
           FlatButton(
-            child: Text('Gallery'),
+            child: Text('GALLERY'),
+            textColor: Theme.of(context).primaryColor,
             onPressed: () => Navigator.of(context).pop(ImageSource.gallery),
           ),
           FlatButton(
-            child: Text('Camera'),
+            child: Text('CAMERA'),
+            textColor: Theme.of(context).primaryColor,
             onPressed: () => Navigator.of(context).pop(ImageSource.camera),
           )
         ],

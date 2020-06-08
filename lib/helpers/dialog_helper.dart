@@ -38,15 +38,29 @@ class DialogHelper {
     EdgeInsets insetPadding,
     Clip clipBehavior = Clip.none,
     Widget title,
-    List<Widget> actions
+    List<Widget> actions,
+    IconData icon,
+    Color iconColor
   }) => AlertDialog(
     key: key,
     backgroundColor: backgroundColor,
     insetPadding: insetPadding,
     clipBehavior: clipBehavior,
-    title: Container(
-      width: 270,
-      child: title
+    title: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if(icon != null) Icon(
+          icon,
+          size: 40,
+          color: iconColor,
+        ),
+        if(icon != null) SizedBox(height: 10,),
+        Container(
+          width: 270,
+          child: title
+        ),
+      ],
     ),
     actions: actions,
     shape: RoundedRectangleBorder(
@@ -58,6 +72,8 @@ class DialogHelper {
     return showDialog<bool>(
         context: context,
         builder: (context) => getThemedAlertDialog(
+          icon: Icons.error_outline,
+          iconColor: Theme.of(context).accentColor,
           title: Text(title),
           actions: [
             FlatButton(

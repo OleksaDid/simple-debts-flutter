@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
-import 'package:simpledebts/models/common/push_notification/push_notification.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/services/navigation_service.dart';

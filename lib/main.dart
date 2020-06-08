@@ -62,8 +62,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Simple Debts',
       theme: ThemeData(
-        primaryColor: Colors.redAccent,
+        primaryColor: Colors.orangeAccent,
         accentColor: Colors.orangeAccent,
+        primaryColorBrightness: Brightness.dark,
+        accentColorBrightness: Brightness.dark,
         colorScheme: const ColorScheme.light(
           primary: const Color.fromRGBO(88, 210, 125, 1),
           primaryVariant: const Color.fromRGBO(199, 239, 209, 1),

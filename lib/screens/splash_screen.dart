@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/icon.png'),
+              Image.asset('assets/images/icon_transparent.png'),
               SizedBox(height: 100,),
               Text(
                 'Simple Debts',

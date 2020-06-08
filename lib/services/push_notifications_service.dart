@@ -43,7 +43,6 @@ class PushNotificationsService {
 
   static Future<void> _handleMessage(Map<String, dynamic> message) async {
     print('M: ${message.toString()}');
-    _basicNotificationHandle(message);
   }
 
   static Future<void> _handleBkgMessage(Map<String, dynamic> message) async {

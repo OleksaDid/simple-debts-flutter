@@ -45,6 +45,7 @@ class DebtListItem extends StatelessWidget {
         title: Text(
           debt.user.name,
           style: Theme.of(context).textTheme.headline6,
+          overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
           '${debt.currency} ${debt.summary.toStringAsFixed(0)}',

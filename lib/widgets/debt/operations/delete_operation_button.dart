@@ -35,7 +35,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 8.0),
-      alignment: Alignment.center,
+      alignment: Alignment.centerRight,
       child: spinnerContainer(
         spinner: ButtonSpinner(),
         replacement: FlatButton(

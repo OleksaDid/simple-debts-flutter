@@ -31,67 +31,69 @@ class UsersSearch extends StatelessWidget with SpinnerStoreUse {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: 360,
-      ),
-      child: Column(
-        children: [
-          SizedBox(height: 20,),
-          DebounceInput(
-            inputDecoration: InputDecoration(
-              hintText: 'type user name',
+    return SingleChildScrollView(
+      child: Container(
+        constraints: BoxConstraints(
+          maxHeight: 240,
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: 20,),
+            DebounceInput(
+              inputDecoration: InputDecoration(
+                hintText: 'type user name',
+              ),
+              onInputChange: (name) => _getUsersList(context, name),
             ),
-            onInputChange: (name) => _getUsersList(context, name),
-          ),
-          SizedBox(height: 10,),
-          Expanded(
-            child: Stack(
-              children: [
-                StreamBuilder<List<User>>(
-                  stream: _usersStore.users$,
-                  builder: (context, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      final users = snapshot.data;
+            SizedBox(height: 10,),
+            Expanded(
+              child: Stack(
+                children: [
+                  StreamBuilder<List<User>>(
+                    stream: _usersStore.users$,
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        final users = snapshot.data;
 
-                      return ListView.builder(
-                        itemCount: users.length,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () => onSelectUser(users[index]),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(users[index].picture),
+                        return ListView.builder(
+                          itemCount: users.length,
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () => onSelectUser(users[index]),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(users[index].picture),
+                              ),
+                              title: Text(users[index].name),
                             ),
-                            title: Text(users[index].name),
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-                spinnerContainer(
-                  spinner: Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    color: Colors.white54,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                        );
+                      }
+                    },
+                  ),
+                  spinnerContainer(
+                    spinner: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.white54,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
                   )
-                )
-              ],
+                ],
+              ),
             ),
-          ),
-          FlatButton(
-            child: Text('BACK'),
-            onPressed: onCancel,
-            textColor: Theme.of(context).primaryColor,
-          )
-        ],
+            FlatButton(
+              child: Text('BACK'),
+              onPressed: onCancel,
+              textColor: Theme.of(context).primaryColor,
+            )
+          ],
+        ),
       ),
     );
   }

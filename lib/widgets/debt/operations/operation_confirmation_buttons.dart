@@ -9,30 +9,38 @@ import 'package:simpledebts/widgets/common/button_spinner.dart';
 class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse {
   final String operationId;
   final MainAxisSize rowSize;
+  final void Function(BuildContext context) onConfirm;
 
   OperationConfirmationButtons({
     @required this.operationId,
     this.rowSize = MainAxisSize.min,
+    this.onConfirm
   });
 
   Future<void> _acceptOperation(BuildContext context) async {
     showSpinner();
     try {
       await GetIt.instance<DebtStore>().acceptOperation(operationId);
+      if(onConfirm != null) {
+        onConfirm(context);
+      }
     } on Failure catch(error) {
+      hideSpinner();
       ErrorHelper.showErrorDialog(context, error.message);
     }
-    hideSpinner();
   }
 
   Future<void> _declineOperation(BuildContext context) async {
     showSpinner();
     try {
       await GetIt.instance<DebtStore>().declineOperation(operationId);
+      if(onConfirm != null) {
+        onConfirm(context);
+      }
     } on Failure catch(error) {
+      hideSpinner();
       ErrorHelper.showErrorDialog(context, error.message);
     }
-    hideSpinner();
   }
 
   @override
@@ -42,6 +50,7 @@ class OperationConfirmationButtons extends StatelessWidget with SpinnerStoreUse 
         spinner: Container(
           width: 40,
           height: 48,
+          alignment: Alignment.centerRight,
           child: ButtonSpinner(radius: 20,)
         ),
         replacement: Row(

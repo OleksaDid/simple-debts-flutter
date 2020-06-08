@@ -21,9 +21,7 @@ class OperationDetailsDialog extends StatelessWidget {
   Widget _buildBottomBlock(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 10,),
-        Divider(),
-        SizedBox(height: 10,),
+        SizedBox(height: 20,),
         if(operation.status == OperationStatus.CANCELLED) Text(
           'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
           style: TextStyle(
@@ -36,9 +34,13 @@ class OperationDetailsDialog extends StatelessWidget {
               color: Theme.of(context).accentColor
           ),
         ),
-        if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor != debt.user.id) OperationConfirmationButtons(
-          operationId: operation.id,
-          rowSize: MainAxisSize.max,
+        if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor != debt.user.id) Container(
+          alignment: Alignment.centerRight,
+          child: OperationConfirmationButtons(
+            operationId: operation.id,
+            rowSize: MainAxisSize.max,
+            onConfirm: (context) => Navigator.of(context).pop(),
+          ),
         )
       ],
     );
@@ -60,7 +62,7 @@ class OperationDetailsDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
                 backgroundImage: NetworkImage(authStore.currentUser.picture),
@@ -82,7 +84,7 @@ class OperationDetailsDialog extends StatelessWidget {
           SizedBox(height: 10,),
           Container(
             width: double.infinity,
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             child: Text(
               '${debt.currency} ${operation.moneyAmount.toStringAsFixed(2)}',
               textAlign: TextAlign.center,
@@ -93,9 +95,7 @@ class OperationDetailsDialog extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10,),
-          Divider(),
-          SizedBox(height: 10,),
+          SizedBox(height: 20,),
           Text(operation.description, style: TextStyle(fontSize: 18),),
           Text(formattedDate, textAlign: TextAlign.start,),
           if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context),

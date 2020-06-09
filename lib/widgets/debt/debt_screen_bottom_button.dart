@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DebtScreenBottomButton extends StatelessWidget {
@@ -13,19 +14,26 @@ class DebtScreenBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      padding: const EdgeInsets.all(14),
-      child: Text(
-        title,
-        style: TextStyle(
-            fontSize: 18,
-            color: Colors.white
+    return Container(
+      child: RaisedButton(
+        highlightColor: Colors.white10,
+        highlightElevation: 0,
+        shape: ContinuousRectangleBorder(),
+        padding: const EdgeInsets.all(20),
+        child: SafeArea(
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: 18,
+                color: color
+            ),
+          ),
         ),
+        elevation: 0,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        onPressed: onTap,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      elevation: 0,
-      color: color,
-      onPressed: onTap,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

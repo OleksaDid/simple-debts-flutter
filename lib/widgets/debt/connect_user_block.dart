@@ -68,9 +68,8 @@ class ConnectUserBlock extends StatelessWidget with SpinnerModal {
             showBottomButtons: false,
           ),
         ),
-        if(!debt.isUserStatusAcceptor) Container(
-          width: double.infinity,
-          child: DebtScreenBottomButton(
+        if(!debt.isUserStatusAcceptor) BottomButtonsRow(
+          secondaryButton: DebtScreenBottomButton(
             title: 'CANCEL REQUEST',
             color: Theme.of(context).colorScheme.secondary,
             onTap: () => _cancelConnectionRequest(context),

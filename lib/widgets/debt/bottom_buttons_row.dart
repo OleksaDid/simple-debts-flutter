@@ -6,22 +6,24 @@ class BottomButtonsRow extends StatelessWidget {
   final DebtScreenBottomButton secondaryButton;
 
   BottomButtonsRow({
-    @required this.primaryButton,
-    @required this.secondaryButton
+    this.primaryButton,
+    this.secondaryButton
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Expanded(
-          child: secondaryButton,
-        ),
-        Expanded(
-          child: primaryButton,
-        ),
-      ],
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          if(secondaryButton != null) Expanded(
+            child: secondaryButton,
+          ),
+          if(primaryButton != null) Expanded(
+            child: primaryButton,
+          ),
+        ],
+      ),
     );
   }
 

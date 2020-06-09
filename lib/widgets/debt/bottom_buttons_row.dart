@@ -12,18 +12,23 @@ class BottomButtonsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          if(secondaryButton != null) Expanded(
-            child: secondaryButton,
-          ),
-          if(primaryButton != null) Expanded(
-            child: primaryButton,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Divider(
+          height: 1,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            if(secondaryButton != null) Expanded(
+              child: secondaryButton,
+            ),
+            if(primaryButton != null) Expanded(
+              child: primaryButton,
+            ),
+          ],
+        ),
+      ],
     );
   }
 

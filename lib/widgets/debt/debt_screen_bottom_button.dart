@@ -14,26 +14,24 @@ class DebtScreenBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        highlightColor: Colors.white10,
-        highlightElevation: 0,
-        shape: ContinuousRectangleBorder(),
-        padding: const EdgeInsets.all(20),
-        child: SafeArea(
-          child: Text(
-            title,
-            style: TextStyle(
-                fontSize: 18,
-                color: color
-            ),
+    return RaisedButton(
+      highlightColor: Colors.white10,
+      highlightElevation: 0,
+      shape: ContinuousRectangleBorder(),
+      padding: const EdgeInsets.all(24),
+      child: SafeArea(
+        child: Text(
+          title,
+          style: TextStyle(
+              fontSize: 18,
+              color: color
           ),
         ),
-        elevation: 0,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        onPressed: onTap,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
+      elevation: 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      onPressed: onTap,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

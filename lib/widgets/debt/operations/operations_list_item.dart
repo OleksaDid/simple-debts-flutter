@@ -73,7 +73,9 @@ class OperationsListItem extends StatelessWidget {
             ),
             subtitle: Text(
               operation.description,
-              overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.fade,
+              maxLines: 1,
+              softWrap: false,
             ),
             trailing: _buildTrailingBlock(context),
           ),

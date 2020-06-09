@@ -18,7 +18,7 @@ class DebtScreenBottomButton extends StatelessWidget {
       highlightColor: Colors.white10,
       highlightElevation: 0,
       shape: ContinuousRectangleBorder(),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       child: SafeArea(
         child: Text(
           title,

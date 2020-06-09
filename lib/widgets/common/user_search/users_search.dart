@@ -66,6 +66,7 @@ class UsersSearch extends StatelessWidget with SpinnerStoreUse {
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(users[index].picture),
+                                backgroundColor: Colors.white
                               ),
                               title: Text(users[index].name),
                             ),

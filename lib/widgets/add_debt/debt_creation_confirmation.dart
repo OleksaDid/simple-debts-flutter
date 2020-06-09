@@ -72,10 +72,12 @@ class _DebtCreationConfirmationState extends State<DebtCreationConfirmation> {
             children: [
               FlatButton(
                 child: Text('NO'),
+                textColor: Theme.of(context).primaryColor,
                 onPressed: widget.onCancel,
               ),
               FlatButton(
                 child: Text('YES'),
+                textColor: Theme.of(context).primaryColor,
                 onPressed: _submit,
               ),
             ],

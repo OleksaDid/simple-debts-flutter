@@ -44,7 +44,7 @@ class OperationsListItem extends StatelessWidget {
       }
     }
     if(operation.status == OperationStatus.CANCELLED) {
-      return Text('CANCELED', style: TextStyle(color: Theme.of(context).errorColor),);
+      return Text('CANCELED', style: TextStyle(color: Theme.of(context).colorScheme.secondary),);
     }
     return null;
   }

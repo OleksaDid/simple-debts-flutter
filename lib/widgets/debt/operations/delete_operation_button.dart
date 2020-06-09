@@ -40,7 +40,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
         spinner: ButtonSpinner(),
         replacement: FlatButton(
           child: Text('DELETE'),
-          textColor: Theme.of(context).errorColor,
+          textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => _deleteOperation(context),
         )
       ),

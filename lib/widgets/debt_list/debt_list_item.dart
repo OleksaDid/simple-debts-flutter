@@ -20,7 +20,7 @@ class DebtListItem extends StatelessWidget {
           : Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor));
     }
     if(debt.status == DebtStatus.USER_DELETED) {
-      return Text('USER LEFT', style: TextStyle(color: Theme.of(context).errorColor),);
+      return Text('USER LEFT', style: TextStyle(color: Theme.of(context).colorScheme.secondary),);
     }
     if(debt.status == DebtStatus.CHANGE_AWAITING && debt.isUserStatusAcceptor) {
       return Text('NEW OPERATIONS', style: TextStyle(color: Theme.of(context).accentColor),);

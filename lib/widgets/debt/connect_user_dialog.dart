@@ -72,6 +72,7 @@ class _ConnectUserDialogState extends State<ConnectUserDialog> with SpinnerStore
                 CircleAvatar(
                   radius: 38,
                   backgroundImage: NetworkImage(_selectedUser.picture),
+                  backgroundColor: Colors.white
                 ),
                 SizedBox(height: 4,),
                 Text(

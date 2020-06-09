@@ -25,7 +25,7 @@ class OperationDetailsDialog extends StatelessWidget {
         if(operation.status == OperationStatus.CANCELLED) Text(
           'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
           style: TextStyle(
-              color: Theme.of(context).errorColor
+              color: Theme.of(context).colorScheme.secondary
           ),
         ),
         if(operation.status == OperationStatus.CREATION_AWAITING && operation.statusAcceptor == debt.user.id) Text(
@@ -62,11 +62,12 @@ class OperationDetailsDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CircleAvatar(
                 backgroundImage: NetworkImage(authStore.currentUser.picture),
                 radius: 28,
+                backgroundColor: Colors.white,
               ),
               SizedBox(width: 20,),
               Icon(
@@ -78,18 +79,19 @@ class OperationDetailsDialog extends StatelessWidget {
               CircleAvatar(
                 backgroundImage: NetworkImage(debt.user.picture),
                 radius: 28,
+                backgroundColor: Colors.white,
               )
             ],
           ),
           SizedBox(height: 10,),
           Container(
             width: double.infinity,
-            alignment: Alignment.centerLeft,
+            alignment: youGiveMoney ? Alignment.centerLeft : Alignment.centerRight,
             child: Text(
               '${debt.currency} ${operation.moneyAmount.toStringAsFixed(2)}',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: operationColor
               ),

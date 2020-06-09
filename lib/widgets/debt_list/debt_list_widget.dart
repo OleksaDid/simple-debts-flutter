@@ -24,7 +24,7 @@ class _DebtListWidgetState extends State<DebtListWidget> {
   Future<void> _refreshDebtsList() async {
     try {
       await _currencyStore.fetchCurrencies();
-      return _debtListStore.fetchAndSetDebtList();
+      await _debtListStore.fetchAndSetDebtList();
     } on Failure catch(error) {
       ErrorHelper.showErrorSnackBar(context, error.message);
     }
@@ -55,14 +55,20 @@ class _DebtListWidgetState extends State<DebtListWidget> {
           final debts = snapshot.data;
 
           if(debts.length == 0) {
-            return EmptyListPlaceholder(
-              icon: Icons.assistant,
-              title: 'There are no items yet',
-              subtitle: 'press \'+\' to add the first debt',
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                EmptyListPlaceholder(
+                  icon: Icons.assistant,
+                  title: 'There are no items yet',
+                  subtitle: 'press \'+\' to add the first debt',
+                  onRefresh: _refreshDebtsList,
+                ),
+              ],
             );
           } else {
             return RefreshIndicator(
-              onRefresh: () => _refreshDebtsList(),
+              onRefresh: _refreshDebtsList,
               child: ListView.builder(
                   itemCount: debts.length,
                   itemBuilder: (context, index) => DebtListItem(debts[index])

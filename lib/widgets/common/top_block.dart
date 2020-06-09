@@ -26,7 +26,7 @@ class TopBlock extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 220,
+          height: 224,
           padding: const EdgeInsets.symmetric(
             horizontal: 40
           ),

@@ -45,10 +45,16 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
       );
     }
     return widget.operations.length == 0
-        ? EmptyListPlaceholder(
-          icon: Icons.account_balance_wallet,
-          title: 'No operations yet',
-          subtitle: 'Press one of the buttons below to add one',
+        ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            EmptyListPlaceholder(
+              icon: Icons.account_balance_wallet,
+              title: 'No operations yet',
+              subtitle: 'Press one of the buttons below to add one',
+              onRefresh: () => _fetchOperations(forceRefresh: true),
+            ),
+          ],
         )
         : RefreshIndicator(
           onRefresh: () => _fetchOperations(forceRefresh: true),
@@ -68,7 +74,6 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
         return GetIt.instance<DebtStore>().fetchDebt();
       } on Failure catch(error) {
         ErrorHelper.showErrorSnackBar(context, error.message);
-        throw error;
       }
     } else {
       return widget.debt;

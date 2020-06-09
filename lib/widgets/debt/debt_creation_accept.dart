@@ -39,18 +39,32 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
     }
   }
 
+  Future<void> _refreshDebt(BuildContext context) async {
+    try {
+      await _debtStore.fetchDebt();
+    } on Failure catch(error) {
+      ErrorHelper.showErrorSnackBar(context, error.message);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          child: EmptyListPlaceholder(
-            icon: Icons.add,
-            title: 'New debt',
-            subtitle: !debt.isUserStatusAcceptor
-                ? 'You have invited ${debt.user.name} to create debt \n Waiting for response'
-                : '${debt.user.name} invites you to create debt',
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              EmptyListPlaceholder(
+                icon: Icons.add,
+                title: 'New debt',
+                subtitle: !debt.isUserStatusAcceptor
+                    ? 'You have invited ${debt.user.name} to create debt \n Waiting for response'
+                    : '${debt.user.name} invites you to create debt',
+                onRefresh: () => _refreshDebt(context),
+              ),
+            ],
           ),
         ),
         if(debt.isUserStatusAcceptor) BottomButtonsRow(

@@ -8,7 +8,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/widgets/common/hero_image_circle.dart';
-import 'package:simpledebts/widgets/common/image_lazy_load.dart';
 
 class UserImageInput extends StatefulWidget {
   final Function(File image) onPickImage;

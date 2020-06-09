@@ -38,13 +38,13 @@ class DebtStore with AnalyticsUse {
 
   Future<void> acceptMultipleDebtCreation() => _debtsService
       .acceptMultipleDebtCreation(debt.id)
-      ..then((debt) => analyticsService.logDebtCreationResponse(isAccepted: true))
+      ..then((_) => analyticsService.logDebtCreationResponse(isAccepted: true))
       ..then((debt) => _debt.add(debt))
       ..then((debt) => _debtListStore.updateDebtById(debt.id, debt));
 
   Future<void> declineMultipleDebtCreation() => _debtsService
       .declineMultipleDebtCreation(debt.id)
-      ..then((debt) => analyticsService.logDebtCreationResponse(isAccepted: false))
+      ..then((_) => analyticsService.logDebtCreationResponse(isAccepted: false))
       ..then((_) => _debtListStore.fetchAndSetDebtList())
       ..then((_) => _removeDebt());
 

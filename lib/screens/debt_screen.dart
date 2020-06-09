@@ -120,6 +120,9 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
       stream: _debt$,
       builder: (context, snapshot) {
         final Debt debt = snapshot.data ?? _debtStore.debt;
+        if(debt == null) {
+          return CircularProgressIndicator();
+        }
         return Scaffold(
             appBar: AppBar(
                 actions: [

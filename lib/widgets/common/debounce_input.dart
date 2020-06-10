@@ -31,7 +31,9 @@ class _DebounceInputState extends State<DebounceInput> {
   void dispose() {
     _inputController.removeListener(_onInputChanged);
     _inputController.dispose();
-    _debounce.cancel();
+    if(_debounce != null) {
+      _debounce.cancel();
+    }
     super.dispose();
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
 import 'package:simpledebts/widgets/common/user_top_block.dart';
-import 'package:simpledebts/widgets/debt/connect_user_block.dart';
+import 'package:simpledebts/widgets/debt/connect_user/connect_user_block.dart';
 import 'package:simpledebts/widgets/debt/debt_creation_accept.dart';
 import 'package:simpledebts/widgets/debt/debt_deleted_user.dart';
 import 'package:simpledebts/widgets/debt/operations/operations_list_widget.dart';

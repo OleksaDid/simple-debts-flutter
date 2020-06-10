@@ -8,7 +8,7 @@ import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/store/auth.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
-import 'package:simpledebts/widgets/profile/user_image_input.dart';
+import 'package:simpledebts/widgets/profile/user_image_input/user_image_input.dart';
 
 class UserDataFormWidget extends StatefulWidget {
   final void Function() onSuccess;

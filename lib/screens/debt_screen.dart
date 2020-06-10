@@ -12,7 +12,7 @@ import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
-import 'package:simpledebts/widgets/debt/connect_user_dialog.dart';
+import 'package:simpledebts/widgets/debt/connect_user/connect_user_dialog.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_body.dart';
 
 enum DropdownActions {

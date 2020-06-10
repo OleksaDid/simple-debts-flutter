@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:simpledebts/models/user/user.dart';
-import 'package:simpledebts/widgets/add_debt/currency_select.dart';
+import 'package:simpledebts/widgets/common/currency_select/currency_select.dart';
 
-class DebtCreationConfirmation extends StatefulWidget {
+class DebtCreationConfirmation extends StatelessWidget {
   final String userName;
   final User user;
+  final String currency;
   final void Function() onCancel;
-  final Future<void> Function(String currency) onSubmit;
+  final void Function(String currency) onCurrencySelect;
+  final Future<void> Function() onSubmit;
 
   DebtCreationConfirmation({
-    this.userName,
-    this.user,
-    this.onCancel,
-    this.onSubmit
+    @required this.userName,
+    @required this.user,
+    @required this.currency,
+    @required this.onCancel,
+    @required this.onCurrencySelect,
+    @required this.onSubmit
   });
-
-  @override
-  _DebtCreationConfirmationState createState() => _DebtCreationConfirmationState();
-}
-
-class _DebtCreationConfirmationState extends State<DebtCreationConfirmation> {
-  String _currency = 'UAH';
-
-  void _setCurrency(String currency) {
-    setState(() => _currency = currency);
-  }
-
-  void _submit() {
-    widget.onSubmit(_currency);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +26,17 @@ class _DebtCreationConfirmationState extends State<DebtCreationConfirmation> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Create debt with ${widget.userName}?',
+            'Create debt with $userName?',
             style: TextStyle(
               fontSize: 20
             ),
           ),
           SizedBox(height: 30,),
-          if(widget.user != null) CircleAvatar(
-            backgroundImage: NetworkImage(widget.user.picture),
+          if(user != null) CircleAvatar(
+            backgroundImage: NetworkImage(user.picture),
             radius: 50,
           ),
-          if(widget.user == null) CircleAvatar(
+          if(user == null) CircleAvatar(
             radius: 50,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -63,8 +52,8 @@ class _DebtCreationConfirmationState extends State<DebtCreationConfirmation> {
           ),
           SizedBox(height: 30,),
           CurrencySelect(
-            defaultCurrency: _currency,
-            onSelect: _setCurrency,
+            defaultCurrency: currency,
+            onSelect: onCurrencySelect,
           ),
           SizedBox(height: 20,),
           Row(
@@ -73,12 +62,12 @@ class _DebtCreationConfirmationState extends State<DebtCreationConfirmation> {
               FlatButton(
                 child: Text('NO'),
                 textColor: Theme.of(context).primaryColor,
-                onPressed: widget.onCancel,
+                onPressed: onCancel,
               ),
               FlatButton(
                 child: Text('YES'),
                 textColor: Theme.of(context).primaryColor,
-                onPressed: _submit,
+                onPressed: onSubmit,
               ),
             ],
           )

@@ -25,6 +25,7 @@ Future<void> main() async {
   await EnvHelper.setupEnvironment();
   setupSingletonServices();
   setupCrashlytics();
+  await _autologin();
   runApp(MyApp());
 }
 
@@ -52,6 +53,15 @@ void setupCrashlytics() {
 
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
+}
+
+Future<void> _autologin() async {
+  try {
+    await GetIt.instance<AuthStore>().autoLogin();
+  } catch(error) {
+    print('AUTO LOGIN FAILED');
+    print(error);
+  }
 }
 
 // TODO: route animations

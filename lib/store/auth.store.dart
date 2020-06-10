@@ -23,6 +23,7 @@ class AuthStore {
 
   AuthData get authData => _authData.value;
   User get currentUser => authData?.user;
+  bool get isAuthenticated => checkIfAuthenticated(authData);
 
 
   void updateUserData(User user) => _updateData(AuthData(

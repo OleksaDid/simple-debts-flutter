@@ -54,6 +54,7 @@ dev_dependencies:
   build_runner: ^1.9.0
   change_app_package_name: ^0.1.2
   flutter_launcher_icons: ^0.7.3
+  flutter_native_splash: ^0.1.9
 
 flutter_icons:
   android: true
@@ -61,6 +62,11 @@ flutter_icons:
   image_path_android: "assets/images/icon_android.png"
   image_path_ios: "assets/images/icon.png"
   adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/icon_android.png"
+
+flutter_native_splash:
+  image: assets/images/icon_transparent.png
+  color: "ffffff"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

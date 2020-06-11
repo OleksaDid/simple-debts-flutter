@@ -64,7 +64,7 @@ Future<void> _autologin() async {
   }
 }
 
-// TODO: route animations
+
 class MyApp extends StatelessWidget {
 
   @override

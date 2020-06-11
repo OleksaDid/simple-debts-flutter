@@ -46,7 +46,6 @@ class HttpAuthService {
   }
 
   dynamic _onError(Dio http, DioError error) async {
-    // TODO: log error
     final failure = error?.response?.data != null
         ? Failure.fromJson(error.response.data)
         : null;

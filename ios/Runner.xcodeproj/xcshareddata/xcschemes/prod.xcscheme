@@ -82,6 +82,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release-prod"
+      customArchiveName = "Simple Debts"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

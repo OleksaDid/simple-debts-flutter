@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:simpledebts/helpers/env_helper.dart';
@@ -25,23 +26,25 @@ Future<void> main() async {
   await EnvHelper.setupEnvironment();
   setupSingletonServices();
   setupCrashlytics();
+  _setupStatusBar();
   await _autologin();
   runApp(MyApp());
 }
 
 void setupSingletonServices() {
-  GetIt.I.registerSingleton<AnalyticsService>(AnalyticsService());
-  GetIt.I.registerSingleton<NavigationService>(NavigationService());
-  GetIt.I.registerSingleton<HttpService>(HttpService());
-  GetIt.I.registerSingleton<AuthService>(AuthService());
-  GetIt.I.registerSingleton<AuthStore>(AuthStore());
-  GetIt.I.registerSingleton<HttpAuthService>(HttpAuthService());
-  GetIt.I.registerSingleton<CurrencyService>(CurrencyService());
-  GetIt.I.registerSingleton<CurrencyStore>(CurrencyStore());
-  GetIt.I.registerSingleton<UsersService>(UsersService());
-  GetIt.I.registerSingleton<OperationsService>(OperationsService());
-  GetIt.I.registerSingleton<DebtsService>(DebtsService());
-  GetIt.I.registerSingleton<DebtListStore>(DebtListStore());
+  final getIt = GetIt.instance;
+  getIt.registerSingleton<AnalyticsService>(AnalyticsService());
+  getIt.registerSingleton<NavigationService>(NavigationService());
+  getIt.registerSingleton<HttpService>(HttpService());
+  getIt.registerSingleton<AuthService>(AuthService());
+  getIt.registerSingleton<AuthStore>(AuthStore(getIt<AuthService>()));
+  getIt.registerSingleton<HttpAuthService>(HttpAuthService());
+  getIt.registerSingleton<CurrencyService>(CurrencyService());
+  getIt.registerSingleton<CurrencyStore>(CurrencyStore());
+  getIt.registerSingleton<UsersService>(UsersService());
+  getIt.registerSingleton<OperationsService>(OperationsService());
+  getIt.registerSingleton<DebtsService>(DebtsService());
+  getIt.registerSingleton<DebtListStore>(DebtListStore());
 }
 
 void setupCrashlytics() {
@@ -62,6 +65,12 @@ Future<void> _autologin() async {
     print('AUTO LOGIN FAILED');
     print(error);
   }
+}
+
+void _setupStatusBar() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
 }
 
 

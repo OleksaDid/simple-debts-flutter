@@ -32,38 +32,36 @@ class EmptyListPlaceholder extends StatelessWidget with SpinnerStoreUse {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 80,
-              color: Theme.of(context).textTheme.headline1.color,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 80,
+            color: Theme.of(context).textTheme.headline1.color,
+          ),
+          SizedBox(height: 20,),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          SizedBox(height: 4,),
+          Text(
+            subtitle,
+            style: Theme.of(context).textTheme.bodyText2,
+            textAlign: TextAlign.center,
+          ),
+          if(isRefreshable) SizedBox(height: 20,),
+          if(isRefreshable) spinnerContainer(
+            spinner: ButtonSpinner(),
+            replacement: FlatButton(
+              child: Text('REFRESH'),
+              textColor: Theme.of(context).primaryColor,
+              onPressed: _refresh,
             ),
-            SizedBox(height: 20,),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            SizedBox(height: 4,),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.bodyText2,
-              textAlign: TextAlign.center,
-            ),
-            if(isRefreshable) SizedBox(height: 20,),
-            if(isRefreshable) spinnerContainer(
-              spinner: ButtonSpinner(),
-              replacement: FlatButton(
-                child: Text('REFRESH'),
-                textColor: Theme.of(context).primaryColor,
-                onPressed: _refresh,
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

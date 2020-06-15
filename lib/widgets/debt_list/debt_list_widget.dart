@@ -55,16 +55,13 @@ class _DebtListWidgetState extends State<DebtListWidget> {
           final debts = snapshot.data;
 
           if(debts.length == 0) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                EmptyListPlaceholder(
-                  icon: Icons.assistant,
-                  title: 'There are no items yet',
-                  subtitle: 'press \'+\' to add the first debt',
-                  onRefresh: _refreshDebtsList,
-                ),
-              ],
+            return Center(
+              child: EmptyListPlaceholder(
+                icon: Icons.assistant,
+                title: 'There are no items yet',
+                subtitle: 'press \'+\' to add the first debt',
+                onRefresh: _refreshDebtsList,
+              ),
             );
           } else {
             return RefreshIndicator(

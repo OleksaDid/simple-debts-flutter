@@ -8,10 +8,13 @@ import 'package:simpledebts/services/auth_service.dart';
 
 class AuthStore {
 
-  final AuthService _authService = GetIt.instance<AuthService>();
+  final AuthService _authService;
 
   final BehaviorSubject<AuthData> _authData = BehaviorSubject();
   final BehaviorSubject<bool> _logout = BehaviorSubject.seeded(false);
+
+
+  AuthStore(this._authService);
 
 
   Stream<AuthData> get authData$ => Stream

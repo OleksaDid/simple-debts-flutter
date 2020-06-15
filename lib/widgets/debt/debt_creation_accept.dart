@@ -53,19 +53,16 @@ class DebtCreationAccept extends StatelessWidget with SpinnerModal {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              EmptyListPlaceholder(
-                icon: Icons.add,
-                title: 'New debt',
-                subtitle: !debt.isUserStatusAcceptor
-                    ? 'You have invited ${debt.user.name} to create debt \n Waiting for response'
-                    : '${debt.user.name} invites you to create debt',
-                onRefresh: () => _refreshDebt(context),
-              ),
-            ],
-          ),
+          child: Center(
+            child: EmptyListPlaceholder(
+              icon: Icons.add,
+              title: 'New debt',
+              subtitle: !debt.isUserStatusAcceptor
+                  ? 'You have invited ${debt.user.name} to create debt \n Waiting for response'
+                  : '${debt.user.name} invites you to create debt',
+              onRefresh: () => _refreshDebt(context),
+            ),
+          )
         ),
         if(debt.isUserStatusAcceptor) BottomButtonsRow(
           primaryButton: DebtScreenBottomButton(

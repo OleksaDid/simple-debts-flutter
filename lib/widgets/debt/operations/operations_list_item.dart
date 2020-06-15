@@ -36,7 +36,7 @@ class OperationsListItem extends StatelessWidget {
   Widget _buildTrailingBlock(BuildContext context) {
     if(operation.status == OperationStatus.CREATION_AWAITING) {
       if(operation.statusAcceptor == debt.user.id) {
-        return Text('WAITING FOR ACCEPT', style: TextStyle(color: Theme.of(context).accentColor),);
+        return Text('WAITING', style: TextStyle(color: Theme.of(context).accentColor),);
       } else {
         return OperationConfirmationButtons(
           operationId: operation.id,

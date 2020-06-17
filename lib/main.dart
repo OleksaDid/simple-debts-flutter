@@ -12,6 +12,7 @@ import 'package:simpledebts/services/http_service.dart';
 import 'package:simpledebts/services/auth_service.dart';
 import 'package:simpledebts/services/navigation_service.dart';
 import 'package:simpledebts/services/operations_service.dart';
+import 'package:simpledebts/services/shared_preferences_service.dart';
 import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/screens/auth_screen.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
@@ -27,13 +28,14 @@ Future<void> main() async {
   setupSingletonServices();
   setupCrashlytics();
   _setupStatusBar();
-  await _autologin();
+  await _getCachedInfo();
   runApp(MyApp());
 }
 
 void setupSingletonServices() {
   final getIt = GetIt.instance;
   getIt.registerSingleton<AnalyticsService>(AnalyticsService());
+  getIt.registerSingleton<SharedPreferencesService>(SharedPreferencesService());
   getIt.registerSingleton<NavigationService>(NavigationService());
   getIt.registerSingleton<HttpService>(HttpService());
   getIt.registerSingleton<AuthService>(AuthService());
@@ -58,9 +60,15 @@ void setupCrashlytics() {
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 }
 
-Future<void> _autologin() async {
+Future<void> _getCachedInfo() async {
+  final getIt = GetIt.instance;
   try {
-    await GetIt.instance<AuthStore>().autoLogin();
+    await getIt<SharedPreferencesService>().init();
+    final authData = await getIt<AuthStore>().autoLogin();
+    if(authData != null) {
+      await getIt<CurrencyStore>().getCachedCurrencies();
+      await getIt<DebtListStore>().getCachedList();
+    }
   } catch(error) {
     print('AUTO LOGIN FAILED');
     print(error);

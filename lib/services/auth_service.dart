@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
-import 'package:simpledebts/helpers/shared_preferences_helper.dart';
 import 'package:simpledebts/mixins/analytics_use.dart';
 import 'package:simpledebts/mixins/http_service_use.dart';
 import 'package:simpledebts/models/auth/auth_data.dart';
@@ -48,16 +47,6 @@ class AuthService with HttpServiceUse, AnalyticsUse {
       case FacebookLoginStatus.error:
         throw Failure(error: loginResult.errorMessage);
         break;
-    }
-  }
-
-  Future<AuthData> autoLogin() async {
-    try {
-      return SharedPreferencesHelper.getAuthData();
-    } catch(error) {
-      analyticsService.logAutoLoginFailed();
-      ErrorHelper.logError(error);
-      return null;
     }
   }
   

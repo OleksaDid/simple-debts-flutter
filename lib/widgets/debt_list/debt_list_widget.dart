@@ -21,16 +21,22 @@ class _DebtListWidgetState extends State<DebtListWidget> {
 
   Stream<List<Debt>> _debts$;
 
-  Future<void> _refreshDebtsList() async {
+  Future<void> _refreshDebtsList({fromCache = false}) async {
     try {
       await _currencyStore.fetchCurrencies();
+      if(fromCache == true && _debtListStore.debts != null) {
+        _debtListStore.fetchAndSetDebtList();
+        return _debtListStore.debts;
+      }
       await _debtListStore.fetchAndSetDebtList();
     } on Failure catch(error) {
       ErrorHelper.showErrorSnackBar(context, error.message);
     }
   }
 
-  Stream<List<Debt>> get _debtsStream => Stream.fromFuture(_refreshDebtsList()).flatMap((_) => _debtListStore.debts$);
+  Stream<List<Debt>> get _debtsStream => Stream
+      .fromFuture(_refreshDebtsList(fromCache: true))
+      .flatMap((_) => _debtListStore.debts$);
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +53,12 @@ class _DebtListWidgetState extends State<DebtListWidget> {
             child: Text('Something went wrong. Try again later'),
           );
         }
-        if(snapshot.connectionState == ConnectionState.waiting) {
+        final debts = snapshot.data ?? _debtListStore?.debts;
+        if(snapshot.connectionState == ConnectionState.waiting || debts == null) {
           return Center(
             child: CircularProgressIndicator(),
           );
         } else {
-          final debts = snapshot.data;
-
           if(debts.length == 0) {
             return Center(
               child: EmptyListPlaceholder(

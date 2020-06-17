@@ -53,32 +53,7 @@ class AuthService with HttpServiceUse, AnalyticsUse {
 
   Future<AuthData> autoLogin() async {
     try {
-      final authData = await SharedPreferencesHelper.getAuthData();
-      if(authData != null) {
-        final isValidToken = await _checkLoginStatus(authData);
-        if(isValidToken == true) {
-          return authData;
-        } else {
-          try {
-            return refreshToken(authData);
-          } on DioError catch(error) {
-            analyticsService.logAutoLoginFailed();
-            ErrorHelper.handleDioError(error);
-            return null;
-          } catch(error) {
-            analyticsService.logAutoLoginFailed();
-            ErrorHelper.logError(error);
-            return null;
-          }
-        }
-      } else {
-        analyticsService.logAutoLoginFailed();
-        return null;
-      }
-    } on DioError catch(error) {
-      analyticsService.logAutoLoginFailed();
-      ErrorHelper.handleDioError(error);
-      return null;
+      return SharedPreferencesHelper.getAuthData();
     } catch(error) {
       analyticsService.logAutoLoginFailed();
       ErrorHelper.logError(error);

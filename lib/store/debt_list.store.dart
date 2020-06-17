@@ -36,7 +36,7 @@ class DebtListStore with AnalyticsUse {
       ..then((list) => _debtList.add(list));
 
   Future<void> deleteDebt(String id) =>  _debtsService
-      .deleteDebt(id, getDebt(id).type)
+      .deleteDebt(id)
       ..then((_) => analyticsService.logDebtDelete(getDebt(id)))
       ..then((_) => _removeDebtById(id));
 

@@ -26,7 +26,7 @@ class DebtsService with HttpAuthServiceUse {
     }
   }
 
-  Future<void> deleteDebt(String id, DebtAccountType type) async {
+  Future<void> deleteDebt(String id) async {
     try {
       final url = '/debts/$id';
       await http.delete(url);

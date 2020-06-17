@@ -46,8 +46,8 @@ app.*.map.json
 # env
 .env**
 
-# FireBase info
-ios/config/*/GoogleService-Info.plist
-android/app/src/*/google-services.json
+# firebase
+**/GoogleService-Info.plist
+**/google-services.json
 /android/app/src/dev/
 /android/app/src/prod/

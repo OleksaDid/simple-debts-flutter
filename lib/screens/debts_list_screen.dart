@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
@@ -51,46 +52,49 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
       _currentUser$ = authStore.currentUser$;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.exit_to_app),
-          onPressed: () => _logout(context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openAddDebtForm(context),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          StreamBuilder<User>(
-            stream: _currentUser$,
-            builder: (context, snapshot) {
-              final user = snapshot.data ?? authStore.currentUser;
-              if(user == null) {
-                return SizedBox();
-              }
-              return TopBlock(
-                child: UserTopBlock(
-                  imageUrl: user.picture,
-                  imageTag: user.id,
-                  title: user.name,
-                  onImageTap: () => _navigateToProfile(context),
-                  fontSize: 34,
-                ),
-                color: BlockColor.Green,
-              );
-            }
+    return FocusWatcher(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () => _logout(context),
           ),
-          Expanded(
-              child: DebtListWidget()
-          )
-        ],
+          actions: [
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => _openAddDebtForm(context),
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            StreamBuilder<User>(
+              stream: _currentUser$,
+              builder: (context, snapshot) {
+                final user = snapshot.data ?? authStore.currentUser;
+                if(user == null) {
+                  return SizedBox();
+                }
+                return TopBlock(
+                  child: UserTopBlock(
+                    imageUrl: user.picture,
+                    imageTag: user.id,
+                    title: user.name,
+                    onImageTap: () => _navigateToProfile(context),
+                    fontSize: 34,
+                  ),
+                  color: BlockColor.Green,
+                );
+              }
+            ),
+            Expanded(
+                child: DebtListWidget()
+            )
+          ],
+        ),
       ),
     );
   }

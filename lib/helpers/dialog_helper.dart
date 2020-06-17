@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 
 class DialogHelper {
 
-  static Dialog getThemedDialog({
+  static Widget getThemedDialog({
     Key key,
     Color backgroundColor,
     Duration insetAnimationDuration = const Duration(milliseconds: 100),
@@ -10,25 +11,27 @@ class DialogHelper {
     EdgeInsets insetPadding,
     Clip clipBehavior = Clip.none,
     Widget child
-  }) => Dialog(
-    key: key,
-    backgroundColor: backgroundColor,
-    insetAnimationDuration: insetAnimationDuration,
-    insetAnimationCurve: insetAnimationCurve,
-    insetPadding: insetPadding,
-    clipBehavior: clipBehavior,
-    child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 30.0,
-          horizontal: 40.0,
-        ),
-        child: Container(
-          width: 240,
-          child: child
-        )
-    ),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12)
+  }) => FocusWatcher(
+    child: Dialog(
+      key: key,
+      backgroundColor: backgroundColor,
+      insetAnimationDuration: insetAnimationDuration,
+      insetAnimationCurve: insetAnimationCurve,
+      insetPadding: insetPadding,
+      clipBehavior: clipBehavior,
+      child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 30.0,
+            horizontal: 40.0,
+          ),
+          child: Container(
+            width: 240,
+            child: child
+          )
+      ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12)
+      ),
     ),
   );
 

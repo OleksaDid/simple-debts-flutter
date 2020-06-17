@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/widgets/auth/auth_body_widget.dart';
@@ -16,24 +17,30 @@ class _AuthScreenState extends BaseScreenState<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          TopBlock(
-            child: Text(
-              'Simple Debts',
-              style: Theme.of(context).textTheme.headline2.copyWith(
-                color: Colors.white,
+    return FocusWatcher(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          children: [
+            TopBlock(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Text(
+                  'Simple Debts',
+                  style: Theme.of(context).textTheme.headline2.copyWith(
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              textAlign: TextAlign.center,
+              color: BlockColor.Green,
             ),
-            color: BlockColor.Green,
-          ),
-          Expanded(
-            child: AuthBodyWidget()
-          ),
-        ],
-      )
+            Expanded(
+              child: AuthBodyWidget()
+            ),
+          ],
+        )
+      ),
     );
   }
 }

@@ -40,7 +40,7 @@ class DebtListItem extends StatelessWidget {
         leading: HeroImageCircle(
           diameter: 56,
           image: NetworkImage(debt.user.picture),
-          tag: debt.user.id,
+          tag: debt.heroImageTag,
         ),
         title: Text(
           debt.user.name,

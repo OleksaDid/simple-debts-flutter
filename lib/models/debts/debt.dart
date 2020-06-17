@@ -101,11 +101,9 @@ class Debt {
         : 0;
   }
 
-  bool get hasUnacceptedOperations {
-    return unacceptedOperationsAmount > 0;
-  }
+  bool get hasUnacceptedOperations => unacceptedOperationsAmount > 0;
 
-  bool get isUserStatusAcceptor {
-    return statusAcceptor != user.id;
-  }
+  bool get isUserStatusAcceptor => statusAcceptor != user.id;
+
+  String get heroImageTag => user.id + id;
 }

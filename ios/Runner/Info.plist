@@ -35,6 +35,8 @@
 	<string>657412881122208</string>
 	<key>FacebookDisplayName</key>
 	<string>Simple Debts</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -44,6 +46,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires access to the microphone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -53,12 +61,6 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app requires access to the photo library.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app requires access to the microphone.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>This app requires access to the camera.</string>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -74,10 +76,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIStatusBarHidden</key>
-	<true/>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-
 </dict>
 </plist>

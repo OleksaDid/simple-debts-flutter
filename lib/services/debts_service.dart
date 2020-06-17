@@ -28,8 +28,7 @@ class DebtsService with HttpAuthServiceUse {
 
   Future<void> deleteDebt(String id, DebtAccountType type) async {
     try {
-      final debtTypePath = type == DebtAccountType.SINGLE_USER ? 'single' : 'multiple';
-      final url = '/debts/$debtTypePath/$id';
+      final url = '/debts/$id';
       await http.delete(url);
     } on DioError catch(error) {
       throw ErrorHelper.handleDioError(error);

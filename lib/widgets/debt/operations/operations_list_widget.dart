@@ -44,23 +44,24 @@ class _OperationsListWidgetState extends State<OperationsListWidget> {
         child: CircularProgressIndicator(),
       );
     }
-    return widget.operations.length == 0
-        ? Center(
+    final hasOperations = widget.operations != null && widget.operations.length > 0;
+    return hasOperations
+        ? RefreshIndicator(
+          onRefresh: () => _fetchOperations(forceRefresh: true),
+          child: ListView.builder(
+              itemCount: widget.operations.length,
+              itemBuilder: (context, index) => OperationsListItem(
+                operation: widget.operations[index],
+                debt: widget.debt,
+              )
+          ),
+        )
+        : Center(
           child: EmptyListPlaceholder(
             icon: Icons.account_balance_wallet,
             title: 'No operations yet',
             subtitle: 'Press one of the buttons below to add one',
             onRefresh: () => _fetchOperations(forceRefresh: true),
-          ),
-        )
-        : RefreshIndicator(
-          onRefresh: () => _fetchOperations(forceRefresh: true),
-          child: ListView.builder(
-            itemCount: widget.operations.length,
-            itemBuilder: (context, index) => OperationsListItem(
-              operation: widget.operations[index],
-              debt: widget.debt,
-            )
           ),
         );
   }

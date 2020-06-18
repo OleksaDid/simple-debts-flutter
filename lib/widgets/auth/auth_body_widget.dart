@@ -45,7 +45,10 @@ class _AuthBodyWidgetState extends State<AuthBodyWidget> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 50.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 50.0,
+        vertical: 26
+      ),
       child: SingleChildScrollView(
         child: _showUserDataForm == false
             ? AuthFormWidget(

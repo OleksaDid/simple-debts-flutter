@@ -5,10 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:simpledebts/models/common/route/id_route_argument.dart';
 import 'package:simpledebts/screens/debt_screen.dart';
 import 'package:simpledebts/services/navigation_service.dart';
-import 'package:simpledebts/services/users_service.dart';
 
 class PushNotificationsService {
-  final UsersService _usersService = GetIt.instance<UsersService>();
 
   PushNotificationsService._();
 
@@ -34,11 +32,14 @@ class PushNotificationsService {
         onResume: _handleResume,
       );
 
-      await _sendDeviceToken();
-
       _initialized = true;
     }
   }
+
+  Future<String> getDeviceToken() async {
+    return _firebaseMessaging.getToken();
+  }
+
 
   static Future<void> _handleMessage(Map<String, dynamic> message) async {
     print('M: ${message.toString()}');
@@ -54,12 +55,6 @@ class PushNotificationsService {
 
   static Future<void> _handleResume(Map<String, dynamic> message) async {
     _basicNotificationHandle(message);
-  }
-
-
-  Future<void> _sendDeviceToken() async {
-    String token = await _firebaseMessaging.getToken();
-    return _usersService.pushDeviceToken(token);
   }
 
   static _basicNotificationHandle(Map<String, dynamic> message) {

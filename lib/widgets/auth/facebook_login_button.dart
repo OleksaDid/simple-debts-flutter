@@ -3,14 +3,18 @@ import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
 import 'package:simpledebts/screens/debts_list_screen.dart';
+import 'package:simpledebts/services/users_service.dart';
 import 'package:simpledebts/store/auth.store.dart';
 
 class FacebookLoginButton extends StatelessWidget {
   final _authStore = GetIt.instance<AuthStore>();
+  final _usersService = GetIt.I<UsersService>();
 
   Future<void> _loginWithFacebook(BuildContext context) async {
     try {
-      final authData = await _authStore.facebookLogin();
+      final authData = await (_authStore
+          .facebookLogin()
+          ..then((_) => _usersService.sendDeviceToken()));
       if(authData != null) {
         Navigator.of(context).pushReplacementNamed(DebtsListScreen.routeName);
       }

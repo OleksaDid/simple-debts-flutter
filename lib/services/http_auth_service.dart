@@ -53,7 +53,7 @@ class HttpAuthService {
 
     if (error.response?.statusCode == 401 || isInvalidToken) {
       print(error.request.path);
-      print('token expired, need to update');
+      print('${DateTime.now().millisecondsSinceEpoch} token expired, need to update');
 
       http.interceptors.requestLock.lock();
       http.interceptors.responseLock.lock();

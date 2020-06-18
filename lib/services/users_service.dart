@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/analytics_use.dart';
 import 'package:simpledebts/mixins/http_auth_service_use.dart';
 import 'package:simpledebts/models/user/user.dart';
+import 'package:simpledebts/services/push_notifications_service.dart';
 
 class UsersService with HttpAuthServiceUse, AnalyticsUse {
+  final PushNotificationsService _pushNotificationsService = GetIt.I<PushNotificationsService>();
 
   Future<User> updateUserData(String name, File image) async {
     try {
@@ -55,8 +58,9 @@ class UsersService with HttpAuthServiceUse, AnalyticsUse {
     }
   }
 
-  Future<void> pushDeviceToken(String token) async {
+  Future<void> sendDeviceToken() async {
     try {
+      final token = await _pushNotificationsService.getDeviceToken();
       final url = '/users/push_tokens';
       await http.post(url, data: {
         'token': token

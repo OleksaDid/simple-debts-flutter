@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
 import 'package:simpledebts/mixins/spinner_store_use.dart';
 import 'package:simpledebts/models/common/errors/failure.dart';
-import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/common/button_spinner.dart';
 
 class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
-  final String operationId;
-  final String debtId;
+  final Future<void> Function() onDelete;
 
   DeleteOperationButton({
-    @required this.operationId,
-    @required this.debtId
+    @required this.onDelete
   });
 
   Future<void> _deleteOperation(BuildContext context) async {
@@ -21,7 +17,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
     if(deleteOperation == true) {
       showSpinner();
       try {
-        await GetIt.instance<DebtStore>().deleteOperation(operationId);
+        await onDelete();
         Navigator.of(context).pop();
         hideSpinner();
       } on Failure catch(error) {
@@ -39,7 +35,7 @@ class DeleteOperationButton extends StatelessWidget with SpinnerStoreUse {
       child: spinnerContainer(
         spinner: ButtonSpinner(),
         replacement: FlatButton(
-          child: Text('DELETE'),
+          child: const Text('DELETE'),
           textColor: Theme.of(context).colorScheme.secondary,
           onPressed: () => _deleteOperation(context),
         )

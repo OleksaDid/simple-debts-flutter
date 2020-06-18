@@ -5,11 +5,13 @@ import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/models/debts/operation.dart';
 import 'package:simpledebts/store/auth.store.dart';
+import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/widgets/debt/operations/delete_operation_button.dart';
 import 'package:simpledebts/widgets/debt/operations/operation_confirmation_buttons.dart';
 
 class OperationDetailsDialog extends StatelessWidget {
-  final authStore = GetIt.instance<AuthStore>();
+  final _authStore = GetIt.instance<AuthStore>();
+  final _debtStore = GetIt.I<DebtStore>();
   final Operation operation;
   final Debt debt;
 
@@ -23,7 +25,7 @@ class OperationDetailsDialog extends StatelessWidget {
       children: [
         SizedBox(height: 20,),
         if(operation.status == OperationStatus.CANCELLED) Text(
-          'Operation was canceled by ${operation.cancelledBy == authStore.currentUser.id ? 'you' : debt.user.name}',
+          'Operation was canceled by ${operation.cancelledBy == debt.user.id ? debt.user.name : 'you'}',
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary
           ),
@@ -45,6 +47,14 @@ class OperationDetailsDialog extends StatelessWidget {
       ],
     );
   }
+  
+  Future<void> _deleteOperation() async {
+    return _debtStore.deleteOperation(operation.id);
+  }
+  
+  Future<void> _declineOperation() async {
+    return _debtStore.declineOperation(operation.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +75,7 @@ class OperationDetailsDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(authStore.currentUser.picture),
+                backgroundImage: NetworkImage(_authStore.currentUser.picture),
                 radius: 28,
                 backgroundColor: Colors.white,
               ),
@@ -102,9 +112,15 @@ class OperationDetailsDialog extends StatelessWidget {
           Text(formattedDate, textAlign: TextAlign.start,),
           if(operation.status != OperationStatus.UNCHANGED) _buildBottomBlock(context),
           if(debt.type == DebtAccountType.SINGLE_USER) DeleteOperationButton(
-            operationId: operation.id,
-            debtId: debt.id,
-          )
+            onDelete: _deleteOperation,
+          ),
+          if(
+            debt.type == DebtAccountType.MULTIPLE_USERS &&
+            operation.status == OperationStatus.CREATION_AWAITING &&
+            operation.statusAcceptor == debt.user.id
+          ) DeleteOperationButton(
+            onDelete: _declineOperation,
+          ),
         ],
       )
     );

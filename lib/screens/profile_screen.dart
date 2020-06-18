@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
+import 'package:simpledebts/widgets/common/flutter_focus_watcher.dart';
 import 'package:simpledebts/widgets/profile/user_data_form_widget.dart';
 
 class ProfileScreen extends StatefulWidget with ScreenWidget {
@@ -18,7 +18,6 @@ class _ProfileScreenState extends BaseScreenState<ProfileScreen> {
   Widget build(BuildContext context) {
     return FocusWatcher(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Update user profile'),
           elevation: 0,

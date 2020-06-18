@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/widgets/auth/auth_body_widget.dart';
+import 'package:simpledebts/widgets/common/flutter_focus_watcher.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
 
 class AuthScreen extends StatefulWidget with ScreenWidget {
@@ -19,7 +19,6 @@ class _AuthScreenState extends BaseScreenState<AuthScreen> {
   Widget build(BuildContext context) {
     return FocusWatcher(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             TopBlock(

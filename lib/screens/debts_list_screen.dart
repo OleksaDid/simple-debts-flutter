@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:simpledebts/mixins/screen_widget.dart';
 import 'package:simpledebts/models/user/user.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/screens/profile_screen.dart';
 import 'package:simpledebts/widgets/add_debt/add_debt_dialog.dart';
+import 'package:simpledebts/widgets/common/flutter_focus_watcher.dart';
 import 'package:simpledebts/widgets/debt_list/debt_list_widget.dart';
 import 'package:simpledebts/widgets/common/top_block.dart';
 import 'package:simpledebts/widgets/common/user_top_block.dart';
@@ -43,7 +43,6 @@ class _DebtsListScreenState extends BaseScreenState<DebtsListScreen> {
 
     return FocusWatcher(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 0,

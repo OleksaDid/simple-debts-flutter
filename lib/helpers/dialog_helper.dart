@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
+import 'package:simpledebts/widgets/common/flutter_focus_watcher.dart';
 
 class DialogHelper {
 

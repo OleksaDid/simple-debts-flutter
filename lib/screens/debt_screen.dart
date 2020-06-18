@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_focus_watcher/flutter_focus_watcher.dart';
 import 'package:get_it/get_it.dart';
 import 'package:simpledebts/helpers/dialog_helper.dart';
 import 'package:simpledebts/helpers/error_helper.dart';
@@ -13,6 +12,7 @@ import 'package:simpledebts/models/debts/debt.dart';
 import 'package:simpledebts/screens/base_screen_state.dart';
 import 'package:simpledebts/store/debt.store.dart';
 import 'package:simpledebts/store/debt_list.store.dart';
+import 'package:simpledebts/widgets/common/flutter_focus_watcher.dart';
 import 'package:simpledebts/widgets/debt/connect_user/connect_user_dialog.dart';
 import 'package:simpledebts/widgets/debt/debt_screen_body.dart';
 
@@ -126,7 +126,6 @@ class _DebtScreenState extends BaseScreenState<DebtScreen> {
         }
         return FocusWatcher(
           child: Scaffold(
-              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                   actions: [
                     if(debt.hasUnacceptedOperations) FlatButton(

@@ -46,7 +46,6 @@ dependencies:
   firebase_messaging: ^6.0.16
   firebase_analytics: ^5.0.14
   package_info: ^0.4.1
-  flutter_focus_watcher: ^0.0.1
 
 dev_dependencies:
   flutter_test:
